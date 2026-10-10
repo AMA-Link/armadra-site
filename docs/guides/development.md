@@ -2,7 +2,7 @@
 
 ## 环境
 
-- Node.js ≥ 22，pnpm 12（`packageManager` 字段锁定版本）。
+- Node.js ≥ 24，pnpm 12（`packageManager` 字段锁定版本）。
 - 不需要其他工具链；站点是纯静态输出。
 
 ## 常用命令
