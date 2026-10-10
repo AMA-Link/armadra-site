@@ -1,0 +1,139 @@
+---
+/**
+ * 首页小插图：用 SVG 线条画的软件片段（不是图片），配色取 --app-* 与站点线色。
+ * how-1…how-4 对应「工作方式」四步；desktop / server / phone 对应「运行方式」。
+ */
+interface Props {
+  kind: 'how-1' | 'how-2' | 'how-3' | 'how-4' | 'desktop' | 'server' | 'phone';
+}
+const { kind } = Astro.props;
+---
+
+<svg class="illo" viewBox="0 0 240 150" aria-hidden="true" focusable="false">
+  {
+    kind === 'how-1' && (
+      <g>
+        <rect class="card" x="22" y="34" width="86" height="70" rx="8" />
+        <rect class="head" x="22" y="34" width="86" height="16" rx="8" />
+        <circle class="dot-claude" cx="32" cy="42" r="3" />
+        <rect class="term" x="28" y="56" width="74" height="42" rx="3" />
+        <path class="txt" d="M34 66h40M34 74h28M34 82h46" />
+        <rect class="card" x="132" y="46" width="86" height="70" rx="8" />
+        <rect class="head" x="132" y="46" width="86" height="16" rx="8" />
+        <circle class="dot-codex" cx="142" cy="54" r="3" />
+        <rect class="term" x="138" y="68" width="74" height="42" rx="3" />
+        <path class="txt" d="M144 78h36M144 86h48" />
+        <path class="plus" d="M120 128v14M113 135h14" />
+      </g>
+    )
+  }
+  {
+    kind === 'how-2' && (
+      <g>
+        <rect class="card" x="16" y="40" width="80" height="62" rx="8" />
+        <circle class="dot-claude" cx="27" cy="49" r="3" />
+        <rect class="card" x="144" y="40" width="80" height="62" rx="8" />
+        <circle class="dot-codex" cx="155" cy="49" r="3" />
+        <path class="edge" d="M96 71 C 120 71, 120 71, 144 71" />
+        <circle class="port" cx="96" cy="71" r="3.5" />
+        <circle class="port" cx="144" cy="71" r="3.5" />
+        <rect class="label" x="102" y="78" width="36" height="12" rx="3" />
+      </g>
+    )
+  }
+  {
+    kind === 'how-3' && (
+      <g>
+        <rect class="card" x="14" y="52" width="70" height="46" rx="8" />
+        <circle class="dot-ama" cx="25" cy="61" r="3" />
+        <path class="edge edge--dispatch" d="M84 75 C 120 75, 120 34, 156 34" />
+        <path class="edge edge--dispatch" d="M84 75 C 120 75, 120 116, 156 116" />
+        <rect class="card" x="156" y="12" width="70" height="44" rx="8" />
+        <circle class="dot-claude" cx="167" cy="21" r="3" />
+        <rect class="card" x="156" y="94" width="70" height="44" rx="8" />
+        <circle class="dot-codex" cx="167" cy="103" r="3" />
+        <rect class="pkg" x="104" y="64" width="22" height="18" rx="3" />
+      </g>
+    )
+  }
+  {
+    kind === 'how-4' && (
+      <g>
+        <rect class="card" x="40" y="18" width="160" height="114" rx="8" />
+        <rect class="head" x="40" y="18" width="160" height="18" rx="8" />
+        <circle class="dot-ama" cx="51" cy="27" r="3" />
+        <path class="ok" d="M56 56l5 5 9-10M56 82l5 5 9-10M56 108l5 5 9-10" />
+        <path class="txt" d="M80 57h80M80 83h64M80 109h92" />
+      </g>
+    )
+  }
+  {
+    kind === 'desktop' && (
+      <g>
+        <rect class="card" x="20" y="16" width="200" height="118" rx="8" />
+        <rect class="side" x="20" y="16" width="52" height="118" rx="8" />
+        <circle class="light" cx="30" cy="25" r="2.5" /><circle class="light" cx="38" cy="25" r="2.5" /><circle class="light" cx="46" cy="25" r="2.5" />
+        <path class="txt" d="M28 44h30M28 54h24M28 64h30" />
+        <rect class="mini" x="86" y="34" width="44" height="30" rx="4" />
+        <rect class="mini mini--work" x="150" y="34" width="54" height="36" rx="4" />
+        <rect class="mini" x="104" y="86" width="50" height="32" rx="4" />
+        <path class="edge" d="M130 49 C 140 49, 140 52, 150 52" />
+        <path class="edge" d="M108 64 C 108 76, 128 76, 128 86" />
+      </g>
+    )
+  }
+  {
+    kind === 'server' && (
+      <g>
+        <rect class="term" x="20" y="22" width="200" height="106" rx="8" />
+        <circle class="light" cx="32" cy="34" r="2.5" /><circle class="light" cx="40" cy="34" r="2.5" /><circle class="light" cx="48" cy="34" r="2.5" />
+        <text class="code" x="32" y="60">$ docker compose up -d</text>
+        <text class="code code--dim" x="32" y="78">armadra-server pairing</text>
+        <text class="code code--ok" x="32" y="96">✓ https://canvas.example</text>
+        <rect class="caret" x="32" y="106" width="6" height="10" />
+      </g>
+    )
+  }
+  {
+    kind === 'phone' && (
+      <g>
+        <rect class="card" x="84" y="6" width="72" height="138" rx="12" />
+        <rect class="term" x="92" y="22" width="56" height="70" rx="4" />
+        <path class="txt-light" d="M98 32h30M98 40h22M98 48h36" />
+        <rect class="ask" x="92" y="98" width="56" height="16" rx="4" />
+        <rect class="btn" x="126" y="101" width="18" height="10" rx="3" />
+        <path class="nav" d="M96 130h8M110 130h8M124 130h8M138 130h8" />
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .illo { width: 100%; height: auto; overflow: visible; }
+  .card { fill: var(--app-card); stroke: var(--app-border-strong); }
+  .head { fill: var(--app-head); }
+  .side { fill: var(--app-side); }
+  .term { fill: var(--app-term); }
+  .txt { stroke: var(--app-muted); stroke-width: 3; stroke-linecap: round; }
+  .txt-light { stroke: var(--app-term-dim); stroke-width: 3; stroke-linecap: round; }
+  .dot-claude { fill: var(--app-claude); }
+  .dot-codex { fill: var(--app-codex); }
+  .dot-ama { fill: var(--app-ama); }
+  .light { fill: var(--app-border-strong); }
+  .edge { fill: none; stroke: var(--app-brand); stroke-width: 1.6; }
+  .edge--dispatch { stroke: var(--app-edge-dispatch); stroke-dasharray: 5 4; }
+  .port { fill: var(--app-card); stroke: var(--app-brand); stroke-width: 1.6; }
+  .label { fill: var(--app-canvas); stroke: var(--app-border); }
+  .pkg { fill: var(--app-tint-working); stroke: var(--app-working); }
+  .ok { fill: none; stroke: var(--app-ok); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .plus { stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+  .mini { fill: var(--app-card); stroke: var(--app-border-strong); }
+  .mini--work { stroke: var(--app-working); }
+  .code { fill: var(--app-term-text); font: 400 10px / 1 var(--font-mono); } /* design-ok SVG 视窗内的字号，随插图等比缩放 */
+  .code--dim { fill: var(--app-term-dim); }
+  .code--ok { fill: var(--app-ok); }
+  .caret { fill: var(--app-working); }
+  .ask { fill: var(--app-tint-warn); }
+  .btn { fill: var(--app-brand-solid); }
+  .nav { stroke: var(--app-muted); stroke-width: 3; stroke-linecap: round; }
+</style>
