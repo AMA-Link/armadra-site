@@ -28,7 +28,10 @@ export const H = {
   bands: {
     story: { zh: '软件', en: 'The app' },
     why: { zh: '出发点', en: 'Why' },
+    how: { zh: '工作方式', en: 'How it works' },
     features: { zh: '能力', en: 'Capabilities' },
+    run: { zh: '运行方式', en: 'Where it runs' },
+    recent: { zh: '最近更新', en: 'Recent releases' },
     agents: { zh: 'Agent', en: 'Agents' },
     principles: { zh: '原则', en: 'Principles' },
     start: { zh: '开始', en: 'Start' },
@@ -40,6 +43,27 @@ export const H = {
       { title: { zh: '模型可以分工', en: 'Models split the work' }, line: { zh: '经济模型做边界明确的事，强模型做复杂判断。', en: 'Economical models take bounded tasks; stronger ones make the hard calls.' } },
       { title: { zh: '过程可以查看', en: 'The process stays visible' }, line: { zh: 'Agent、资料、差异与成果摊在同一张画布上。', en: 'Agents, material, diffs and results on one canvas.' } },
     ],
+  },
+  how: {
+    title: { zh: '四步组织一次协作', en: 'Four steps to a collaboration' },
+    steps: [
+      { title: { zh: '放上 Agent', en: 'Place agents' }, line: { zh: '每个节点启动一个真实 CLI。', en: 'Each node starts a real CLI.' } },
+      { title: { zh: '连线', en: 'Link them' }, line: { zh: '连线决定谁能读谁。', en: 'Links decide who reads whom.' } },
+      { title: { zh: '分派与交接', en: 'Assign and hand off' }, line: { zh: '协调者派活，阶段结果交接。', en: 'A coordinator assigns; results are handed off.' } },
+      { title: { zh: '收回结果', en: 'Gather results' }, line: { zh: '差异、测试与结论回到画布。', en: 'Diffs, tests and conclusions land on the canvas.' } },
+    ],
+  },
+  run: {
+    title: { zh: '在桌面，也在服务器上', en: 'On your desktop, and on a server' },
+    items: [
+      { id: 'desktop', title: { zh: '桌面应用', en: 'Desktop app' }, line: { zh: '本地优先，关窗口后台照跑。', en: 'Local first; keeps running after you close the window.' } },
+      { id: 'server', title: { zh: '服务器壳', en: 'Server shell' }, line: { zh: '常开，多人按工作空间共享。', en: 'Always on, shared per workspace.' } },
+      { id: 'phone', title: { zh: '手机', en: 'Phone' }, line: { zh: '扫码配对，随时查看与批准。', en: 'Pair by QR; check in and approve anywhere.' } },
+    ],
+  },
+  recent: {
+    title: { zh: '最近更新', en: 'Recent releases' },
+    all: { zh: '全部更新日志', en: 'Full changelog' },
   },
   features: {
     title: { zh: '围绕画布的一整套工作面', en: 'A whole work surface around the canvas' },
