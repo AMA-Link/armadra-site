@@ -2,9 +2,9 @@
 
 ## 报告漏洞 / Reporting a vulnerability
 
-请通过 [GitHub 私下报告](https://github.com/Owlbay/armadra-site/security/advisories/new) 提交，不要开公开 issue。Armadra 软件本身的漏洞请报告到 [Owlbay/Armadra](https://github.com/Owlbay/Armadra/security/advisories/new)。
+请通过 [GitHub 私下报告](https://github.com/AMA-Link/armadra-site/security/advisories/new) 提交，不要开公开 issue。Armadra 软件本身的漏洞请报告到 [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/security/advisories/new)。
 
-Please report through [GitHub private reporting](https://github.com/Owlbay/armadra-site/security/advisories/new) rather than a public issue. Vulnerabilities in the Armadra app itself go to [Owlbay/Armadra](https://github.com/Owlbay/Armadra/security/advisories/new).
+Please report through [GitHub private reporting](https://github.com/AMA-Link/armadra-site/security/advisories/new) rather than a public issue. Vulnerabilities in the Armadra app itself go to [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/security/advisories/new).
 
 ## 范围 / Scope
 

@@ -34,7 +34,7 @@ Armadra 是本地优先的 AI Coding 画布：Claude Code、Codex、OpenCode、P
 
 ## Evidence on Hand
 
-- 产品说明：Owlbay/Armadra 的 `README.md`、`docs/guides/product-overview.md`、`agent-collaboration.md`、`server-deployment.md`。
+- 产品说明：AMA-Link/Armadra 的 `README.md`、`docs/guides/product-overview.md`、`agent-collaboration.md`、`server-deployment.md`。
 - 发布：GitHub Releases（macOS / Windows / Linux 安装包，目前未签名）。
 - 没有用户数、评价、媒体报道；不得编造。
 

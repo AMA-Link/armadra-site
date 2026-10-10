@@ -25,7 +25,7 @@ pnpm deploy:dry
 3. GitHub 仓库已配好 secret `CLOUDFLARE_ACCOUNT_ID` 与变量 `DEPLOY_ENABLED=true`、`SITE_URL=https://armadra.com`；只差令牌，在本机运行后粘贴第 1 步的令牌：
 
    ```sh
-   gh secret set CLOUDFLARE_API_TOKEN -R Owlbay/armadra-site
+   gh secret set CLOUDFLARE_API_TOKEN -R AMA-Link/armadra-site
    ```
 
 4. 之后每次合并到 `main`，`.github/workflows/deploy.yml` 自动构建、检查站内链接并发布；也可以在 Actions 页手动运行。令牌缺失时工作流只打一条提示并跳过，不会失败。
