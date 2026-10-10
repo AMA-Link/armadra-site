@@ -1,0 +1,20 @@
+{
+  // Armadra 官网：Cloudflare Workers 静态资源，没有 Worker 脚本。
+  // 部署步骤与域名绑定见 docs/guides/deployment.md。
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "armadra-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // armadra.com 的 zone 已在同一个 Cloudflare 账号里（relay.armadra.com 也在）。
+  // 首次部署确认 workers.dev 地址正常后，把下面两条取消注释再部署，Cloudflare 会自动建 DNS 记录与证书。
+  // "routes": [
+  //   { "pattern": "armadra.com", "custom_domain": true },
+  //   { "pattern": "www.armadra.com", "custom_domain": true }
+  // ],
+  "workers_dev": true,
+  "observability": { "enabled": false }
+}
