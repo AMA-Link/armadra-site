@@ -8,7 +8,7 @@ For the development setup, conventions and check commands, see [AGENTS.md](../AG
 
 - 先搜索已有 issue，一个 issue 只写一个问题。 / Search existing issues first; one problem per issue.
 - 使用对应的表单：缺陷报告、功能建议、内容与文档问题。 / Use the matching form: bug report, feature request, or content or docs issue.
-- Armadra 软件本身的问题请到 [Owlbay/Armadra](https://github.com/Owlbay/Armadra/issues)。 / Issues with the Armadra app itself belong in [Owlbay/Armadra](https://github.com/Owlbay/Armadra/issues).
+- Armadra 软件本身的问题请到 [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/issues)。 / Issues with the Armadra app itself belong in [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/issues).
 - 安全问题按 [SECURITY.md](SECURITY.md) 私下报告。 / Report security problems privately as described in [SECURITY.md](SECURITY.md).
 
 ## 需求流程 / From request to merge
@@ -41,7 +41,7 @@ docs(guides): 部署指南补 armadra.com 绑定步骤
 - 从 `main` 拉出按用途命名的分支，例如 `feat/home-model`、`docs/deploy-guide`。 / Branch from `main` with a purpose-based name.
 - PR 标题沿用提交信息格式；正文按模板填写，不适用的小节写「无 / None」。 / The PR title follows the commit format; fill in the template.
 - 合并前 `pnpm check` 与 `pnpm build` 通过，界面改动附桌面与手机截图。 / `pnpm check` and `pnpm build` pass before merging; UI changes include desktop and mobile screenshots.
-- 产品介绍与文档以 [Owlbay/Armadra](https://github.com/Owlbay/Armadra) 的 README 与 `docs/guides/` 为准，不编造数字或功能。 / Product copy and docs follow the Armadra README and `docs/guides/`; never invent numbers or features.
+- 产品介绍与文档以 [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra) 的 README 与 `docs/guides/` 为准，不编造数字或功能。 / Product copy and docs follow the Armadra README and `docs/guides/`; never invent numbers or features.
 
 ## 仓库自动化 / Repository automation
 

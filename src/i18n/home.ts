@@ -1,5 +1,5 @@
 /**
- * 首页文案：只留标题级的短句，不写解释段落。事实出自 Owlbay/Armadra 的 README 与产品说明。
+ * 首页文案：只留标题级的短句，不写解释段落。事实出自 AMA-Link/Armadra 的 README 与产品说明。
  */
 export const H = {
   docTitle: { zh: 'Armadra · 多 Agent 协作的 AI Coding 画布', en: 'Armadra · An AI coding canvas for agents that work together' },

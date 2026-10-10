@@ -35,4 +35,4 @@ Workflow tools excel at turning well-defined steps into repeatable pipelines. Ar
 
 ## Where do I report problems?
 
-App issues go to [Owlbay/Armadra](https://github.com/Owlbay/Armadra/issues/new/choose); website and docs issues go to [Owlbay/armadra-site](https://github.com/Owlbay/armadra-site/issues/new/choose).
+App issues go to [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/issues/new/choose); website and docs issues go to [AMA-Link/armadra-site](https://github.com/AMA-Link/armadra-site/issues/new/choose).

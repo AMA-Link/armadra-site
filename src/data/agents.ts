@@ -1,4 +1,4 @@
-/** 支持的 Agent：与 Owlbay/Armadra README「支持的 Agent」表一致 */
+/** 支持的 Agent：与 AMA-Link/Armadra README「支持的 Agent」表一致 */
 export type Channel = 'hook' | 'plugin' | 'ext' | 'host';
 export interface AgentRow {
   name: string;

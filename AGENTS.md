@@ -5,7 +5,7 @@
 
 ## 产品不变量
 
-1. 产品事实以 [Owlbay/Armadra](https://github.com/Owlbay/Armadra) 的 README、`docs/guides/` 与 `docs/status/` 为唯一来源；官网不编造功能、数字、用户评价或下载量。
+1. 产品事实以 [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra) 的 README、`docs/guides/` 与 `docs/status/` 为唯一来源；官网不编造功能、数字、用户评价或下载量。
 2. 尚未实现或未验证的能力不写成已支持；路线图项明确标注为计划。
 3. 界面与文档中英双语，两种语言内容一致；切换只换语言，不换信息量。
 4. 纯静态站点：不加后端、表单、账号、统计或第三方脚本，字体本地打包。

@@ -1,5 +1,5 @@
 /**
- * 更新日志：取自 Owlbay/Armadra 的 CHANGELOG.md，只留用户能感知的改动，不写契约号、迁移号与 PR 号。
+ * 更新日志：取自 AMA-Link/Armadra 的 CHANGELOG.md，只留用户能感知的改动，不写契约号、迁移号与 PR 号。
  * 新版本加在最前面。
  */
 import type { Bi } from '../lib/types';

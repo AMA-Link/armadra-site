@@ -1,8 +1,8 @@
 # armadra-site
 
-[Armadra](https://github.com/Owlbay/Armadra) 的官网：产品介绍、更新日志与文档。正式地址 <https://armadra.com>。
+[Armadra](https://github.com/AMA-Link/Armadra) 的官网：产品介绍、更新日志与文档。正式地址 <https://armadra.com>。
 
-The official website of [Armadra](https://github.com/Owlbay/Armadra): product overview, changelog and documentation.
+The official website of [Armadra](https://github.com/AMA-Link/Armadra): product overview, changelog and documentation.
 
 ## 开发 / Development
 
