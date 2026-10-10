@@ -27,8 +27,9 @@ export function mountDemo(root: HTMLElement): void {
     svg,
     strings: S.demo,
     onLayout: layout,
+    // 首页紧凑版始终看全图；完整版跟随每一步聚焦到相关节点
     onFocus: (ns) => {
-      if (!vp.userMoved) vp.fit(ns);
+      if (!vp.userMoved && !compact) vp.fit(ns);
     },
     onState: ({ playing }) => playBtn.setAttribute('aria-pressed', String(playing)),
   });

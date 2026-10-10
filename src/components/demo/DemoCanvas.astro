@@ -246,10 +246,14 @@ const cliName = { ama: 'ama', claude: 'Claude Code', codex: 'Codex' } as const;
     will-change: transform;
   }
 
+  /* 1×1 的 SVG 靠 overflow 画出整张图；max-width 要解除，否则在零宽的世界层里被压成 0 而不绘制 */
   .demo__edges {
     position: absolute;
     left: 0;
     top: 0;
+    width: 1px;
+    height: 1px;
+    max-width: none;
     overflow: visible;
     pointer-events: none;
   }
