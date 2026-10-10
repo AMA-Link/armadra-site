@@ -107,6 +107,8 @@ export function initStory(root: HTMLElement): void {
     });
     titles.forEach((t, j) => t.toggleAttribute('data-active', j === i));
     captions.forEach((c, j) => (c.hidden = j !== Math.max(0, i)));
+    // 首次布局时模型可能还没有尺寸（视口切换、字体未就绪），这里补放一次
+    if (!hotspots.childElementCount) placeHotspots();
     hotspots.querySelectorAll('button').forEach((b, j) => (j === i ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')));
     camera();
   };
