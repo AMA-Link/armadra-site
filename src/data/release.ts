@@ -12,13 +12,3 @@ export interface Asset {
 
 /** 最新发布的快照，由 pnpm sync:release 更新 */
 export const RELEASE = data as { version: string; tag: string; published: string; url: string; assets: Asset[] };
-
-export const OS_ORDER: readonly Os[] = ['darwin', 'windows', 'linux'];
-
-export function assetsFor(os: Os): Asset[] {
-  return RELEASE.assets.filter((a) => a.os === os);
-}
-
-export function formatSize(bytes: number): string {
-  return `${(bytes / 1024 / 1024).toFixed(0)} MB`;
-}
