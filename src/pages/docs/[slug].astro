@@ -144,6 +144,12 @@ const group = groupLabel(pair.group);
     overflow-y: auto;
     padding-block: var(--sp-7);
   }
+  /* 目录行的 hover 底向两侧外扩，侧栏自己留出这段内边距，避免出现横向滚动条 */
+  .docs__side {
+    padding-inline: var(--sp-3);
+    margin-inline: calc(-1 * var(--sp-3));
+    overflow-x: hidden;
+  }
   .docs__menu-toggle { display: none; }
   .docs__main {
     min-width: 0;
@@ -203,7 +209,7 @@ const group = groupLabel(pair.group);
   }
   @media (max-width: 1024px) {
     .docs { grid-template-columns: minmax(0, 1fr); gap: 0; }
-    .docs__side { position: static; max-height: none; padding-block: var(--sp-4) 0; overflow: visible; }
+    .docs__side { position: static; max-height: none; padding: var(--sp-4) 0 0; margin-inline: 0; overflow: visible; }
     .docs__menu { border: 1px solid var(--line); }
     .docs__menu-toggle {
       display: flex;
