@@ -85,10 +85,12 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
       import { applyLang, setLang } from '../scripts/lang';
       import { installShortcuts } from '../scripts/shortcuts';
       import { initCopy } from '../scripts/copy';
+      import { initReveal } from '../scripts/reveal';
 
       initTheme();
       applyLang();
       initCopy();
+      initReveal();
 
       // 主题与语言切换按钮：事件委托，覆盖页面上所有变体
       document.addEventListener('click', (e) => {

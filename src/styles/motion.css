@@ -90,3 +90,18 @@
   }
   .is-revealing { animation: vt-fade-in 160ms linear both; animation-delay: 0s; }
 }
+
+/* ---- 滚动渐进（scripts/reveal.ts）：脚本就绪后才隐藏，没有脚本时内容照常可见 ---- */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms var(--ease-out), transform 800ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-ready [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal] { transform: none; transition: opacity 300ms linear; }
+}
