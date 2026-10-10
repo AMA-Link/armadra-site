@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNav from '../components/home/TopNav.astro';
+import Footer from '../components/common/Footer.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import { S } from '../i18n';
+---
+
+<BaseLayout page="home" title="Armadra">
+  <TopNav page="home" />
+  <main id="main" class="container">
+    <PageHeader title={S.site.name} intro={S.site.description} />
+  </main>
+  <Footer />
+</BaseLayout>

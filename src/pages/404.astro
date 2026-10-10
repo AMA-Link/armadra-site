@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNav from '../components/home/TopNav.astro';
+import Footer from '../components/common/Footer.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import T from '../components/common/T.astro';
+import { S } from '../i18n';
+---
+
+<BaseLayout page="404" title={S.notFound.docTitle.zh} titleEn={S.notFound.docTitle.en}>
+  <TopNav page="404" />
+  <main id="main" class="container nf">
+    <PageHeader title={S.notFound.title} intro={S.notFound.intro}>
+      <a class="btn-primary" href="/"><T zh={S.notFound.home.zh} en={S.notFound.home.en} /></a>
+      <a class="btn-ghost" href="/docs/"><T zh={S.notFound.docs.zh} en={S.notFound.docs.en} /></a>
+    </PageHeader>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .nf { min-height: calc(100svh - var(--nav-h) - var(--sp-10)); }
+</style>

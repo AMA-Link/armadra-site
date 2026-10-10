@@ -1,0 +1,104 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/utilities.css';
+import '../styles/motion.css';
+import type { PageId } from '../lib/types';
+import { S } from '../i18n';
+import T from '../components/common/T.astro';
+
+interface Props {
+  page: PageId;
+  /** 最终 title（首页只写 'Armadra'） */
+  title: string;
+  /** 可选英文 title，切换语言时替换 document.title */
+  titleEn?: string;
+  description?: string;
+  /** side：文档外壳，≥1025 左侧为目录栏 */
+  shell?: 'top' | 'side';
+  bodyClass?: string;
+}
+
+const {
+  page,
+  title,
+  titleEn,
+  description = S.site.description.zh,
+
+  shell = 'top',
+  bodyClass,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
+---
+
+<!doctype html>
+<html
+  lang="zh-CN"
+  data-lang="zh"
+  data-scheme="dark"
+  data-page={page}
+  data-title-zh={title}
+  data-title-en={titleEn ?? title}
+>
+  <head>
+    <script is:inline>
+      (function () {
+        try {
+          var d = document.documentElement;
+          var s = localStorage.getItem('armadra-site.scheme');
+          if (s !== 'dark' && s !== 'light') s = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          d.dataset.scheme = s;
+          var l = localStorage.getItem('armadra-site.lang');
+          if (l !== 'zh' && l !== 'en') l = /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
+          d.dataset.lang = l; d.lang = l === 'zh' ? 'zh-CN' : 'en';
+          if (l === 'en' && d.dataset.titleEn) document.title = d.dataset.titleEn;
+        } catch (e) {}
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#141413" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:site_name" content="Armadra" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content={page === 'doc' ? 'article' : 'website'} />
+    <meta name="twitter:card" content="summary" />
+    <slot name="head" />
+  </head>
+  <body class:list={[`shell-${shell}`, `page-${page}`, bodyClass]}>
+    <a class="skip-link" href="#main"><T zh={S.skip.zh} en={S.skip.en} /></a>
+    <slot />
+    <script>
+      import { initTheme, setScheme } from '../scripts/theme';
+      import { applyLang, setLang } from '../scripts/lang';
+      import { installShortcuts } from '../scripts/shortcuts';
+      import { initCopy } from '../scripts/copy';
+
+      initTheme();
+      applyLang();
+      initCopy();
+
+      // 主题与语言切换按钮：事件委托，覆盖页面上所有变体
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element | null)?.closest('[data-theme-toggle], [data-lang-toggle]');
+        if (!el) return;
+        if (el.hasAttribute('data-theme-toggle')) setScheme('toggle');
+        else setLang('toggle');
+      });
+
+      installShortcuts();
+    </script>
+  </body>
+</html>

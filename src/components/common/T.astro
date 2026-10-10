@@ -1,0 +1,11 @@
+---
+/** 双语文本：同时输出两份，由 html[data-lang] 的全局 CSS 隐藏其一 */
+interface Props {
+  zh: string;
+  en: string;
+  as?: 'span' | 'div' | 'p';
+}
+const { zh, en, as: Tag = 'span' } = Astro.props;
+---
+
+<Tag lang="zh-CN" data-l="zh">{zh}</Tag><Tag lang="en" data-l="en">{en}</Tag>

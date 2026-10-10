@@ -1,0 +1,63 @@
+---
+import { S } from '../../i18n';
+import T from './T.astro';
+
+interface Props {
+  variant?: 'icon' | 'row';
+  class?: string;
+}
+const { variant = 'icon', class: className } = Astro.props;
+// 当前中文 → 动作是「切换到英文」；当前英文 → 「切换到中文」。由 applyLang() 按 data-aria-* 同步
+---
+
+<button
+  type="button"
+  class:list={['lang-toggle', `lang-toggle--${variant}`, className]}
+  data-lang-toggle
+  aria-label={S.lang.toEn.zh}
+  data-aria-zh={S.lang.toEn.zh}
+  data-aria-en={S.lang.toZh.en}
+>
+  {
+    variant === 'icon' ? (
+      <span class="lt-label"><T zh={S.lang.label.zh} en={S.lang.label.en} /></span>
+    ) : (
+      <>
+        <span class="lt-row__key"><T zh={S.lang.row.zh} en={S.lang.row.en} /></span>
+        <span class="lt-row__val"><T zh={S.lang.zh.zh} en={S.lang.en.en} /></span>
+      </>
+    )
+  }
+</button>
+
+<style>
+  .lang-toggle--icon {
+    display: inline-grid;
+    place-items: center;
+    width: var(--control-h);
+    height: var(--control-h);
+    color: var(--ink-2);
+    font: 500 var(--fs-body-sm) / 1 var(--font-sans);
+    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), scale var(--dur-1) var(--ease-out);
+  }
+  .lang-toggle--icon:hover { color: var(--ink); background: var(--hover-row); }
+
+  .lang-toggle--row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% + 2 * var(--row-bleed, var(--sp-5)));
+    margin-inline: calc(-1 * var(--row-bleed, var(--sp-5)));
+    padding-inline: var(--row-bleed, var(--sp-5));
+    height: 36px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-nav);
+    line-height: var(--lh-mono-nav);
+    color: var(--ink-2);
+    text-align: left;
+    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .lang-toggle--row:hover { color: var(--ink); background: var(--hover-row); }
+  .lang-toggle--row:focus-visible { outline-offset: -2px; }
+  .lt-row__val { color: var(--ink-3); }
+</style>
