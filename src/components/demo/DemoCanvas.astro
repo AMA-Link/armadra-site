@@ -1,0 +1,443 @@
+---
+/**
+ * 在线演示画布。节点与连线来自 scenario.ts；SSR 输出节点初始状态，
+ * 平移缩放、拖动与回放由 scripts/demo/ 接管。compact：首页嵌入版，进入视口自动播放、循环。
+ */
+import { NODES, EDGES, STEPS } from './scenario';
+import { S, fmtBi } from '../../i18n';
+import T from '../common/T.astro';
+import Icon from '../common/Icon.astro';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+const D = S.demo;
+const ready = fmtBi(D.step, { n: 0, total: STEPS.length });
+const cliName = { ama: 'ama', claude: 'Claude Code', codex: 'Codex' } as const;
+---
+
+<div class:list={['demo', { 'demo--compact': compact }]} data-demo data-compact={compact ? '' : undefined}>
+  <div class="demo__bar">
+    <div class="demo__progress">
+      <span class="demo__step corner" data-demo-step><T zh={ready.zh} en={ready.en} /></span>
+      <p class="demo__caption" data-demo-caption aria-live="polite">
+        <T zh={D.ready.zh} en={D.ready.en} />
+      </p>
+    </div>
+    <div class="demo__controls">
+      <button type="button" class="demo__btn demo__btn--play" data-demo-play aria-pressed="false">
+        <span class="demo__when-paused"><Icon name="play" size={14} /><T zh={D.play.zh} en={D.play.en} /></span>
+        <span class="demo__when-playing"><Icon name="pause" size={14} /><T zh={D.pause.zh} en={D.pause.en} /></span>
+      </button>
+      <button type="button" class="demo__btn" data-demo-restart>
+        <Icon name="replay" size={14} /><T zh={D.restart.zh} en={D.restart.en} />
+      </button>
+      {
+        !compact && (
+          <>
+            <button type="button" class="demo__icon" data-demo-zoom="out" aria-label={D.zoomOut.zh} data-aria-zh={D.zoomOut.zh} data-aria-en={D.zoomOut.en}>
+              <Icon name="minus" size={14} />
+            </button>
+            <button type="button" class="demo__icon" data-demo-zoom="in" aria-label={D.zoomIn.zh} data-aria-zh={D.zoomIn.zh} data-aria-en={D.zoomIn.en}>
+              <Icon name="plus" size={14} />
+            </button>
+          </>
+        )
+      }
+      <button type="button" class="demo__icon" data-demo-fit aria-label={D.fit.zh} data-aria-zh={D.fit.zh} data-aria-en={D.fit.en}>
+        <Icon name="fit" size={14} />
+      </button>
+      {
+        compact && (
+          <a class="demo__btn demo__btn--link" href="/demo/">
+            <T zh={D.full.zh} en={D.full.en} />
+            <Icon name="arrow-right" size={12} />
+          </a>
+        )
+      }
+    </div>
+  </div>
+
+  <div
+    class="demo__viewport"
+    tabindex="0"
+    role="application"
+    aria-roledescription={D.canvas.zh}
+    aria-label={D.canvas.zh}
+    aria-describedby={compact ? undefined : 'demo-help'}
+    data-aria-zh={D.canvas.zh}
+    data-aria-en={D.canvas.en}
+    data-demo-viewport
+    data-demo-keys
+  >
+    <div class="demo__world" data-demo-world>
+      <svg class="demo__edges" aria-hidden="true" data-demo-edges>
+        {
+          EDGES.map((e) => (
+            <g class={`dedge dedge--${e.role}`} data-edge={e.id} data-from={e.from} data-to={e.to}>
+              <path class="dedge__path" />
+              <g class="dedge__label">
+                <rect class="dedge__label-bg" rx="4" />
+                <text class="dedge__label-text">
+                  <tspan data-l="zh">{e.label.zh}</tspan>
+                  <tspan data-l="en">{e.label.en}</tspan>
+                </text>
+              </g>
+            </g>
+          ))
+        }
+      </svg>
+
+      {
+        NODES.map((n) => (
+          <article
+            class:list={['dnode', `dnode--${n.kind}`]}
+            data-node={n.id}
+            data-status="idle"
+            data-x={n.x}
+            data-y={n.y}
+            style={`left:${n.x}px;top:${n.y}px;width:${n.w}px`}
+          >
+            <header class="dnode__head" data-drag>
+              <span class:list={['dnode__dot', `dnode__dot--${n.cli ?? n.kind}`]} aria-hidden="true" />
+              <span class="dnode__title">
+                {n.cli && <span class="dnode__cli">{cliName[n.cli]}</span>}
+                {typeof n.title === 'string' ? <span class="mono">{n.title}</span> : <T zh={n.title.zh} en={n.title.en} />}
+              </span>
+              {n.model && <span class="dnode__model">{n.model}</span>}
+              {n.kind === 'agent' && (
+                <span class="dnode__status" data-status-label>
+                  <T zh={D.status.idle.zh} en={D.status.idle.en} />
+                </span>
+              )}
+            </header>
+            {n.kind === 'agent' && (
+              <>
+                <div class="dnode__ask" data-ask hidden>
+                  <span class="dnode__ask-label">
+                    <T zh={D.permission.zh} en={D.permission.en} />
+                  </span>
+                  <span class="dnode__ask-prompt" data-ask-prompt />
+                  <span class="dnode__ask-actions">
+                    <button type="button" class="dnode__deny" data-ask-deny>
+                      <T zh={D.deny.zh} en={D.deny.en} />
+                    </button>
+                    <button type="button" class="dnode__allow" data-ask-allow>
+                      <T zh={D.allow.zh} en={D.allow.en} />
+                    </button>
+                  </span>
+                </div>
+                <div class="dnode__term" data-term role="log" aria-live="off">
+                  <span class="dnode__cursor" aria-hidden="true">▍</span>
+                </div>
+              </>
+            )}
+            {n.kind === 'note' && n.body && (
+              <p class="dnode__note">
+                <T zh={n.body.zh} en={n.body.en} />
+              </p>
+            )}
+            {n.kind === 'diff' && (
+              <div class="dnode__diff" data-diff>
+                <p class="dnode__empty">
+                  <T zh={D.noDiff.zh} en={D.noDiff.en} />
+                </p>
+              </div>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <p class="demo__hint" id={compact ? undefined : 'demo-help'}>
+    {compact ? <T zh={D.hintCompact.zh} en={D.hintCompact.en} /> : <T zh={D.hint.zh} en={D.hint.en} />}
+    <span class="sr-only"><T zh={D.canvasHelp.zh} en={D.canvasHelp.en} /></span>
+  </p>
+</div>
+
+<script>
+  import { mountDemo } from '../../scripts/demo/mount';
+  document.querySelectorAll<HTMLElement>('[data-demo]').forEach((el) => mountDemo(el));
+</script>
+
+<style>
+  .demo {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  /* 顶部工具行：官网体系 */
+  .demo__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    min-height: var(--row-h);
+    padding: var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .demo__progress {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-4);
+    min-width: 0;
+  }
+  .demo__step { flex: none; }
+  .demo__caption {
+    min-width: 0;
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .demo__controls {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--sp-1);
+  }
+  .demo__btn,
+  .demo__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    min-height: 36px;
+    color: var(--ink-2);
+    font: 500 var(--fs-body-sm) / 1 var(--font-sans);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
+  }
+  .demo__btn { padding-inline: var(--sp-3); }
+  .demo__icon { width: 36px; }
+  .demo__btn:hover,
+  .demo__icon:hover { color: var(--ink); background: var(--hover-row); }
+  .demo__btn--play { border-color: var(--line); color: var(--ink); }
+  .demo__btn > span { display: inline-flex; align-items: center; gap: var(--sp-2); }
+  .demo__btn--play[aria-pressed='true'] .demo__when-paused,
+  .demo__btn--play[aria-pressed='false'] .demo__when-playing { display: none; }
+
+  /* 画布：软件外观 */
+  .demo__viewport {
+    position: relative;
+    height: min(72svh, 680px);
+    overflow: hidden;
+    background-color: var(--demo-canvas);
+    background-image: radial-gradient(var(--demo-dot) 1px, transparent 1.2px);
+    background-size: 20px 20px;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .demo--compact .demo__viewport { height: 460px; touch-action: pan-y; }
+  .demo__viewport:focus-visible { outline-offset: -2px; }
+  .demo__viewport[data-panning] { cursor: grabbing; }
+  .demo__world {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  .demo__edges {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .dedge__path {
+    fill: none;
+    stroke: var(--demo-brand);
+    stroke-width: 1.6;
+    opacity: 0.75;
+    transition: opacity var(--dur-2) var(--ease-out), stroke-width var(--dur-2) var(--ease-out);
+  }
+  .dedge--peer .dedge__path { stroke-dasharray: 6 5; }
+  .dedge--context .dedge__path { opacity: 0.55; }
+  .dedge[data-active] .dedge__path { opacity: 1; stroke-width: 2.4; }
+  .dedge__label-bg { fill: var(--demo-canvas); stroke: var(--demo-border); }
+  .dedge__label-text {
+    fill: var(--demo-brand-text);
+    font: 500 var(--fs-mono-xs) / 1 var(--font-sans);
+    dominant-baseline: central;
+    text-anchor: middle;
+  }
+  :global(.dpulse) { fill: var(--demo-brand-text); }
+
+  /* 节点 */
+  .dnode {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background: var(--demo-card);
+    border: 1px solid var(--demo-border-strong);
+    border-radius: var(--demo-radius);
+    overflow: hidden;
+    color: var(--demo-text);
+    transition: box-shadow var(--dur-3) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+  }
+  .dnode[data-status='working'] { border-color: var(--demo-working); box-shadow: 0 0 0 3px var(--demo-tint-working), 0 0 24px var(--demo-glow); } /* design-ok 软件画布的运行光晕 */
+  .dnode[data-status='waiting'] { border-color: var(--demo-warn); box-shadow: 0 0 0 3px var(--demo-tint-warn); } /* design-ok 软件画布的等待描边 */
+  .dnode[data-dragging] { z-index: 2; }
+
+  .dnode__head {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: 36px;
+    padding: 0 var(--sp-3);
+    background: var(--demo-head);
+    border-bottom: 1px solid var(--demo-border);
+    font: 500 var(--fs-mono) / var(--lh-mono) var(--font-sans);
+    cursor: move;
+  }
+  .dnode__dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--demo-pill);
+    background: var(--demo-muted);
+  }
+  .dnode__dot--ama { background: var(--demo-ama); }
+  .dnode__dot--claude { background: var(--demo-claude); }
+  .dnode__dot--codex { background: var(--demo-codex); }
+  .dnode__dot--note { background: var(--demo-note); }
+  .dnode__dot--diff { background: var(--demo-brand); }
+  .dnode__title {
+    display: inline-flex;
+    gap: var(--sp-2);
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .dnode__cli { color: var(--demo-text); }
+  .dnode__cli + :global(span) { color: var(--demo-muted); font-weight: 400; }
+  .dnode__model {
+    margin-left: auto;
+    padding: 0 var(--sp-2);
+    border-radius: var(--demo-pill);
+    background: var(--demo-hover);
+    color: var(--demo-muted);
+    font: 400 var(--fs-mono-xs) / var(--lh-mono-xs) var(--font-mono);
+  }
+  .dnode__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: 0 var(--sp-2);
+    border-radius: var(--demo-pill);
+    background: var(--demo-hover);
+    color: var(--demo-muted);
+    font: 500 var(--fs-mono-xs) / var(--lh-mono-xs) var(--font-sans);
+    white-space: nowrap;
+  }
+  .dnode__status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: var(--demo-pill);
+    background: currentColor;
+  }
+  .dnode--note .dnode__head,
+  .dnode--diff .dnode__head { gap: var(--sp-2); }
+  .dnode[data-status='working'] .dnode__status { background: var(--demo-tint-working); color: var(--demo-working); }
+  .dnode[data-status='waiting'] .dnode__status { background: var(--demo-tint-warn); color: var(--demo-warn); }
+  .dnode[data-status='done'] .dnode__status { background: var(--demo-tint-ok); color: var(--demo-ok); }
+
+  .dnode__ask {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2) var(--sp-3);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--demo-tint-warn);
+    border-bottom: 1px solid var(--demo-border);
+    font: 400 var(--fs-mono) / var(--lh-mono) var(--font-sans);
+  }
+  .dnode__ask[hidden] { display: none; }
+  .dnode__ask-label { color: var(--demo-warn); font-weight: 500; }
+  .dnode__ask-prompt { font-family: var(--font-mono); }
+  .dnode__ask-actions { display: inline-flex; gap: var(--sp-2); margin-left: auto; }
+  .dnode__allow,
+  .dnode__deny {
+    min-height: 28px;
+    padding: 0 var(--sp-3);
+    border-radius: var(--demo-radius-sm);
+    font: 500 var(--fs-mono) / 1 var(--font-sans);
+    transition: background-color var(--dur-1) var(--ease-out), filter var(--dur-1) var(--ease-out);
+  }
+  .dnode__allow { background: var(--demo-brand-solid); color: var(--demo-on-brand); }
+  .dnode__allow:hover { filter: brightness(1.12); }
+  .dnode__deny { background: var(--demo-hover); color: var(--demo-text); }
+  .dnode__deny:hover { background: var(--demo-border-strong); }
+  .dnode__allow[data-auto] { animation: ask-press 600ms var(--ease-out); }
+
+  .dnode__term {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: calc(var(--lh-mono) * 6 + var(--sp-3) * 2);
+    padding: var(--sp-3);
+    overflow: hidden;
+    background: var(--demo-term);
+    color: var(--demo-term-text);
+    font: 400 var(--fs-mono-sm) / var(--lh-mono) var(--font-mono);
+  }
+  .dnode__term :global(.tl) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: line-in 220ms var(--ease-out) both; }
+  .dnode__term :global(.tl--cmd)::before { content: '> '; color: var(--demo-brand-text); }
+  .dnode__term :global(.tl--ok) { color: var(--demo-ok); }
+  .dnode__term :global(.tl--warn) { color: var(--demo-warn); }
+  .dnode__term :global(.tl--dim) { color: var(--demo-term-dim); }
+  .dnode__cursor { color: var(--demo-term-dim); }
+  .dnode[data-status='working'] .dnode__cursor { animation: blink 1s steps(1) infinite; color: var(--demo-working); }
+
+  .dnode__note {
+    padding: var(--sp-3);
+    font: 400 var(--fs-body-sm) / var(--lh-body-sm) var(--font-sans);
+    color: var(--demo-text);
+  }
+  .dnode__diff {
+    min-height: 120px;
+    padding: var(--sp-2) 0;
+    font: 400 var(--fs-mono-xs) / var(--lh-mono) var(--font-mono);
+  }
+  .dnode__empty { padding: var(--sp-2) var(--sp-3); color: var(--demo-muted); font-family: var(--font-sans); font-size: var(--fs-mono); }
+  .dnode__diff :global(.dfl) { display: flex; gap: var(--sp-2); padding: 0 var(--sp-3); white-space: pre; animation: line-in 260ms var(--ease-out) both; }
+  .dnode__diff :global(.dfl--add) { background: var(--demo-add-bg); }
+  .dnode__diff :global(.dfl--del) { background: var(--demo-del-bg); }
+  .dnode__diff :global(.dfl__sign) { width: 1ch; flex: none; color: var(--demo-muted); }
+
+  .demo__hint {
+    padding: var(--sp-2) var(--sp-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-caption);
+    color: var(--ink-3);
+  }
+
+  @keyframes line-in { from { opacity: 0; transform: translateY(3px); } }
+  @keyframes ask-press { 50% { filter: brightness(1.35); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dnode__term :global(.tl),
+    .dnode__diff :global(.dfl) { animation: none; }
+    .dnode[data-status='working'] .dnode__cursor { animation: none; }
+  }
+
+  @media (max-width: 640px) {
+    .demo__bar { flex-direction: column; align-items: stretch; gap: var(--sp-2); padding-inline: var(--sp-3); }
+    .demo__progress { flex-direction: column; gap: var(--sp-1); }
+    .demo__controls { justify-content: flex-start; }
+    .demo__viewport { height: 64svh; }
+    .demo--compact .demo__viewport { height: 380px; }
+  }
+</style>
