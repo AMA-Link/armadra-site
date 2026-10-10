@@ -3,6 +3,7 @@ export const S = {
   nav: {
     home: { zh: '首页', en: 'Home' },
     docs: { zh: '文档', en: 'Docs' },
+    changelog: { zh: '更新日志', en: 'Changelog' },
     download: { zh: '下载', en: 'Download' },
     github: { zh: 'GitHub', en: 'GitHub' },
     aria: { zh: '主导航', en: 'Main navigation' },
@@ -67,6 +68,14 @@ export const S = {
     edit: { zh: '在 GitHub 上编辑本页', en: 'Edit this page on GitHub' },
     devDocs: { zh: '开发者文档在 Armadra 仓库的 docs/ 目录', en: 'Developer docs live in the docs/ folder of the Armadra repository' },
     count: { zh: '{n} 篇', en: '{n} pages' },
+  },
+
+  changelog: {
+    docTitle: { zh: '更新日志 · Armadra', en: 'Changelog · Armadra' },
+    title: { zh: '更新日志', en: 'Changelog' },
+    latest: { zh: '最新', en: 'Latest' },
+    release: { zh: '发布说明', en: 'Release notes' },
+    full: { zh: '完整记录', en: 'Full history' },
   },
 
   notFound: {
