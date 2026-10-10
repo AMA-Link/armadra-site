@@ -1,0 +1,230 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNav from '../../components/home/TopNav.astro';
+import Footer from '../../components/common/Footer.astro';
+import DocsNav from '../../components/docs/DocsNav.astro';
+import T from '../../components/common/T.astro';
+import Icon from '../../components/common/Icon.astro';
+import { getDocPairs, groupLabel, type DocPair } from '../../lib/docs';
+import { SITE_REPO_URL } from '../../lib/nav';
+import { S } from '../../i18n';
+import '../../styles/prose.css';
+
+export async function getStaticPaths() {
+  const pairs = await getDocPairs();
+  return pairs.map((pair, i) => ({
+    params: { slug: pair.slug },
+    props: { pair, pairs, prev: pairs[i - 1] ?? null, next: pairs[i + 1] ?? null },
+  }));
+}
+
+interface Props {
+  pair: DocPair;
+  pairs: DocPair[];
+  prev: DocPair | null;
+  next: DocPair | null;
+}
+const { pair, pairs, prev, next } = Astro.props;
+const zh = await render(pair.zh);
+const en = await render(pair.en);
+const versions = [
+  { lang: 'zh' as const, entry: pair.zh, r: zh },
+  { lang: 'en' as const, entry: pair.en, r: en },
+];
+const group = groupLabel(pair.group);
+---
+
+<BaseLayout
+  page="doc"
+  shell="side"
+  title={`${pair.zh.data.title} · Armadra`}
+  titleEn={`${pair.en.data.title} · Armadra`}
+  description={pair.zh.data.description}
+>
+  <TopNav page="doc" variant="side" />
+  <div class="docs container">
+    <aside class="docs__side">
+      <details class="docs__menu" open>
+        <summary class="docs__menu-toggle"><T zh={S.docs.nav.zh} en={S.docs.nav.en} /></summary>
+        <DocsNav pairs={pairs} current={pair.slug} />
+      </details>
+    </aside>
+
+    <main id="main" class="docs__main">
+      {
+        versions.map(({ lang, entry, r }) => (
+          <article class="docs__article" data-l={lang} lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+            <header class="docs__head">
+              <p class="corner">{group[lang]}</p>
+              <h1 class="docs__title">{entry.data.title}</h1>
+              <p class="docs__desc">{entry.data.description}</p>
+            </header>
+            <div class="prose">
+              <r.Content />
+            </div>
+          </article>
+        ))
+      }
+
+      <nav class="docs__pager" aria-label={S.docs.nav.zh} data-aria-zh={S.docs.nav.zh} data-aria-en={S.docs.nav.en}>
+        {
+          prev ? (
+            <a class="docs__pager-link" href={`/docs/${prev.slug}/`} rel="prev">
+              <span class="corner"><T zh={S.docs.prev.zh} en={S.docs.prev.en} /></span>
+              <span class="docs__pager-title"><T zh={prev.zh.data.title} en={prev.en.data.title} /></span>
+            </a>
+          ) : <span />
+        }
+        {
+          next && (
+            <a class="docs__pager-link docs__pager-link--next" href={`/docs/${next.slug}/`} rel="next">
+              <span class="corner"><T zh={S.docs.next.zh} en={S.docs.next.en} /></span>
+              <span class="docs__pager-title"><T zh={next.zh.data.title} en={next.en.data.title} /></span>
+            </a>
+          )
+        }
+      </nav>
+      <p class="docs__edit">
+        <a class="link-quiet" href={`${SITE_REPO_URL}/edit/main/src/content/docs/zh/${pair.slug}.md`} data-l="zh">
+          {S.docs.edit.zh} <Icon name="arrow-up-right" size={12} />
+        </a>
+        <a class="link-quiet" href={`${SITE_REPO_URL}/edit/main/src/content/docs/en/${pair.slug}.md`} data-l="en">
+          {S.docs.edit.en} <Icon name="arrow-up-right" size={12} />
+        </a>
+      </p>
+      <Footer />
+    </main>
+
+    <aside class="docs__toc" aria-label={S.docs.toc.zh} data-aria-zh={S.docs.toc.zh} data-aria-en={S.docs.toc.en}>
+      {
+        versions.map(({ lang, r }) => {
+          const hs = r.headings.filter((h) => h.depth === 2 || h.depth === 3);
+          return hs.length ? (
+            <div data-l={lang}>
+              <p class="corner docs__toc-title">{S.docs.toc[lang]}</p>
+              <ul class="docs__toc-list" role="list">
+                {hs.map((h) => (
+                  <li class:list={{ 'docs__toc-sub': h.depth === 3 }}>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null;
+        })
+      }
+    </aside>
+  </div>
+</BaseLayout>
+
+<script>
+  // 窄屏收起目录；宽屏目录常开
+  const menu = document.querySelector<HTMLDetailsElement>('.docs__menu');
+  const wide = matchMedia('(min-width: 1025px)');
+  const sync = () => {
+    if (menu) menu.open = wide.matches;
+  };
+  sync();
+  wide.addEventListener('change', sync);
+</script>
+
+<style>
+  .docs {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr) 200px;
+    gap: var(--sp-7);
+    align-items: start;
+  }
+  .docs__side,
+  .docs__toc {
+    position: sticky;
+    top: var(--nav-h);
+    max-height: calc(100svh - var(--nav-h));
+    overflow-y: auto;
+    padding-block: var(--sp-7);
+  }
+  /* 目录行的 hover 底向两侧外扩，侧栏自己留出这段内边距，避免出现横向滚动条 */
+  .docs__side {
+    padding-inline: var(--sp-3);
+    margin-inline: calc(-1 * var(--sp-3));
+    overflow-x: hidden;
+  }
+  .docs__menu-toggle { display: none; }
+  .docs__main {
+    min-width: 0;
+    max-width: var(--docs-main-max);
+    padding-top: var(--sp-7);
+  }
+  .docs__head { margin-bottom: var(--sp-6); }
+  .docs__title {
+    margin-top: var(--sp-2);
+    font: 500 var(--fs-h1) / 1.2 var(--font-sans);
+    letter-spacing: -0.02em;
+  }
+  .docs__desc {
+    margin-top: var(--sp-3);
+    color: var(--ink-2);
+    font-size: var(--fs-body-lg);
+    line-height: var(--lh-body-lg);
+  }
+
+  .docs__pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-4);
+    margin-top: var(--sp-8);
+  }
+  .docs__pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    padding: var(--sp-4);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    transition: border-color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .docs__pager-link:hover { border-color: var(--line-strong); background: var(--hover-row); }
+  .docs__pager-link--next { grid-column: 2; text-align: right; }
+  .docs__pager-title { color: var(--ink); }
+  .docs__edit { margin: var(--sp-5) 0 var(--sp-7); font-size: var(--fs-body-sm); }
+  .docs__edit a { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); }
+
+  .docs__toc-title { margin-bottom: var(--sp-3); }
+  .docs__toc-list { margin: 0; padding: 0; border-left: 1px solid var(--line-soft); }
+  .docs__toc-list a {
+    display: block;
+    padding: var(--sp-1) var(--sp-3);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+  .docs__toc-list a:hover { color: var(--ink); }
+  .docs__toc-sub a { padding-left: var(--sp-5); }
+
+  @media (max-width: 1279px) {
+    .docs { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+    .docs__toc { display: none; }
+  }
+  @media (max-width: 1024px) {
+    .docs { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .docs__side { position: static; max-height: none; padding: var(--sp-4) 0 0; margin-inline: 0; overflow: visible; }
+    .docs__menu { border: 1px solid var(--line); }
+    .docs__menu-toggle {
+      display: flex;
+      align-items: center;
+      min-height: var(--control-h);
+      padding-inline: var(--sp-4);
+      cursor: pointer;
+      color: var(--ink-2);
+    }
+    .docs__menu[open] .docs__menu-toggle { border-bottom: 1px solid var(--line-soft); }
+    .docs__menu :global(.docs-nav) { padding: var(--sp-4); }
+    .docs__main { padding-top: var(--sp-6); }
+  }
+  @media (max-width: 640px) {
+    .docs__pager { grid-template-columns: minmax(0, 1fr); }
+    .docs__pager-link--next { grid-column: 1; }
+  }
+</style>

@@ -117,6 +117,28 @@ export const S = {
     },
   },
 
+  docs: {
+    docTitle: { zh: '文档 · Armadra', en: 'Docs · Armadra' },
+    title: { zh: '文档', en: 'Documentation' },
+    intro: {
+      zh: '从安装到多 Agent 协作：先读「入门」，再按需查概念与使用指南。',
+      en: 'From installing to multi-agent collaboration: start with Getting started, then look up concepts and guides as you need them.',
+    },
+    groups: {
+      start: { zh: '入门', en: 'Getting started' },
+      concepts: { zh: '概念', en: 'Concepts' },
+      guides: { zh: '使用', en: 'Guides' },
+      reference: { zh: '参考', en: 'Reference' },
+    },
+    nav: { zh: '文档目录', en: 'Documentation' },
+    toc: { zh: '本页内容', en: 'On this page' },
+    prev: { zh: '上一篇', en: 'Previous' },
+    next: { zh: '下一篇', en: 'Next' },
+    edit: { zh: '在 GitHub 上编辑本页', en: 'Edit this page on GitHub' },
+    devDocs: { zh: '开发者文档在 Armadra 仓库的 docs/ 目录', en: 'Developer docs live in the docs/ folder of the Armadra repository' },
+    count: { zh: '{n} 篇', en: '{n} pages' },
+  },
+
   notFound: {
     docTitle: { zh: '页面不存在 · Armadra', en: 'Not found · Armadra' },
     title: { zh: '这个页面不存在', en: 'This page does not exist' },

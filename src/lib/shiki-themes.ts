@@ -1,5 +1,5 @@
 /**
- * Owlbay 代码高亮主题（§4.15），色值与 tokens.css 的 --code-* 一致。
+ * 站点代码高亮主题，色值与 tokens.css 的 --code-* 一致。
  * 由 astro.config.mjs 以 themes: { dark, light } + defaultColor: false 接入，输出 --shiki-dark / --shiki-light。
  */
 
@@ -45,12 +45,12 @@ function build(name: string, type: 'dark' | 'light', c: Palette): ShikiTheme {
   };
 }
 
-export const owlbayDark = build('owlbay-dark', 'dark', {
+export const siteDark = build('site-dark', 'dark', {
   bg: '#1a1a18', plain: '#b0aea5', comment: '#87867f', keyword: '#d97757', string: '#c9b98a', number: '#e0a66b',
   type: '#9fb3a8', fn: '#faf9f5', punct: '#87867f', tag: '#d97757', attr: '#c9b98a', inserted: '#9fb3a8', deleted: '#d97757',
 });
 
-export const owlbayLight = build('owlbay-light', 'light', {
+export const siteLight = build('site-light', 'light', {
   bg: '#f3f1ea', plain: '#5e5d59', comment: '#6e6d67', keyword: '#b0522f', string: '#6b6a2e', number: '#8a5a1c',
   type: '#3f6b5a', fn: '#141413', punct: '#6e6d67', tag: '#b0522f', attr: '#6b6a2e', inserted: '#3f6b5a', deleted: '#b0522f',
 });
