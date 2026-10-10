@@ -7,7 +7,6 @@ import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import CodeBlock from '../components/ui/CodeBlock.astro';
 import Segmented from '../components/ui/Segmented.astro';
-import DemoCanvas from '../components/demo/DemoCanvas.astro';
 import { S, fmtBi } from '../i18n';
 import { H } from '../i18n/home';
 import { AGENTS } from '../data/agents';
@@ -33,8 +32,7 @@ pnpm install
       </h1>
       <p class="hero__intro"><T zh={H.hero.intro.zh} en={H.hero.intro.en} /></p>
       <div class="hero__actions">
-        <a class="btn-primary" href="/demo/"><T zh={H.hero.demo.zh} en={H.hero.demo.en} /></a>
-        <a class="btn-ghost" href="#start"><Icon name="download" size={14} /><T zh={download.zh} en={download.en} /></a>
+        <a class="btn-primary" href="#start"><Icon name="download" size={14} /><T zh={download.zh} en={download.en} /></a>
         <a class="btn-ghost" href="/docs/"><T zh={H.hero.docs.zh} en={H.hero.docs.en} /></a>
       </div>
       <ul class="hero__meta" role="list">
@@ -43,10 +41,6 @@ pnpm install
         <li class="corner"><T zh={H.hero.license.zh} en={H.hero.license.en} /></li>
       </ul>
     </section>
-
-    <div class="container home-demo">
-      <DemoCanvas compact />
-    </div>
 
     <div class="container sections">
       <SectionFrame id="why" title={H.why.title} count={`0${H.why.items.length}`}>
@@ -183,7 +177,7 @@ pnpm install
         <h2 id="cta-title" class="cta__title"><T zh={H.cta.title.zh} en={H.cta.title.en} /></h2>
         <p class="cta__intro"><T zh={H.cta.intro.zh} en={H.cta.intro.en} /></p>
         <div class="hero__actions">
-          <a class="btn-primary" href="/demo/"><T zh={H.hero.demo.zh} en={H.hero.demo.en} /></a>
+          <a class="btn-primary" href="#start"><T zh={download.zh} en={download.en} /></a>
           <a class="btn-ghost" href={REPO_URL}><Icon name="github" size={14} /><T zh={S.nav.github.zh} en={S.nav.github.en} /></a>
         </div>
       </section>
@@ -243,8 +237,6 @@ pnpm install
     gap: var(--sp-2) var(--sp-5);
     margin-top: var(--sp-6);
   }
-
-  .home-demo { padding-bottom: var(--sp-8); }
 
   .sections {
     display: flex;

@@ -36,4 +36,4 @@ Armadra 不重写 Agent。每个 Agent 节点启动的就是你已经在用的 C
 - **桌面应用**：macOS、Windows、Linux 安装包，数据保存在本机 SQLite 与工作区的 `.armadra/`。
 - **无窗口服务器壳**：在服务器或 NAS 上常开，浏览器与手机经 HTTPS 访问同一份页面，支持账号与按工作空间共享。
 
-想先看看协作过程，可以打开[在线演示](/demo/)；准备好了就去[安装](/docs/install/)。
+准备好了就去[安装](/docs/install/)。
