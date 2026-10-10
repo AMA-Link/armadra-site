@@ -7,7 +7,7 @@ order: 2
 
 ## 下载安装包
 
-在 [GitHub Releases](https://github.com/Owlbay/Armadra/releases/latest) 下载对应系统与架构的安装包，也可以在[首页的下载区](/#start)按系统挑选。
+在 [GitHub Releases](https://github.com/Owlbay/Armadra/releases/latest) 下载对应系统与架构的安装包。
 
 | 系统 | 安装包 | 说明 |
 | --- | --- | --- |
@@ -15,7 +15,7 @@ order: 2
 | Windows | `-setup.exe` / `-portable.zip` | 安装版或免安装版，x64 与 ARM64 |
 | Linux | `.AppImage` / `.deb` / `.rpm` | x86_64 与 aarch64 |
 
-> 当前安装包**尚未签名与公证**，首次打开时系统会提示风险。macOS 上可以在「系统设置 → 隐私与安全性」里选择「仍要打开」；Windows 上在 SmartScreen 提示里选择「仍要运行」。签名发布在[路线图](/#roadmap)上。
+> 当前安装包**尚未签名与公证**，首次打开时系统会提示风险。macOS 上可以在「系统设置 → 隐私与安全性」里选择「仍要打开」；Windows 上在 SmartScreen 提示里选择「仍要运行」。签名发布在[路线图](https://github.com/Owlbay/Armadra/blob/main/docs/design/product-roadmap.md)上。
 
 ## 准备 Agent CLI
 
