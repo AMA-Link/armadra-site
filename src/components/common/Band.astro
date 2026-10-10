@@ -1,0 +1,61 @@
+---
+/**
+ * 首页分区带：满宽，顶部一条与顶栏底线同样的满宽横线；带头一行是等宽编号与分区名。
+ * 纵向导轨线（.home 的两条竖线）与横线相交处画小十字。
+ */
+import type { Bi } from '../../lib/types';
+import T from './T.astro';
+
+interface Props {
+  id: string;
+  n: number;
+  label: Bi;
+  /** 带头右侧的角标（数据，如版本号、条数） */
+  aside?: string;
+  class?: string;
+}
+const { id, n, label, aside, class: className } = Astro.props;
+---
+
+<section class:list={['band', className]} id={id} aria-labelledby={`${id}-band`}>
+  <div class="band__head container">
+    <p class="band__label corner" id={`${id}-band`}>
+      <span class="band__n">{String(n).padStart(2, '0')}</span>
+      <T zh={label.zh} en={label.en} />
+    </p>
+    {aside && <p class="corner">{aside}</p>}
+  </div>
+  <slot />
+</section>
+
+<style>
+  .band {
+    position: relative;
+    border-top: 1px solid var(--line);
+  }
+  /* 导轨线与横线的交点：9px 的十字 */
+  .band::before,
+  .band::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    width: 9px;
+    height: 9px;
+    background:
+      linear-gradient(var(--ink-2), var(--ink-2)) center / 1px 100% no-repeat,
+      linear-gradient(var(--ink-2), var(--ink-2)) center / 100% 1px no-repeat;
+    pointer-events: none;
+  }
+  .band::before { left: calc(var(--rail-x) - 4px); }
+  .band::after { right: calc(var(--rail-x) - 4px); }
+  .band__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    min-height: var(--row-h);
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .band__label { display: inline-flex; gap: var(--sp-3); }
+  .band__n { color: var(--accent-text); }
+</style>
