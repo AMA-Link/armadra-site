@@ -1,0 +1,70 @@
+---
+/** 首屏右侧的装饰画布：点阵底、三个 Agent 节点与流动的连线。纯装饰，读屏忽略 */
+import T from '../common/T.astro';
+import { M } from '../../i18n/model';
+---
+
+<div class="hc" aria-hidden="true">
+  <svg class="hc__lines" viewBox="0 0 520 440" preserveAspectRatio="none">
+    <path class="hc__edge hc__edge--dispatch" d="M190 222 C 250 222, 250 96, 312 96" />
+    <path class="hc__edge hc__edge--dispatch" d="M190 222 C 250 222, 250 346, 312 346" />
+    <path class="hc__edge" d="M412 128 C 412 220, 412 250, 412 314" />
+    <path class="hc__edge" d="M70 120 C 70 160, 90 180, 100 196" />
+  </svg>
+  <span class="hc__node hc__node--note" style="left:2%;top:10%"><i class="hc__dot hc__dot--note"></i><T zh={M.node.note.zh} en={M.node.note.en} /></span>
+  <span class="hc__node" style="left:4%;top:45%"><i class="hc__dot hc__dot--ama"></i>ama<em><T zh={M.node.lead.zh} en={M.node.lead.en} /></em></span>
+  <span class="hc__node hc__node--work" style="left:60%;top:16%"><i class="hc__dot hc__dot--claude"></i>Claude Code<em>●</em></span>
+  <span class="hc__node" style="left:60%;top:73%"><i class="hc__dot hc__dot--codex"></i>Codex<em>✓</em></span>
+  <span class="hc__cursor" style="left:42%;top:58%"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M2 1l11 6-5 1.5L6 14z" /></svg></span>
+</div>
+
+<style>
+  .hc {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 520 / 440;
+    border: 1px solid var(--line);
+    background-color: var(--app-canvas);
+    background-image: radial-gradient(var(--app-dot) 1px, transparent 1.2px);
+    background-size: 18px 18px;
+    border-radius: var(--app-radius-win);
+    overflow: hidden;
+  }
+  .hc__lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hc__edge {
+    fill: none;
+    stroke: var(--app-brand);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 6;
+    animation: hc-flow 1.6s linear infinite;
+  }
+  .hc__edge--dispatch { stroke: var(--app-edge-dispatch); }
+  .hc__node {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--app-card);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius);
+    color: var(--app-text);
+    font: 500 var(--fs-mono) / 1 var(--font-sans);
+    white-space: nowrap;
+  }
+  .hc__node em { font-style: normal; color: var(--app-muted); font-size: var(--fs-mono-xs); }
+  .hc__node--work { border-color: var(--app-working); box-shadow: 0 0 0 3px var(--app-tint-working), 0 0 20px var(--app-glow); } /* design-ok 软件画布的运行光晕 */
+  .hc__node--work em { color: var(--app-working); animation: blink 1s steps(1) infinite; }
+  .hc__node--note { border-style: dashed; border-color: var(--app-note); }
+  .hc__dot { width: 8px; height: 8px; border-radius: var(--app-pill); }
+  .hc__dot--note { background: var(--app-note); }
+  .hc__dot--ama { background: var(--app-ama); }
+  .hc__dot--claude { background: var(--app-claude); }
+  .hc__dot--codex { background: var(--app-codex); }
+  .hc__cursor { position: absolute; fill: var(--app-cursor-peer); animation: hc-cursor 6s var(--ease-out) infinite; }
+  @keyframes hc-flow { to { stroke-dashoffset: -24; } }
+  @keyframes hc-cursor { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -30px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hc__edge, .hc__cursor, .hc__node--work em { animation: none; }
+  }
+</style>
