@@ -74,7 +74,7 @@ export const NODES: readonly DemoNode[] = [
   { id: 'ama', kind: 'agent', cli: 'ama', title: { zh: '协调者', en: 'Coordinator' }, model: 'ama', x: 330, y: 130, w: 340 },
   { id: 'claude', kind: 'agent', cli: 'claude', title: { zh: '实现', en: 'Implement' }, model: 'claude-opus', x: 770, y: 0, w: 380 },
   { id: 'codex', kind: 'agent', cli: 'codex', title: { zh: '审查', en: 'Review' }, model: 'gpt-codex', x: 770, y: 300, w: 380 },
-  { id: 'diff', kind: 'diff', title: 'src/auth/session.ts', x: 1250, y: 30, w: 340 },
+  { id: 'diff', kind: 'diff', title: 'src/auth/session.ts', x: 1250, y: 30, w: 440 },
 ];
 
 export const EDGES: readonly DemoEdge[] = [
@@ -86,14 +86,14 @@ export const EDGES: readonly DemoEdge[] = [
 ];
 
 const DIFF_V1: DiffLine[] = [
-  { sign: ' ', text: 'export function createSession(user: User, opts: SessionOpts) {' },
+  { sign: ' ', text: 'export function createSession(user, opts) {' },
   { sign: '-', text: '  const maxAge = DAY;' },
   { sign: '+', text: '  const maxAge = opts.remember ? 30 * DAY : DAY;' },
   { sign: '+', text: "  setCookie('sid', token, { httpOnly: true, maxAge });" },
   { sign: ' ', text: '  return token;' },
 ];
 const DIFF_V2: DiffLine[] = [
-  { sign: ' ', text: 'export function createSession(user: User, opts: SessionOpts) {' },
+  { sign: ' ', text: 'export function createSession(user, opts) {' },
   { sign: '-', text: '  const maxAge = DAY;' },
   { sign: '+', text: '  const maxAge = opts.remember ? 30 * DAY : DAY;' },
   { sign: '+', text: "  setCookie('sid', token, { httpOnly: true, sameSite: 'lax', maxAge });" },
