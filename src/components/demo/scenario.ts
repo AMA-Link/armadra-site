@@ -89,14 +89,14 @@ const DIFF_V1: DiffLine[] = [
   { sign: ' ', text: 'export function createSession(user, opts) {' },
   { sign: '-', text: '  const maxAge = DAY;' },
   { sign: '+', text: '  const maxAge = opts.remember ? 30 * DAY : DAY;' },
-  { sign: '+', text: "  setCookie('sid', token, { httpOnly: true, maxAge });" },
+  { sign: '+', text: "  setCookie('sid', token, { maxAge });" },
   { sign: ' ', text: '  return token;' },
 ];
 const DIFF_V2: DiffLine[] = [
   { sign: ' ', text: 'export function createSession(user, opts) {' },
   { sign: '-', text: '  const maxAge = DAY;' },
   { sign: '+', text: '  const maxAge = opts.remember ? 30 * DAY : DAY;' },
-  { sign: '+', text: "  setCookie('sid', token, { httpOnly: true, sameSite: 'lax', maxAge });" },
+  { sign: '+', text: "  setCookie('sid', token, { maxAge, sameSite: 'lax' });" },
   { sign: ' ', text: '  return token;' },
 ];
 
