@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNav from '../../components/home/TopNav.astro';
+import Footer from '../../components/common/Footer.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import SectionFrame from '../../components/common/SectionFrame.astro';
+import DemoCanvas from '../../components/demo/DemoCanvas.astro';
+import T from '../../components/common/T.astro';
+import { S } from '../../i18n';
+import { RELEASES_URL } from '../../lib/nav';
+
+const D = S.demo;
+---
+
+<BaseLayout page="demo" title={D.docTitle.zh} titleEn={D.docTitle.en} description={D.intro.zh}>
+  <TopNav page="demo" />
+  <main id="main" class="container demo-page">
+    <PageHeader title={D.title} intro={D.intro} />
+    <DemoCanvas />
+    <div class="demo-page__about">
+      <SectionFrame id="demo-about" title={D.about.title}>
+        <ul class="about" role="list">
+          {
+            D.about.items.map((it) => (
+              <li>
+                <h3 class="about__title"><T zh={it.title.zh} en={it.title.en} /></h3>
+                <p class="about__body"><T zh={it.body.zh} en={it.body.en} /></p>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="about__actions">
+          <a class="btn-primary" href={RELEASES_URL}><T zh={S.nav.download.zh} en={S.nav.download.en} /></a>
+          <a class="btn-ghost" href="/docs/"><T zh={S.nav.docs.zh} en={S.nav.docs.en} /></a>
+        </div>
+      </SectionFrame>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .demo-page { padding-bottom: var(--sp-8); }
+  .demo-page__about { margin-top: var(--sp-7); }
+  .about {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-6);
+    margin: 0;
+    padding: 0;
+  }
+  .about__title { font: 500 var(--fs-body-lg) / var(--lh-body-lg) var(--font-sans); }
+  .about__body { margin-top: var(--sp-2); color: var(--ink-2); text-wrap: pretty; }
+  .about__actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6); }
+  @media (max-width: 1024px) {
+    .about { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  }
+</style>

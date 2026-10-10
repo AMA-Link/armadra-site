@@ -7,6 +7,7 @@ import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import CodeBlock from '../components/ui/CodeBlock.astro';
 import Segmented from '../components/ui/Segmented.astro';
+import DemoCanvas from '../components/demo/DemoCanvas.astro';
 import { S, fmtBi } from '../i18n';
 import { H } from '../i18n/home';
 import { AGENTS } from '../data/agents';
@@ -43,6 +44,9 @@ pnpm install
       </ul>
     </section>
 
+    <div class="container home-demo">
+      <DemoCanvas compact />
+    </div>
 
     <div class="container sections">
       <SectionFrame id="why" title={H.why.title} count={`0${H.why.items.length}`}>
@@ -239,6 +243,8 @@ pnpm install
     gap: var(--sp-2) var(--sp-5);
     margin-top: var(--sp-6);
   }
+
+  .home-demo { padding-bottom: var(--sp-8); }
 
   .sections {
     display: flex;

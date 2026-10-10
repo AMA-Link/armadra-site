@@ -3,7 +3,7 @@
  * 站内图标：统一 24 网格、1.5 描边、无填充。
  * 除 github 外均为本项目自绘几何形；github 轮廓改写自 Lucide（ISC 许可）。
  */
-type Name = 'search' | 'slash' | 'arrow-up-right' | 'arrow-left' | 'arrow-right' | 'sun' | 'moon' | 'github' | 'hash' | 'copy' | 'download' | 'check';
+type Name = 'search' | 'slash' | 'arrow-up-right' | 'arrow-left' | 'arrow-right' | 'sun' | 'moon' | 'github' | 'hash' | 'copy' | 'download' | 'check' | 'play' | 'pause' | 'replay' | 'fit' | 'plus' | 'minus';
 
 interface Props {
   name: Name;
@@ -20,6 +20,12 @@ const PATHS: Record<Name, string[]> = {
   copy: ['M9 9h11v11H9z', 'M15 5V4H4v11h1'],
   download: ['M12 4v11', 'M7 10l5 5 5-5', 'M5 20h14'],
   check: ['M5 12.5l4.5 4.5L19 7.5'],
+  play: ['M7 4.5v15l12-7.5z'],
+  pause: ['M8 5v14', 'M16 5v14'],
+  replay: ['M4.5 12a7.5 7.5 0 1 0 2.2-5.3', 'M4.5 4v4h4'],
+  fit: ['M4 9V4h5', 'M15 4h5v5', 'M20 15v5h-5', 'M9 20H4v-5'],
+  plus: ['M12 5v14', 'M5 12h14'],
+  minus: ['M5 12h14'],
   'arrow-up-right': ['M7 17 17 7', 'M8.5 7H17v8.5'],
   'arrow-left': ['M19.5 12h-15', 'M10.5 6l-6 6 6 6'],
   'arrow-right': ['M4.5 12h15', 'M13.5 6l6 6-6 6'],
