@@ -13,3 +13,4 @@
 | 文档 | 说明 |
 | --- | --- |
 | [guides/development.md](guides/development.md) | 本地启动、检查与目录结构 |
+| [guides/deployment.md](guides/deployment.md) | Cloudflare 部署、armadra.com 绑定与回滚 |
