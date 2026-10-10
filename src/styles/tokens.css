@@ -148,6 +148,8 @@
   --bar-h: 52px;
   --sidebar-w: 232px;
   --content-max: 1200px;
+  /* 首页纵向导轨线到视口边的距离（与 .container 的外缘对齐） */
+  --rail-x: max(calc(var(--gutter) / 2), calc((100vw - var(--content-max)) / 2));
   --docs-main-max: 1040px;
 
   /* 断点（媒体查询无法读取变量，此处仅作记录）：≤640 手机 · 641–1024 平板 · ≥1025 桌面 */
