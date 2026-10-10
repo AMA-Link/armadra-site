@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNav from '../../components/home/TopNav.astro';
+import Footer from '../../components/common/Footer.astro';
+import T from '../../components/common/T.astro';
+import Icon from '../../components/common/Icon.astro';
+import { CHANGELOG } from '../../data/changelog';
+import { REPO_URL } from '../../lib/nav';
+import { S } from '../../i18n';
+
+const C = S.changelog;
+---
+
+<BaseLayout page="changelog" title={C.docTitle.zh} titleEn={C.docTitle.en}>
+  <TopNav page="changelog" />
+  <main id="main" class="container log">
+    <h1 class="log__title" data-reveal><T zh={C.title.zh} en={C.title.en} /></h1>
+
+    <ol class="log__list" role="list">
+      {
+        CHANGELOG.map((r, i) => (
+          <li class="log__item" data-reveal>
+            <div class="log__meta">
+              <span class="log__version">{r.version}</span>
+              <time class="corner" datetime={r.date}>{r.date}</time>
+              {i === 0 && (
+                <span class="log__latest corner">
+                  <T zh={C.latest.zh} en={C.latest.en} />
+                </span>
+              )}
+            </div>
+            <div class="log__body">
+              <h2 class="log__heading">
+                <T zh={r.title.zh} en={r.title.en} />
+              </h2>
+              <ul class="log__points" role="list">
+                {r.items.map((it) => (
+                  <li>
+                    <T zh={it.zh} en={it.en} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a class="log__link link-quiet" href={`${REPO_URL}/releases/tag/v${r.version}`}>
+              <T zh={C.release.zh} en={C.release.en} />
+              <Icon name="arrow-up-right" size={12} />
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="log__more">
+      <a class="link-quiet" href={`${REPO_URL}/blob/main/CHANGELOG.md`}>
+        <T zh={C.full.zh} en={C.full.en} />
+        <Icon name="arrow-up-right" size={12} />
+      </a>
+    </p>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .log { padding-bottom: var(--sp-9); }
+  .log__title {
+    padding-block: var(--sp-9) var(--sp-7);
+    font: 500 var(--fs-display) / 1 var(--font-sans);
+    letter-spacing: -0.03em;
+  }
+  .log__list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  .log__item {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+    gap: var(--sp-6);
+    padding-block: var(--sp-7);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .log__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-2);
+  }
+  .log__version {
+    font: 500 var(--fs-h2) / 1 var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .log__latest { color: var(--accent-text); }
+  .log__heading { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .log__points {
+    margin: var(--sp-4) 0 0;
+    padding: 0;
+    color: var(--ink-2);
+  }
+  .log__points li {
+    position: relative;
+    padding-left: var(--sp-5);
+  }
+  .log__points li + li { margin-top: var(--sp-2); }
+  .log__points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: var(--sp-3);
+    height: 1px;
+    background: var(--line-strong);
+  }
+  .log__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    align-self: start;
+    min-height: var(--control-h);
+    margin-top: calc((var(--fs-h2) - var(--control-h)) / 2);
+    font-size: var(--fs-body-sm);
+    white-space: nowrap;
+  }
+  .log__more { margin-top: var(--sp-6); font-size: var(--fs-body-sm); }
+  .log__more a { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); }
+
+  @media (max-width: 1024px) {
+    .log__item { grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-4) var(--sp-5); }
+    .log__meta { flex-direction: row; align-items: baseline; gap: var(--sp-4); grid-column: 1; }
+    .log__body { grid-column: 1 / -1; grid-row: 2; }
+    .log__link { grid-column: 2; grid-row: 1; margin-top: 0; }
+  }
+  @media (max-width: 640px) {
+    .log__title { padding-block: var(--sp-7) var(--sp-6); }
+    .log__item { padding-block: var(--sp-6); }
+  }
+</style>

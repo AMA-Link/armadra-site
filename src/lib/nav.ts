@@ -2,7 +2,7 @@ import type { Bi, PageId } from './types';
 import { S } from '../i18n';
 
 export interface NavItem {
-  id: 'home' | 'docs';
+  id: 'home' | 'docs' | 'changelog';
   href: string;
   /** 单键快捷键，大写显示；scripts/shortcuts.ts 共用 */
   key: string;
@@ -13,6 +13,7 @@ export interface NavItem {
 export const NAV: readonly NavItem[] = [
   { id: 'home', href: '/', key: 'H', label: S.nav.home },
   { id: 'docs', href: '/docs/', key: 'C', label: S.nav.docs },
+  { id: 'changelog', href: '/changelog/', key: 'L', label: S.nav.changelog },
 ];
 
 export const REPO_URL = 'https://github.com/Owlbay/Armadra';
