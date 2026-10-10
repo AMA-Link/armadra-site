@@ -1,0 +1,31 @@
+name: 功能建议 / Feature request
+description: 官网新增页面、交互或改进。 / A new page, interaction or improvement for the website.
+title: "[Feature] "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 现状与问题 / Current state and problem
+      description: 访客现在遇到什么困难，涉及哪些页面或文件。 / What visitors struggle with today, and which pages or files are involved.
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目标 / Goal
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 范围与验收 / Scope and acceptance
+      description: 做什么、不做什么，怎样算完成。 / What is in and out of scope, and how to tell it is done.
+
+  - type: textarea
+    id: design
+    attributes:
+      label: 设计 / Design
+      description: 页面结构、组件、文案；可在分诊后补充。 / Page structure, components and copy; can be added after triage.

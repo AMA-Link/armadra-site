@@ -1,0 +1,39 @@
+name: 内容与文档问题 / Content or docs issue
+description: 介绍或文档有误、过时、缺失或中英不一致。 / Product copy or docs are wrong, outdated, missing or differ between languages.
+title: "[Docs] "
+labels: ["documentation", "needs-triage"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: 位置 / Location
+      description: 页面地址或文件路径，带上章节更好。 / Page URL or file path, ideally with the section.
+      placeholder: /docs/getting-started/ · src/content/docs/zh/getting-started.md
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 问题类型 / Kind
+      options:
+        - 内容有误 / Incorrect
+        - 与软件当前行为不符 / Outdated
+        - 缺少内容 / Missing
+        - 难以理解 / Unclear
+        - 链接失效 / Broken link
+        - 中英不一致 / Chinese and English differ
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述 / Description
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 建议的修改 / Suggested change

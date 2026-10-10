@@ -1,0 +1,22 @@
+# PR 按改动路径打标签（.github/workflows/labeler.yml）。新增目录时同步这里与仓库标签。
+demo:
+  - changed-files:
+      - any-glob-to-any-file: ["src/components/demo/**", "src/scripts/demo/**", "src/pages/demo/**"]
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ["src/content/**", "docs/**", "*.md"]
+design:
+  - changed-files:
+      - any-glob-to-any-file: ["src/styles/**", "DESIGN.md", "scripts/check-design.mjs"]
+i18n:
+  - changed-files:
+      - any-glob-to-any-file: ["src/i18n/**"]
+deploy:
+  - changed-files:
+      - any-glob-to-any-file: ["wrangler.jsonc", "public/_headers", "public/_redirects", ".github/workflows/deploy.yml"]
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**", "scripts/**"]
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"]

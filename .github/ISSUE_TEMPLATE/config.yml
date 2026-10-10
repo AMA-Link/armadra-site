@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Armadra 产品问题 / Armadra product issues
+    url: https://github.com/Owlbay/Armadra/issues/new/choose
+    about: 软件本身的缺陷与功能建议请到 Armadra 主仓库。 / Bugs and feature requests for the app itself go to the Armadra repository.
+  - name: 安全问题 / Security vulnerability
+    url: https://github.com/Owlbay/armadra-site/security/advisories/new
+    about: 请私下报告，不要开公开 issue。见 SECURITY.md。 / Please report privately, not in a public issue. See SECURITY.md.

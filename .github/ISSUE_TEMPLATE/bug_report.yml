@@ -1,0 +1,54 @@
+name: 缺陷报告 / Bug report
+description: 官网页面显示、交互或构建出错。 / Something on the website renders, behaves or builds incorrectly.
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: 页面地址 / Page URL
+      placeholder: https://armadra.com/docs/…
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述 / Description
+      description: 看到了什么、期望看到什么。 / What you saw and what you expected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤 / Steps to reproduce
+      placeholder: |
+        1.
+        2.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: 浏览器与设备 / Browser and device
+      placeholder: Safari 26 · iPhone / Chrome 142 · macOS
+    validations:
+      required: true
+
+  - type: dropdown
+    id: settings
+    attributes:
+      label: 语言与主题 / Language and theme
+      multiple: true
+      options:
+        - 中文 / Chinese
+        - English
+        - 深色 / Dark
+        - 浅色 / Light
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图 / Screenshots
