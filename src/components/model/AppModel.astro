@@ -1,0 +1,677 @@
+---
+/**
+ * Armadra 软件界面模型：用 HTML / CSS 画出的应用窗口（不是截图）。
+ * 固定设计尺寸 1200×760，由 scripts/model/ 按容器等比缩放；可点的小功能也在那里接线。
+ * data-area 标出可被滚动叙事高亮的区域，取值见 i18n/home.ts 的 story.steps[].areas。
+ */
+import T from '../common/T.astro';
+import MIcon from './MIcon.astro';
+import { M } from '../../i18n/model';
+
+type Bi = { zh: string; en: string };
+const t = (b: Bi) => b;
+const tools = M.dock.tools;
+---
+
+<div class="model" data-model role="group" aria-label={M.aria.zh} data-aria-zh={M.aria.zh} data-aria-en={M.aria.en}>
+  <div class="model__stage" data-model-stage>
+    <div class="win">
+      <!-- 侧栏 -->
+      <aside class="side" data-area="side">
+        <div class="side__top">
+          <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="side__icons">
+            <button type="button" class="ib" aria-label={M.side.toggle.zh} data-aria-zh={M.side.toggle.zh} data-aria-en={M.side.toggle.en}><MIcon name="panel" /></button>
+            <button type="button" class="ib" aria-label={M.side.search.zh} data-aria-zh={M.side.search.zh} data-aria-en={M.side.search.en}><MIcon name="search" /></button>
+            <button type="button" class="ib" aria-label={M.side.bell.zh} data-aria-zh={M.side.bell.zh} data-aria-en={M.side.bell.en}><MIcon name="bell" /></button>
+          </span>
+        </div>
+        <p class="side__brand">Armadra</p>
+        <button type="button" class="side__row"><MIcon name="edit" /><T {...t(M.side.newCanvas)} /></button>
+        <div class="side__head">
+          <span><T {...t(M.side.projects)} /></span>
+          <button type="button" class="ib ib--sm" aria-label={M.side.addProject.zh} data-aria-zh={M.side.addProject.zh} data-aria-en={M.side.addProject.en}><MIcon name="plus" size={12} /></button>
+        </div>
+        {
+          M.projects.map((p, pi) => (
+            <div class="side__project">
+              <p class="side__pname"><MIcon name="folder" size={13} />{p.name}</p>
+              {p.canvases.map((c, ci) => (
+                <button
+                  type="button"
+                  class="side__row side__canvas"
+                  data-model-canvas
+                  aria-pressed={pi === 0 && ci === 0 ? 'true' : 'false'}
+                >
+                  <MIcon name="canvas" size={13} />
+                  <T {...t(c)} />
+                </button>
+              ))}
+            </div>
+          ))
+        }
+        <button type="button" class="side__row side__settings"><MIcon name="settings" /><T {...t(M.side.settings)} /></button>
+      </aside>
+
+      <!-- 画布 -->
+      <section class="main">
+        <div class="canvas" data-model-canvas-area>
+          <div class="world" data-model-world>
+            <svg class="edges" aria-hidden="true" data-model-edges>
+              <g data-edge data-from="note" data-to="ama" data-kind="context" data-area="edges"><path /><text><tspan data-l="zh">{M.edge.context.zh}</tspan><tspan data-l="en">{M.edge.context.en}</tspan></text></g>
+              <g data-edge data-from="ama" data-to="claude" data-kind="dispatch" data-area="edges-dispatch"><path /><text><tspan data-l="zh">{M.edge.dispatch.zh}</tspan><tspan data-l="en">{M.edge.dispatch.en}</tspan></text></g>
+              <g data-edge data-from="ama" data-to="codex" data-kind="dispatch" data-area="edges-dispatch"><path /><text><tspan data-l="zh">{M.edge.dispatch.zh}</tspan><tspan data-l="en">{M.edge.dispatch.en}</tspan></text></g>
+              <g data-edge data-from="claude" data-to="codex" data-kind="peer" data-area="edges"><path /><text><tspan data-l="zh">{M.edge.peer.zh}</tspan><tspan data-l="en">{M.edge.peer.en}</tspan></text></g>
+              <g data-edge data-from="claude" data-to="diff" data-kind="context" data-area="edges"><path /><text><tspan data-l="zh">{M.edge.context.zh}</tspan><tspan data-l="en">{M.edge.context.en}</tspan></text></g>
+              <g data-edge data-from="codex" data-to="browser" data-kind="context" data-area="edges"><path /><text><tspan data-l="zh">{M.edge.context.zh}</tspan><tspan data-l="en">{M.edge.context.en}</tspan></text></g>
+            </svg>
+
+            <!-- 便签 -->
+            <article class="node node--note" data-node="note" data-area="node-note" style="left:40px;top:70px;width:220px">
+              <header class="node__head"><span class="dot dot--note"></span><span class="node__name"><T {...t(M.node.note)} /></span></header>
+              <p class="node__note"><T {...t(M.node.noteBody)} /></p>
+            </article>
+
+            <!-- 协调者 -->
+            <article class="node" data-node="ama" data-area="node-ama" data-status="working" style="left:40px;top:300px;width:270px">
+              <header class="node__head">
+                <span class="dot dot--ama"></span>
+                <span class="node__name">ama <em><T {...t(M.node.coordinator)} /></em></span>
+                <span class="chip"><T {...t(M.node.lead)} /></span>
+                <span class="pill" data-pill><T {...t(M.node.status.working)} /></span>
+              </header>
+              <div class="term">
+                <p class="tl tl--cmd">canvas team claude codex</p>
+                <p class="tl tl--dim"><T zh="2 名成员已就位，各带一条 worktree" en="2 members ready, each on a worktree" /></p>
+                <p class="tl"><T zh="等待成员回报…" en="Waiting for members…" /></p>
+                <span class="caret"></span>
+              </div>
+            </article>
+
+            <!-- Claude Code -->
+            <article class="node" data-node="claude" data-area="node-claude" data-status="waiting" style="left:380px;top:40px;width:300px">
+              <header class="node__head">
+                <span class="dot dot--claude"></span>
+                <span class="node__name">Claude Code <em><T {...t(M.node.implement)} /></em></span>
+                <span class="chip"><T {...t(M.node.member)} /></span>
+                <span class="pill" data-pill>
+                  <span data-pill-waiting><T {...t(M.node.status.waiting)} /></span>
+                  <span data-pill-working hidden><T {...t(M.node.status.working)} /></span>
+                </span>
+                <span class="node__menu-wrap">
+                  <button type="button" class="ib ib--sm" data-model-menu aria-haspopup="menu" aria-expanded="false" aria-label={M.node.more.zh} data-aria-zh={M.node.more.zh} data-aria-en={M.node.more.en}><MIcon name="more" size={12} /></button>
+                  <span class="pop menu" role="menu" hidden>
+                    {M.node.menu.map((m) => <button type="button" role="menuitem" class="pop__item"><T {...t(m)} /></button>)}
+                  </span>
+                </span>
+              </header>
+              <div class="ask" data-area="ask" data-model-ask>
+                <span class="ask__label"><T {...t(M.ask.label)} /></span>
+                <code class="ask__prompt">{M.ask.prompt}</code>
+                <span class="ask__actions">
+                  <button type="button" class="btn btn--ghost" data-model-deny><T {...t(M.ask.deny)} /></button>
+                  <button type="button" class="btn btn--solid" data-model-allow><T {...t(M.ask.allow)} /></button>
+                </span>
+              </div>
+              <div class="term" data-model-term>
+                <p class="tl"><T zh="读取 src/auth/login.tsx" en="Read src/auth/login.tsx" /></p>
+                <p class="tl"><T zh="编辑 src/auth/session.ts" en="Edit src/auth/session.ts" /></p>
+                <p class="tl"><T zh="新增 tests/session.test.ts" en="Add tests/session.test.ts" /></p>
+                <span class="caret"></span>
+              </div>
+            </article>
+
+            <!-- Codex -->
+            <article class="node" data-node="codex" data-area="node-codex" data-status="working" style="left:380px;top:400px;width:300px">
+              <header class="node__head">
+                <span class="dot dot--codex"></span>
+                <span class="node__name">Codex <em><T {...t(M.node.review)} /></em></span>
+                <span class="chip"><T {...t(M.node.member)} /></span>
+                <span class="pill" data-pill><T {...t(M.node.status.working)} /></span>
+              </header>
+              <div class="term">
+                <p class="tl tl--cmd">canvas inbox</p>
+                <p class="tl"><T zh="读取 claude 的差异（经连线）" en="Read claude’s diff (via link)" /></p>
+                <p class="tl tl--warn"><T zh="建议：cookie 加 sameSite" en="Suggest: add sameSite to the cookie" /></p>
+                <span class="caret"></span>
+              </div>
+            </article>
+
+            <!-- 差异 -->
+            <article class="node node--diff" data-node="diff" data-area="node-diff" style="left:760px;top:40px;width:330px">
+              <header class="node__head">
+                <span class="dot dot--diff"></span>
+                <span class="node__name mono">session.ts</span>
+                <span class="diffstat"><b>+2</b> <i>−1</i></span>
+              </header>
+              <div class="diff">
+                <p class="dl"><span>@@</span>createSession(user, opts)</p>
+                <p class="dl dl--del"><span>−</span>const maxAge = DAY;</p>
+                <p class="dl dl--add"><span>+</span>const maxAge = opts.remember ? 30 * DAY : DAY;</p>
+                <p class="dl dl--add"><span>+</span>setCookie('sid', token, &#123; maxAge &#125;);</p>
+                <p class="dl"><span> </span>return token;</p>
+              </div>
+            </article>
+
+            <!-- 浏览器 -->
+            <article class="node node--browser" data-node="browser" data-area="node-browser" style="left:760px;top:330px;width:330px">
+              <header class="node__head">
+                <span class="dot dot--diff"></span>
+                <span class="url mono">{M.browser.url}</span>
+                <button type="button" class="ib ib--sm" data-model-reload aria-label="Reload"><MIcon name="reload" size={12} /></button>
+              </header>
+              <div class="page" data-model-page>
+                <span class="page__logo"></span>
+                <span class="page__input"></span>
+                <span class="page__input"></span>
+                <label class="page__check"><input type="checkbox" checked /><T {...t(M.browser.remember)} /></label>
+                <span class="page__btn"><T {...t(M.browser.signIn)} /></span>
+              </div>
+            </article>
+
+            <!-- 评论钉与他人光标 -->
+            <button type="button" class="pin" data-area="pin" data-model-pin style="left:1072px;top:22px" aria-label={M.comment.zh} data-aria-zh={M.comment.zh} data-aria-en={M.comment.en}>2</button>
+            <span class="pop pin__pop" data-model-pin-pop hidden style="left:900px;top:-6px">
+              <b>Noah</b> <T zh="记住我的过期时间要和产品确认" en="Confirm the expiry with product" />
+            </span>
+            <span class="cursor" data-area="cursor" style="left:640px;top:560px" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 1l11 6-5 1.5L6 14z" /></svg>
+              <span>Noah</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- 右上工具簇 -->
+        <div class="cluster" data-area="cluster">
+          <button type="button" class="ib" aria-label={M.cluster.palette.zh} data-aria-zh={M.cluster.palette.zh} data-aria-en={M.cluster.palette.en}><MIcon name="command" /></button>
+          <button type="button" class="ib" data-model-drawer="explorer" aria-pressed="false" aria-label={M.cluster.explorer.zh} data-aria-zh={M.cluster.explorer.zh} data-aria-en={M.cluster.explorer.en}><MIcon name="files" /></button>
+          <button type="button" class="ib ib--badge" data-model-drawer="scm" aria-pressed="false" aria-label={M.cluster.scm.zh} data-aria-zh={M.cluster.scm.zh} data-aria-en={M.cluster.scm.en}><MIcon name="branch" /><b data-model-scm-badge>2</b></button>
+          <button type="button" class="ib" aria-label={M.cluster.github.zh}><MIcon name="github" /></button>
+          <button type="button" class="ib" aria-label={M.cluster.resources.zh} data-aria-zh={M.cluster.resources.zh} data-aria-en={M.cluster.resources.en}><MIcon name="activity" /></button>
+        </div>
+
+        <!-- 右侧抽屉 -->
+        <aside class="drawer" data-model-panel="scm" hidden>
+          <header class="drawer__head"><span><T {...t(M.cluster.scm)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh}><MIcon name="x" size={12} /></button></header>
+          <p class="drawer__branch mono"><MIcon name="branch" size={12} />{M.scm.branch}</p>
+          <p class="drawer__group"><T {...t(M.scm.changes)} /> <span data-model-scm-count>2</span></p>
+          <ul class="drawer__files" data-model-scm-files>
+            <li><b class="st st--m">M</b><span class="mono">src/auth/session.ts</span></li>
+            <li><b class="st st--a">A</b><span class="mono">tests/session.test.ts</span></li>
+          </ul>
+          <span class="drawer__input"><T {...t(M.scm.message)} /></span>
+          <button type="button" class="btn btn--solid btn--wide" data-model-commit>
+            <span data-commit-idle><T {...t(M.scm.commit)} /></span>
+            <span data-commit-done hidden><MIcon name="check" size={12} /><T {...t(M.scm.committed)} /></span>
+          </button>
+        </aside>
+        <aside class="drawer" data-model-panel="explorer" hidden>
+          <header class="drawer__head"><span><T {...t(M.cluster.explorer)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh}><MIcon name="x" size={12} /></button></header>
+          <ul class="drawer__tree mono">
+            {M.explorer.files.map((f) => <li style={`padding-left:${(f.length - f.trimStart().length) * 6 + 10}px`}>{f.trim()}</li>)}
+          </ul>
+        </aside>
+
+        <!-- Dock -->
+        <div class="dock" data-area="dock">
+          <button type="button" class="ib" data-model-lock aria-pressed="false" aria-label={M.dock.lock.zh} data-aria-zh={M.dock.lock.zh} data-aria-en={M.dock.lock.en}><MIcon name="lock" /></button>
+          <span class="dock__menu-wrap">
+            <button type="button" class="ib ib--add" data-model-menu aria-haspopup="menu" aria-expanded="false" aria-label={M.dock.add.zh} data-aria-zh={M.dock.add.zh} data-aria-en={M.dock.add.en}><MIcon name="plus" /></button>
+            <span class="pop menu menu--add" role="menu" hidden>
+              {
+                M.add.groups.map((g) => (
+                  <>
+                    <span class="pop__title"><T {...t(g.title)} /></span>
+                    {g.items.map((it) => <button type="button" role="menuitem" class="pop__item"><T {...t(it)} /></button>)}
+                  </>
+                ))
+              }
+            </span>
+          </span>
+          <i class="dock__sep"></i>
+          <button type="button" class="ib" aria-label={M.dock.undo.zh} data-aria-zh={M.dock.undo.zh} data-aria-en={M.dock.undo.en}><MIcon name="undo" /></button>
+          <button type="button" class="ib" aria-label={M.dock.redo.zh} data-aria-zh={M.dock.redo.zh} data-aria-en={M.dock.redo.en}><MIcon name="redo" /></button>
+          <button type="button" class="ib" data-model-tidy aria-label={M.dock.tidy.zh} data-aria-zh={M.dock.tidy.zh} data-aria-en={M.dock.tidy.en}><MIcon name="tidy" /></button>
+          <i class="dock__sep"></i>
+          <button type="button" class="ib" data-model-zoom="-1" aria-label={M.dock.zoomOut.zh} data-aria-zh={M.dock.zoomOut.zh} data-aria-en={M.dock.zoomOut.en}><MIcon name="minus" /></button>
+          <button type="button" class="dock__zoom mono" data-model-zoom="0" aria-label={M.dock.fit.zh} data-aria-zh={M.dock.fit.zh} data-aria-en={M.dock.fit.en}><span data-model-zoom-label>100%</span></button>
+          <button type="button" class="ib" data-model-zoom="1" aria-label={M.dock.zoomIn.zh} data-aria-zh={M.dock.zoomIn.zh} data-aria-en={M.dock.zoomIn.en}><MIcon name="plus" /></button>
+          <i class="dock__sep"></i>
+          {
+            tools.map((tool, i) => (
+              <button
+                type="button"
+                class="ib"
+                data-model-tool
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                aria-label={tool.zh}
+                data-aria-zh={tool.zh}
+                data-aria-en={tool.en}
+              >
+                <MIcon name={tool.id} />
+              </button>
+            ))
+          }
+        </div>
+
+        <!-- 小地图 -->
+        <div class="minimap" aria-hidden="true">
+          <i style="left:6%;top:12%;width:20%;height:20%"></i>
+          <i style="left:6%;top:48%;width:24%;height:26%"></i>
+          <i style="left:36%;top:8%;width:26%;height:36%"></i>
+          <i style="left:36%;top:58%;width:26%;height:30%"></i>
+          <i style="left:68%;top:8%;width:28%;height:28%"></i>
+          <i style="left:68%;top:50%;width:28%;height:30%"></i>
+          <b data-model-viewport></b>
+        </div>
+      </section>
+    </div>
+
+    <!-- 权限请求之后追加到终端的行（中英两份） -->
+    <template data-model-line="cmd">pnpm test</template>
+    <template data-model-line="passed"><T {...t(M.ask.passed)} /></template>
+    <template data-model-line="denied"><T {...t(M.ask.denied)} /></template>
+
+    <!-- 跳步编号点：与滚动叙事对应 -->
+    <div class="hotspots" data-model-hotspots aria-hidden="false"></div>
+  </div>
+</div>
+
+<script>
+  import { initModel } from '../../scripts/model/interact';
+  document.querySelectorAll<HTMLElement>('[data-model]').forEach((m) => initModel(m));
+</script>
+
+<style>
+  .model {
+    position: relative;
+    width: 100%;
+    height: calc(760px * var(--model-k, 1));
+    color: var(--app-text);
+  }
+  .model__stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1200px;
+    height: 760px;
+    transform-origin: 0 0;
+    transform: translate(var(--model-x, 0px), 0) scale(var(--model-k, 1));
+    transition: transform 700ms var(--ease-out);
+  }
+  .win {
+    display: grid;
+    grid-template-columns: 236px 1fr;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--app-canvas);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius-win);
+    box-shadow: var(--app-shadow-win); /* design-ok 软件窗口的系统阴影 */
+    font: 400 13px / 1.4 var(--font-sans);
+  }
+
+  /* 高亮：叙事进行中，不在本步的区域压暗；访客动手点模型时（data-free）取消压暗 */
+  .model[data-step] [data-area] { transition: opacity 500ms var(--ease-out), filter 500ms var(--ease-out); }
+  .model[data-step]:not([data-free]) [data-area]:not(.is-focus):not(.is-host) { opacity: 0.22; filter: saturate(0.4); }
+  .model[data-step]:not([data-free]) .node.is-focus,
+  .model[data-step]:not([data-free]) .side.is-focus,
+  .model[data-step]:not([data-free]) .dock.is-focus,
+  .model[data-step]:not([data-free]) .cluster.is-focus,
+  .model[data-step]:not([data-free]) .ask.is-focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* 通用小部件 */
+  .ib {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--app-radius-sm);
+    color: var(--app-muted);
+    transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+  }
+  .ib:hover { background: var(--app-hover); color: var(--app-text); }
+  .ib[aria-pressed='true'] { background: var(--app-hover); color: var(--app-brand-text); }
+  .ib--sm { width: 22px; height: 22px; }
+  .ib:focus-visible, .btn:focus-visible, .side__row:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  .ib--badge b {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    min-width: 13px;
+    height: 13px;
+    padding: 0 3px;
+    border-radius: var(--app-pill);
+    background: var(--app-brand-solid);
+    color: var(--app-on-brand);
+    font: 600 9px / 13px var(--font-sans);
+  }
+  .ib--badge b:empty { display: none; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: var(--app-radius-sm);
+    font: 500 12px / 1 var(--font-sans);
+    transition: filter var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .btn--solid { background: var(--app-brand-solid); color: var(--app-on-brand); }
+  .btn--solid:hover { filter: brightness(1.12); }
+  .btn--ghost { background: var(--app-hover); color: var(--app-text); }
+  .btn--ghost:hover { background: var(--app-border-strong); }
+  .btn--wide { width: 100%; height: 28px; margin-top: 10px; }
+  .mono { font-family: var(--font-mono); }
+
+  /* 侧栏 */
+  .side {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 8px;
+    background: var(--app-side);
+    border-right: 1px solid var(--app-border);
+  }
+  .side__top { display: flex; align-items: center; justify-content: space-between; height: 28px; padding-left: 6px; }
+  .lights { display: inline-flex; gap: 7px; }
+  .lights i { width: 11px; height: 11px; border-radius: var(--app-pill); background: var(--app-border-strong); }
+  .side__icons { display: inline-flex; }
+  .side__brand { margin: 14px 8px 8px; font: 600 14px / 1.2 var(--font-sans); }
+  .side__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 30px;
+    padding: 0 8px;
+    border-radius: var(--app-radius-sm);
+    color: var(--app-muted);
+    text-align: left;
+    transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+  }
+  .side__row:hover { background: var(--app-hover); color: var(--app-text); }
+  .side__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 8px 4px;
+    color: var(--app-muted);
+    font-size: 11px;
+  }
+  .side__head .ib { margin-right: -4px; }
+  .side__pname { display: flex; align-items: center; gap: 6px; margin: 8px 8px 2px; color: var(--app-text); font-weight: 500; }
+  .side__canvas { padding-left: 26px; }
+  .side__canvas[aria-pressed='true'] { background: var(--app-hover); color: var(--app-text); }
+  .side__settings { margin-top: auto; }
+
+  /* 主区与画布 */
+  .main { position: relative; overflow: hidden; }
+  .canvas {
+    position: absolute;
+    inset: 0;
+    background-color: var(--app-canvas);
+    background-image: radial-gradient(var(--app-dot) 1px, transparent 1.2px);
+    background-size: 20px 20px;
+  }
+  .world {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 964px;
+    height: 760px;
+    transform-origin: 482px 330px;
+    transform: scale(var(--world-k, 1));
+    transition: transform 300ms var(--ease-out);
+  }
+  .edges { position: absolute; left: 0; top: 0; width: 1px; height: 1px; max-width: none; overflow: visible; pointer-events: none; }
+  .edges path { fill: none; stroke: var(--app-brand); stroke-width: 1.6; }
+  .edges [data-kind='dispatch'] path { stroke: var(--app-edge-dispatch); stroke-dasharray: 5 4; }
+  .edges [data-kind='peer'] path { stroke-dasharray: 2 4; }
+  .edges text { fill: var(--app-brand-text); font: 500 10px / 1 var(--font-sans); text-anchor: middle; paint-order: stroke; stroke: var(--app-canvas); stroke-width: 4px; }
+  .edges [data-kind='dispatch'] text { fill: var(--app-edge-dispatch); }
+
+  .node {
+    position: absolute;
+    background: var(--app-card);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius);
+    transition: box-shadow 400ms var(--ease-out), border-color 300ms var(--ease-out), opacity 500ms var(--ease-out), filter 500ms var(--ease-out);
+  }
+  .node[data-status='working'] { border-color: var(--app-working); box-shadow: 0 0 0 3px var(--app-tint-working), 0 0 22px var(--app-glow); } /* design-ok 软件画布的运行光晕 */
+  .node[data-status='waiting'] { border-color: var(--app-warn); box-shadow: 0 0 0 3px var(--app-tint-warn); } /* design-ok 软件画布的等待描边 */
+  .node__head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 8px 0 10px;
+    background: var(--app-head);
+    border-bottom: 1px solid var(--app-border);
+    border-radius: var(--app-radius) var(--app-radius) 0 0; /* design-ok 节点头部只圆上两角 */
+    font: 500 12px / 1 var(--font-sans);
+  }
+  .node__name { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .node__name em { margin-left: 4px; font-style: normal; font-weight: 400; color: var(--app-muted); }
+  .dot { flex: none; width: 8px; height: 8px; border-radius: var(--app-pill); }
+  .dot--note { background: var(--app-note); }
+  .dot--ama { background: var(--app-ama); }
+  .dot--claude { background: var(--app-claude); }
+  .dot--codex { background: var(--app-codex); }
+  .dot--diff { background: var(--app-brand); }
+  .chip, .pill {
+    flex: none;
+    padding: 2px 6px;
+    border-radius: var(--app-pill);
+    background: var(--app-hover);
+    color: var(--app-muted);
+    font: 500 10px / 1.2 var(--font-sans);
+    white-space: nowrap;
+  }
+  [data-status='working'] .pill { background: var(--app-tint-working); color: var(--app-working); }
+  [data-status='waiting'] .pill { background: var(--app-tint-warn); color: var(--app-warn); }
+  [data-status='done'] .pill { background: var(--app-tint-ok); color: var(--app-ok); }
+  .node__menu-wrap, .dock__menu-wrap { position: relative; display: inline-flex; }
+
+  .term {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 112px;
+    padding: 10px;
+    overflow: hidden;
+    background: var(--app-term);
+    border-radius: 0 0 var(--app-radius) var(--app-radius); /* design-ok 终端只圆下两角 */
+    color: var(--app-term-text);
+    font: 400 11px / 18px var(--font-mono);
+  }
+  .tl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tl--cmd::before { content: '> '; color: var(--app-brand-text); }
+  .tl--dim { color: var(--app-term-dim); }
+  .tl--ok { color: var(--app-ok); }
+  .tl--warn { color: var(--app-warn); }
+  .caret { width: 7px; height: 13px; margin-top: 2px; background: var(--app-term-dim); }
+  [data-status='working'] .caret { background: var(--app-working); animation: blink 1s steps(1) infinite; }
+
+  .ask {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 8px 0 10px;
+    background: var(--app-tint-warn);
+    border-bottom: 1px solid var(--app-border);
+    font-size: 12px;
+  }
+  .ask[hidden] { display: none; }
+  .ask__label { color: var(--app-warn); font-weight: 500; }
+  .ask__prompt { font: 400 11px / 1 var(--font-mono); }
+  .ask__actions { display: inline-flex; gap: 6px; margin-left: auto; }
+
+  .node__note { padding: 10px 12px 12px; font-size: 12px; line-height: 1.55; }
+  .node--note { border-style: dashed; border-color: var(--app-note); }
+  .diffstat { font: 500 11px / 1 var(--font-mono); }
+  .diffstat b { color: var(--app-ok); font-weight: 500; }
+  .diffstat i { color: var(--app-danger); font-style: normal; }
+  .diff { padding: 6px 0 8px; font: 400 10.5px / 18px var(--font-mono); }
+  .dl { display: flex; gap: 8px; padding: 0 10px; white-space: pre; overflow: hidden; }
+  .dl span { width: 12px; flex: none; color: var(--app-muted); }
+  .dl--add { background: var(--app-add-bg); }
+  .dl--del { background: var(--app-del-bg); }
+
+  .url { flex: 1; padding: 3px 8px; border-radius: var(--app-radius-xs); background: var(--app-hover); color: var(--app-muted); font-size: 10.5px; font-weight: 400; }
+  .page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 150px;
+    padding: 16px;
+    background: var(--app-term-text);
+    border-radius: 0 0 var(--app-radius) var(--app-radius); /* design-ok 页面区只圆下两角 */
+    color: var(--app-term);
+    transition: opacity 200ms linear;
+  }
+  .page[data-loading] { opacity: 0.3; }
+  .page__logo { width: 22px; height: 22px; border-radius: var(--app-pill); background: var(--app-term); }
+  .page__input { width: 70%; height: 16px; border: 1px solid var(--app-border-strong); border-radius: var(--app-radius-xs); background: var(--app-on-brand); }
+  .page__check { display: flex; align-items: center; gap: 6px; width: 70%; font-size: 10.5px; }
+  .page__check input { width: 11px; height: 11px; margin: 0; accent-color: var(--app-brand-solid); }
+  .page__btn { display: grid; place-items: center; width: 70%; height: 20px; border-radius: var(--app-radius-xs); background: var(--app-term); color: var(--app-term-text); font-size: 10.5px; }
+
+  .pin {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--app-pill) var(--app-pill) var(--app-pill) 0; /* design-ok 评论钉的水滴形 */
+    background: var(--app-cursor-peer);
+    color: var(--app-on-brand);
+    font: 600 11px / 1 var(--font-sans);
+  }
+  .pin__pop { position: absolute; width: 160px; padding: 8px 10px; font-size: 11px; line-height: 1.5; }
+  .cursor { position: absolute; display: inline-flex; align-items: flex-start; gap: 2px; pointer-events: none; }
+  .cursor svg { fill: var(--app-cursor-peer); }
+  .cursor span { margin-top: 12px; padding: 1px 6px; border-radius: var(--app-radius-xs); background: var(--app-cursor-peer); color: var(--app-on-brand); font: 500 10px / 1.5 var(--font-sans); }
+
+  /* 浮层 */
+  .pop {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    background: var(--app-card);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius-sm);
+    box-shadow: var(--app-shadow-pop); /* design-ok 软件菜单的浮层阴影 */
+    color: var(--app-text);
+  }
+  .pop[hidden] { display: none; }
+  .menu { top: 26px; right: 0; min-width: 150px; padding: 4px; }
+  .menu--add { top: auto; bottom: 40px; right: auto; left: -10px; max-height: 330px; overflow: auto; }
+  .pop__title { padding: 6px 8px 2px; color: var(--app-muted); font-size: 10.5px; }
+  .pop__item { padding: 5px 8px; border-radius: var(--app-radius-xs); text-align: left; font-size: 12px; white-space: nowrap; }
+  .pop__item:hover, .pop__item:focus-visible { background: var(--app-hover); outline: none; }
+
+  /* 右上工具簇与抽屉 */
+  .cluster {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--app-dock);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+  }
+  .drawer {
+    position: absolute;
+    top: 52px;
+    right: 12px;
+    bottom: 124px;
+    width: 280px;
+    padding: 10px 12px;
+    background: var(--app-card);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-pop); /* design-ok 软件抽屉的浮层阴影 */
+    animation: drawer-in 220ms var(--ease-out);
+  }
+  .drawer[hidden] { display: none; }
+  .drawer__head { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
+  .drawer__branch { display: flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--app-muted); font-size: 11px; }
+  .drawer__group { margin-top: 14px; color: var(--app-muted); font-size: 11px; }
+  .drawer__files, .drawer__tree { margin: 6px 0 0; padding: 0; list-style: none; }
+  .drawer__files li { display: flex; align-items: center; gap: 8px; height: 26px; font-size: 11px; }
+  .st { width: 14px; font: 600 10.5px / 1 var(--font-mono); }
+  .st--m { color: var(--app-warn); }
+  .st--a { color: var(--app-ok); }
+  .drawer__input { display: block; margin-top: 12px; padding: 6px 8px; border: 1px solid var(--app-border-strong); border-radius: var(--app-radius-sm); color: var(--app-muted); font-size: 11px; }
+  .drawer__tree li { height: 24px; line-height: 24px; border-radius: var(--app-radius-xs); font-size: 11px; color: var(--app-muted); }
+  .drawer__tree li:hover { background: var(--app-hover); color: var(--app-text); }
+
+  /* Dock */
+  .dock {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    transform: translateX(-50%);
+    background: var(--app-dock);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-pop); /* design-ok 软件 Dock 的浮层阴影 */
+  }
+  .dock__sep { width: 1px; height: 18px; margin: 0 4px; background: var(--app-border-strong); }
+  .ib--add { background: var(--app-brand-solid); color: var(--app-on-brand); }
+  .ib--add:hover { background: var(--app-brand-solid); color: var(--app-on-brand); filter: brightness(1.12); }
+  .dock__zoom { min-width: 46px; height: 28px; border-radius: var(--app-radius-sm); color: var(--app-muted); font-size: 11px; }
+  .dock__zoom:hover { background: var(--app-hover); color: var(--app-text); }
+
+  .minimap {
+    position: absolute;
+    right: 12px;
+    bottom: 16px;
+    width: 150px;
+    height: 96px;
+    background: var(--app-dock);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-sm);
+  }
+  .minimap i { position: absolute; border-radius: var(--app-radius-xs); background: var(--app-border-strong); }
+  .minimap b { position: absolute; left: 2%; top: 4%; width: 96%; height: 90%; border: 1px solid var(--app-brand); border-radius: var(--app-radius-xs); }
+
+  /* 跳步编号点 */
+  .hotspots { position: absolute; inset: 0; pointer-events: none; }
+  .hotspots :global(button) {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--app-pill);
+    background: var(--accent);
+    color: var(--app-on-brand);
+    font: 600 12px / 1 var(--font-mono);
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(var(--hs-s, 1));
+    box-shadow: 0 0 0 4px var(--selection); /* design-ok 编号点的光环 */
+    transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+  }
+  .hotspots :global(button[aria-current='step']) { --hs-s: 1.25; }
+  .hotspots :global(button:hover) { --hs-s: 1.15; }
+
+  @keyframes drawer-in { from { opacity: 0; transform: translateX(12px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .model__stage, .world { transition: none; }
+    .drawer { animation: none; }
+    [data-status='working'] .caret { animation: none; }
+  }
+</style>
