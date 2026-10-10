@@ -1,0 +1,92 @@
+/*
+ * 动效层（§2.6）。原则：只为状态变化与空间关系服务；常规状态 120–200ms，
+ * 视图切换 280–360ms，缓出曲线；减少动效偏好下保留淡入淡出，去掉位移与缩放。
+ */
+
+/* ---- 跨页导航（Chrome 126+、Safari 18.2+；其他浏览器直接跳转） ---- */
+@view-transition {
+  navigation: auto;
+}
+
+/* 常驻区域在跳页时原地不动，只有内容区切换 */
+.topnav { view-transition-name: topnav; }
+.docs-nav { view-transition-name: docs-nav; }
+
+::view-transition-group(*) {
+  animation-duration: 340ms;
+  animation-timing-function: var(--ease-out);
+}
+
+/* 内容区：旧页快速淡出，新页淡入并轻微上移 */
+::view-transition-old(root) {
+  animation: vt-fade-out 100ms var(--ease-out) both;
+}
+::view-transition-new(root) {
+  animation: vt-rise-in 300ms var(--ease-out) both;
+}
+
+/* ---- 页内状态切换（由 scripts/motion.ts 写入 html[data-vt]） ---- */
+
+/* 主题：整页交叉淡化；切换期间压住元素自身的颜色过渡，避免逐个渐变造成闪烁 */
+:root[data-vt='scheme'] *,
+:root[data-vt='scheme'] *::before,
+:root[data-vt='scheme'] *::after {
+  transition: none !important;
+}
+:root[data-vt='scheme']::view-transition-old(root),
+:root[data-vt='scheme']::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: var(--ease-out);
+}
+:root[data-vt='scheme']::view-transition-old(root) { animation-name: vt-fade-out; }
+:root[data-vt='scheme']::view-transition-new(root) { animation-name: vt-fade-in; }
+
+/* 语言：文字原地交叉淡化，不位移 */
+:root:is([data-vt='lang'], [data-vt='region'])::view-transition-old(root) { animation: vt-fade-out 120ms var(--ease-out) both; }
+:root:is([data-vt='lang'], [data-vt='region'])::view-transition-new(root) { animation: vt-fade-in 220ms var(--ease-out) both; }
+
+/* 标签筛选：只有列表区域参与过渡，其余内容保持静止 */
+:root[data-vt='list'] [data-vt-list] { view-transition-name: post-list; }
+:root[data-vt='list']::view-transition-old(root),
+:root[data-vt='list']::view-transition-new(root) { animation: none; }
+:root[data-vt='list']::view-transition-old(post-list) { animation: vt-fade-out 120ms var(--ease-out) both; }
+:root[data-vt='list']::view-transition-new(post-list) {
+  animation: vt-rise-in 260ms var(--ease-out) both;
+  height: 100%;
+  object-fit: none;
+  object-position: top;
+}
+:root[data-vt='list']::view-transition-old(post-list) {
+  height: 100%;
+  object-fit: none;
+  object-position: top;
+}
+
+/* ---- 列表加载更多：新出现的行依次淡入，总延迟不超过约 0.3s ---- */
+.is-revealing {
+  animation: row-in 260ms var(--ease-out) both;
+  animation-delay: calc(var(--reveal-i, 0) * 24ms);
+}
+
+/* ---- 按压反馈：按钮、图标开关与标签按下时轻微收缩 ---- */
+@media (prefers-reduced-motion: no-preference) {
+  :is(.btn-primary, .btn-ghost, .theme-toggle--icon, .lang-toggle--icon, .seg__item):active {
+    scale: 0.97;
+  }
+}
+
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+@keyframes vt-rise-in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes row-in { from { opacity: 0; transform: translateY(4px); } }
+
+/* ---- 减少动效：保留淡入淡出与颜色变化，去掉位移、缩放与形变 ---- */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) { animation-duration: 0s; }
+  ::view-transition-new(root),
+  :root[data-vt='list']::view-transition-new(post-list) {
+    animation-name: vt-fade-in;
+    animation-duration: 160ms;
+  }
+  .is-revealing { animation: vt-fade-in 160ms linear both; animation-delay: 0s; }
+}

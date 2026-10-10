@@ -1,0 +1,120 @@
+---
+/**
+ * 分段选择（单选）。选中项用反白表示（The Inverted Selection Rule），与标签筛选一致。
+ * 选择变化时在根元素上派发 segmented:change（detail.value），由页面脚本决定作用。
+ */
+import type { Bi } from '../../lib/types';
+import T from '../common/T.astro';
+
+interface Option {
+  value: string;
+  label: Bi;
+  count?: number;
+}
+interface Props {
+  name: string;
+  label: Bi;
+  options: Option[];
+  value: string;
+  wrap?: boolean;
+}
+const { name, label, options, value, wrap = false } = Astro.props;
+---
+
+<div
+  class:list={['seg', { 'seg--wrap': wrap }]}
+  role="radiogroup"
+  aria-label={label.zh}
+  data-aria-zh={label.zh}
+  data-aria-en={label.en}
+  data-segmented={name}
+>
+  {
+    options.map((o) => (
+      <button
+        type="button"
+        class="seg__item"
+        role="radio"
+        aria-checked={o.value === value ? 'true' : 'false'}
+        tabindex={o.value === value ? 0 : -1}
+        data-value={o.value}
+      >
+        <T zh={o.label.zh} en={o.label.en} />
+        {o.count != null && <span class="seg__count">{o.count}</span>}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  /** 单选组：点击或方向键切换，roving tabindex */
+  function select(group: HTMLElement, btn: HTMLButtonElement, focus = false) {
+    if (btn.getAttribute('aria-checked') === 'true') return;
+    for (const b of group.querySelectorAll<HTMLButtonElement>('.seg__item')) {
+      const on = b === btn;
+      b.setAttribute('aria-checked', String(on));
+      b.tabIndex = on ? 0 : -1;
+    }
+    if (focus) btn.focus();
+    group.dispatchEvent(new CustomEvent('segmented:change', { bubbles: true, detail: { value: btn.dataset.value } }));
+  }
+
+  for (const group of document.querySelectorAll<HTMLElement>('[data-segmented]')) {
+    if (group.dataset.ready) continue;
+    group.dataset.ready = '1';
+    group.addEventListener('click', (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>('.seg__item');
+      if (btn) select(group, btn);
+    });
+    group.addEventListener('keydown', (e) => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)) return;
+      const items = [...group.querySelectorAll<HTMLButtonElement>('.seg__item')];
+      const i = items.indexOf(document.activeElement as HTMLButtonElement);
+      if (i < 0) return;
+      e.preventDefault();
+      const next =
+        e.key === 'Home' ? 0
+        : e.key === 'End' ? items.length - 1
+        : (i + (e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 1) + items.length) % items.length;
+      select(group, items[next], true);
+    });
+  }
+</script>
+
+<style>
+  .seg {
+    display: inline-flex;
+    max-width: 100%;
+    border: 1px solid var(--line);
+  }
+  .seg--wrap {
+    display: flex;
+    flex-wrap: wrap;
+    border: 0;
+    gap: var(--sp-1);
+  }
+  .seg__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    min-height: var(--control-h);
+    padding: 0 var(--sp-3);
+    font: 400 var(--fs-body-sm) / var(--lh-body-sm) var(--font-sans);
+    color: var(--ink-2);
+    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), scale var(--dur-1) var(--ease-out);
+  }
+  .seg__item:hover { color: var(--ink); background: var(--hover-row); }
+  .seg__item[aria-checked='true'] {
+    background: var(--selected-bg);
+    color: var(--selected-ink);
+  }
+  .seg__item:focus-visible { outline-offset: -2px; }
+  .seg__count {
+    font: 400 var(--fs-mono-sm) / var(--lh-mono-sm) var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    opacity: 0.7;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .seg__item:active { scale: 0.97; }
+  }
+</style>

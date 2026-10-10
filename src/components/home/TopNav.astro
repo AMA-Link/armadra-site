@@ -1,0 +1,222 @@
+---
+/**
+ * 全站顶栏：所有页面共用，文档外壳下吸顶。导航项来自 lib/nav.ts，与快捷键同源。
+ */
+import type { PageId } from '../../lib/types';
+import { NAV, navCurrent, REPO_URL, RELEASES_URL } from '../../lib/nav';
+import T from '../common/T.astro';
+import ThemeToggle from '../common/ThemeToggle.astro';
+import LangToggle from '../common/LangToggle.astro';
+import Icon from '../common/Icon.astro';
+import Kbd from '../ui/Kbd.astro';
+import { S } from '../../i18n';
+
+interface Props {
+  page: PageId;
+  variant?: 'top' | 'side';
+}
+
+const { page, variant = 'top' } = Astro.props;
+const current = navCurrent(page);
+---
+
+<header
+  class:list={['topnav', `topnav--${variant}`]}
+>
+  <div class="container topnav__inner">
+    <a class="topnav__brand" href="/" aria-label="Armadra">
+      <img class="topnav__logo" src="/brand/armadra-96.png" width="28" height="28" alt="" />
+      <span class="topnav__mark">Armadra</span>
+    </a>
+
+    <nav class="topnav__nav" aria-label={S.nav.aria.zh} data-aria-zh={S.nav.aria.zh} data-aria-en={S.nav.aria.en}>
+      {
+        NAV.map((item) => (
+          <a
+            class:list={['topnav__link', `topnav__link--${item.id}`]}
+            href={item.href}
+            aria-current={current === item.id ? 'page' : undefined}
+            aria-keyshortcuts={item.key}
+          >
+            <Kbd k={item.key} class="topnav__kbd" />
+            <span class="topnav__label">
+              <T zh={item.label.zh} en={item.label.en} />
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="topnav__tools">
+      <LangToggle />
+      <ThemeToggle />
+      <a class="topnav__icon" href={REPO_URL} aria-label={S.nav.github.zh}>
+        <Icon name="github" size={16} />
+      </a>
+      <a class="topnav__download btn-primary" href={RELEASES_URL}>
+        <T zh={S.nav.download.zh} en={S.nav.download.en} />
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .topnav {
+    position: relative;
+    z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .topnav__inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    height: var(--nav-h);
+  }
+
+  .topnav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-height: 44px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .topnav__logo {
+    display: block;
+    flex: none;
+    width: 28px;
+    height: 28px;
+  }
+  .topnav__mark {
+    font: 500 var(--fs-body-lg) / 1 var(--font-sans);
+    letter-spacing: -0.01em;
+  }
+  .topnav__download {
+    min-height: 36px;
+    margin-left: var(--sp-2);
+  }
+
+  .topnav__nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-6);
+  }
+
+  .topnav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: 44px;
+    font: 400 var(--fs-body) / var(--lh-body) var(--font-sans);
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .topnav__link:hover,
+  .topnav__link[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  /* 当前位置：陶土色 2px 细线，与侧栏左缘、目录标记同一规则 */
+  .topnav__link {
+    position: relative;
+  }
+  .topnav__link[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--accent-ui);
+  }
+
+  .topnav__tools {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+  }
+
+  .topnav__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--ink-2);
+    transition:
+      color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+
+  .topnav__icon:hover {
+    color: var(--ink);
+    background: var(--hover-row);
+  }
+
+  /* 文档外壳：吸顶 */
+  .topnav--side {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  @media (max-width: 1024px) {
+    .topnav__nav {
+      gap: var(--sp-5);
+    }
+    .topnav :global(.topnav__kbd) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .topnav__inner {
+      height: var(--bar-h);
+      gap: var(--sp-4);
+    }
+
+    .topnav__brand {
+      gap: var(--sp-2);
+    }
+
+
+    .topnav__nav {
+      justify-content: flex-start;
+      gap: 0;
+    }
+
+    .topnav__link {
+      justify-content: center;
+      min-width: 44px;
+      padding-inline: var(--sp-2);
+      font-size: var(--fs-body-sm);
+      line-height: var(--lh-body-sm);
+    }
+
+    .topnav__tools {
+      gap: 0;
+    }
+
+    /* 窄屏由品牌标志承担回到主页 */
+    .topnav__link--home {
+      display: none;
+    }
+  }
+
+  /* 窄屏放不下时：先收起下载按钮（首屏已有），再只留标志 */
+  @media (max-width: 640px) {
+    .topnav__download {
+      display: none;
+    }
+  }
+  @media (max-width: 420px) {
+    .topnav__mark {
+      display: none;
+    }
+  }
+</style>

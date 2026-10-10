@@ -1,0 +1,75 @@
+---
+import { S, fmtBi } from '../../i18n';
+import { NAV, REPO_URL, RELEASES_URL, SITE_REPO_URL } from '../../lib/nav';
+import T from './T.astro';
+
+// 构建时注入：年份与日期（东八区）
+const built = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+const rights = fmtBi(S.footer.rights, { year: built.slice(0, 4) });
+const builtText = fmtBi(S.footer.built, { date: built });
+const links = [
+  ...NAV.filter((n) => n.id !== 'home').map((n) => ({ href: n.href, label: n.label })),
+  { href: RELEASES_URL, label: S.footer.releases },
+  { href: REPO_URL, label: S.nav.github },
+  { href: `${REPO_URL}/issues/new/choose`, label: S.footer.issues },
+  { href: SITE_REPO_URL, label: S.footer.source },
+];
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__id">
+      <p class="site-footer__rights"><T zh={rights.zh} en={rights.en} /></p>
+    </div>
+    <ul class="site-footer__links" role="list">
+      {links.map((l) => <li><a href={l.href}><T zh={l.label.zh} en={l.label.en} /></a></li>)}
+    </ul>
+    <p class="site-footer__built corner"><T zh={builtText.zh} en={builtText.en} /></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-top: var(--sp-6);
+    padding-bottom: max(var(--sp-6), env(safe-area-inset-bottom));
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+  }
+  /* 独立放置时自带容器宽度；放进 main 或 .container 内时沿用父级宽度 */
+  .site-footer__inner {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-5);
+  }
+  :global(main) .site-footer__inner,
+  :global(.container) .site-footer__inner { max-width: none; padding-inline: 0; }
+  .site-footer__id { color: var(--ink-3); }
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .site-footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-h);
+    margin-block: calc((var(--lh-body-sm) - var(--control-h)) / 2);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .site-footer__links a:hover { color: var(--ink); }
+  .site-footer__built { white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .site-footer__inner { flex-direction: column; gap: var(--sp-3); }
+    .site-footer__built { white-space: normal; }
+  }
+</style>
