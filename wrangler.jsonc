@@ -9,12 +9,12 @@
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash"
   },
-  // armadra.com 的 zone 已在同一个 Cloudflare 账号里（relay.armadra.com 也在）。
-  // 首次部署确认 workers.dev 地址正常后，把下面两条取消注释再部署，Cloudflare 会自动建 DNS 记录与证书。
-  // "routes": [
-  //   { "pattern": "armadra.com", "custom_domain": true },
-  //   { "pattern": "www.armadra.com", "custom_domain": true }
-  // ],
+  // armadra.com 的 zone 在同一个 Cloudflare 账号里；custom domain 由 Cloudflare 自动建 DNS 记录与证书。
+  // relay.armadra.com 是中转，与本站无关，不要在这里登记。
+  "routes": [
+    { "pattern": "armadra.com", "custom_domain": true },
+    { "pattern": "www.armadra.com", "custom_domain": true }
+  ],
   "workers_dev": true,
   "observability": { "enabled": false }
 }
