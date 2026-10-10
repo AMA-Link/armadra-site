@@ -36,4 +36,4 @@ Armadra doesn't rewrite agents. Each agent node launches the CLI you already use
 - **Desktop app**: installers for macOS, Windows and Linux; data lives in local SQLite and the workspace's `.armadra/`.
 - **Headless server shell**: always on, on a server or NAS; browsers and phones reach the same pages over HTTPS, with accounts and per-workspace sharing.
 
-To see a collaboration first, open the [live demo](/demo/). When you're ready, head to [Install](/docs/install/).
+When you're ready, head to [Install](/docs/install/).

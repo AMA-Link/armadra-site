@@ -15,7 +15,6 @@ export const H = {
       zh: 'Claude Code、Codex 等 CLI Agent 以真实终端节点放在无限画布上，保留各自的账户、模型与权限。连线即上下文，消息与交接组织分工，资料、过程与成果都在同一个空间里。',
       en: 'Claude Code, Codex and other CLI agents run as real terminal nodes on an infinite canvas, keeping their own accounts, models and permissions. Links carry context, messages and handoffs split the work, and the material, the process and the results share one space.',
     },
-    demo: { zh: '在线体验', en: 'Try the demo' },
     download: { zh: '下载 {v}', en: 'Download {v}' },
     docs: { zh: '阅读文档', en: 'Read the docs' },
     platforms: { zh: 'macOS · Windows · Linux', en: 'macOS · Windows · Linux' },
@@ -229,10 +228,10 @@ export const H = {
   },
 
   cta: {
-    title: { zh: '先在浏览器里看一遍协作过程', en: 'Watch a collaboration in your browser first' },
+    title: { zh: '把第一组 Agent 放上画布', en: 'Put your first agents on the canvas' },
     intro: {
-      zh: '在线演示是一块模拟画布：协调者分派任务，两个 Agent 按连线读取上下文、互相审查，结果汇总回来。',
-      en: 'The demo is a simulated canvas: a coordinator hands out work, two agents read context along links and review each other, and the results come back.',
+      zh: '下载后跟着快速上手，十分钟完成一次实现加审查的协作。',
+      en: 'Download it and follow the quickstart: one implement-and-review collaboration in ten minutes.',
     },
   },
 } as const;

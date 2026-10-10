@@ -1,6 +1,6 @@
 <!--
-标题沿用提交信息格式：`类型(范围): 中文描述`，例如 `feat(demo): 画布可拖动与缩放`。
-Title follows the commit format: `type(scope): description`, for example `feat(demo): …`.
+标题沿用提交信息格式：`类型(范围): 中文描述`，例如 `feat(home): 滚动叙事分步高亮`。
+Title follows the commit format: `type(scope): description`, for example `feat(home): …`.
 规范见 .github/CONTRIBUTING.md。不需要的小节写「无 / None」，不要删掉。
 See .github/CONTRIBUTING.md. Write "无 / None" for sections that do not apply instead of deleting them.
 -->
@@ -16,7 +16,7 @@ See .github/CONTRIBUTING.md. Write "无 / None" for sections that do not apply i
 ## 改动范围 / Scope
 
 - [ ] 页面与组件 / Pages and components（`src/pages`、`src/components`）
-- [ ] 在线演示 / Demo（`src/components/demo`、`src/scripts/demo`）
+- [ ] 软件模型 / App model（`src/components/model`、`src/scripts/model`）
 - [ ] 文档内容 / Docs content（`src/content/docs`）
 - [ ] 设计 token / Design tokens（`src/styles`）
 - [ ] 部署与 CI / Deploy and CI

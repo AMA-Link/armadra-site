@@ -1,3 +1,4 @@
 # Cloudflare 静态资源重定向（www 由 Cloudflare 规则或 wrangler 的 routes 处理）
 /docs  /docs/  301
-/demo  /demo/  301
+/demo   /  301
+/demo/  /  301

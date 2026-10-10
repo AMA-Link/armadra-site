@@ -1,7 +1,7 @@
 # PR 按改动路径打标签（.github/workflows/labeler.yml）。新增目录时同步这里与仓库标签。
-demo:
+app-model:
   - changed-files:
-      - any-glob-to-any-file: ["src/components/demo/**", "src/scripts/demo/**", "src/pages/demo/**"]
+      - any-glob-to-any-file: ["src/components/model/**", "src/scripts/model/**"]
 documentation:
   - changed-files:
       - any-glob-to-any-file: ["src/content/**", "docs/**", "*.md"]

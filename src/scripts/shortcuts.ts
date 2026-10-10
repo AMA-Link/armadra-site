@@ -12,8 +12,6 @@ export function installShortcuts(): () => void {
   const onKey = (e: KeyboardEvent) => {
     if (e.defaultPrevented || e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
     if (isEditable(document.activeElement)) return;
-    // 演示画布获得焦点时，按键交给画布
-    if ((document.activeElement as HTMLElement | null)?.closest('[data-demo-keys]')) return;
     const href = ROUTES[e.key.toLowerCase()];
     if (!href) return;
     e.preventDefault();
