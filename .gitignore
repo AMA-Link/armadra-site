@@ -25,3 +25,6 @@ coverage/
 .claude/settings.local.json
 .impeccable/review/
 .playwright-cli/
+
+# Astro 生成物
+.astro/
