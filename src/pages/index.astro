@@ -27,7 +27,9 @@ pnpm install
   <main id="main">
     <section class="hero container" aria-labelledby="hero-title">
       <p class="hero__eyebrow corner"><T zh={H.hero.eyebrow.zh} en={H.hero.eyebrow.en} /></p>
-      <h1 id="hero-title" class="hero__title"><T zh={H.hero.title.zh} en={H.hero.title.en} /></h1>
+      <h1 id="hero-title" class="hero__title">
+        {H.hero.title.map((l) => <span class="hero__line"><T zh={l.zh} en={l.en} /></span>)}
+      </h1>
       <p class="hero__intro"><T zh={H.hero.intro.zh} en={H.hero.intro.en} /></p>
       <div class="hero__actions">
         <a class="btn-primary" href="/demo/"><T zh={H.hero.demo.zh} en={H.hero.demo.en} /></a>
@@ -211,13 +213,13 @@ pnpm install
   }
   .hero__eyebrow { color: var(--accent-text); }
   .hero__title {
-    max-width: 18ch;
     margin-top: var(--sp-4);
     font: 500 var(--fs-display) / 1.05 var(--font-sans);
     letter-spacing: -0.025em;
     color: var(--ink);
   }
-  :global(html[data-lang='en']) .hero__title { max-width: 20ch; font-size: var(--fs-display-en); }
+  .hero__line { display: block; }
+  :global(html[data-lang='en']) .hero__title { font-size: var(--fs-display-en); }
   .hero__intro {
     max-width: 62ch;
     margin-top: var(--sp-5);

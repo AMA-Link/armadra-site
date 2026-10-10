@@ -6,10 +6,11 @@ export const H = {
   docTitle: { zh: 'Armadra · 多 Agent 协作的 AI Coding 画布', en: 'Armadra · An AI coding canvas for agents that work together' },
   hero: {
     eyebrow: { zh: '本地优先的 AI Coding 画布', en: 'A local-first AI coding canvas' },
-    title: {
-      zh: '让不同的 Agent，在同一张画布上协作',
-      en: 'Put your agents on one canvas, and let them work together',
-    },
+    /** 两行标题，按语义断行 */
+    title: [
+      { zh: '让不同的 Agent，', en: 'Put your agents on one canvas,' },
+      { zh: '在同一张画布上协作', en: 'and let them work together' },
+    ],
     intro: {
       zh: 'Claude Code、Codex 等 CLI Agent 以真实终端节点放在无限画布上，保留各自的账户、模型与权限。连线即上下文，消息与交接组织分工，资料、过程与成果都在同一个空间里。',
       en: 'Claude Code, Codex and other CLI agents run as real terminal nodes on an infinite canvas, keeping their own accounts, models and permissions. Links carry context, messages and handoffs split the work, and the material, the process and the results share one space.',
