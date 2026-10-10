@@ -29,9 +29,9 @@
 | 路径 | 内容 |
 | --- | --- |
 | `src/pages/` | 首页、`/docs/`、`/changelog/`、404 |
-| `src/components/` | `common/` 与 `ui/` 通用组件，`home/` 顶栏，`docs/` 文档目录 |
-| `src/scripts/` | 主题、语言、快捷键、复制 |
+| `src/components/` | `common/` 与 `ui/` 通用组件，`home/` 顶栏，`model/` 首页的软件模型，`docs/` 文档目录 |
+| `src/scripts/` | 主题、语言、快捷键、复制、滚动渐进；`model/` 为软件模型的交互与滚动叙事 |
 | `src/content/docs/{zh,en}/` | 文档正文，两种语言同名文件一一对应 |
-| `src/i18n/` | 界面文案（`strings.ts`）与首页文案（`home.ts`） |
+| `src/i18n/` | 界面文案（`strings.ts`）、首页文案（`home.ts`）、软件模型文案（`model.ts`） |
 | `src/data/` | 支持的 Agent 表、最新发布快照、更新日志 |
 | `scripts/` | 设计约束、站内链接、响应头生成、发布快照同步 |
