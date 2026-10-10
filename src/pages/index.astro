@@ -2,14 +2,383 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopNav from '../components/home/TopNav.astro';
 import Footer from '../components/common/Footer.astro';
-import PageHeader from '../components/ui/PageHeader.astro';
-import { S } from '../i18n';
+import SectionFrame from '../components/common/SectionFrame.astro';
+import T from '../components/common/T.astro';
+import Icon from '../components/common/Icon.astro';
+import CodeBlock from '../components/ui/CodeBlock.astro';
+import Segmented from '../components/ui/Segmented.astro';
+import { S, fmtBi } from '../i18n';
+import { H } from '../i18n/home';
+import { AGENTS } from '../data/agents';
+import { RELEASE, OS_ORDER, assetsFor, formatSize } from '../data/release';
+import { REPO_URL } from '../lib/nav';
+
+const download = fmtBi(H.hero.download, { v: `v${RELEASE.version}` });
+const pad = (n: number) => String(n).padStart(2, '0');
+const sourceCode = `git clone ${REPO_URL}.git
+cd Armadra
+pnpm install
+./armadra.sh doctor
+./armadra.sh run desktop`;
 ---
 
-<BaseLayout page="home" title="Armadra">
+<BaseLayout page="home" title={H.docTitle.zh} titleEn={H.docTitle.en}>
   <TopNav page="home" />
-  <main id="main" class="container">
-    <PageHeader title={S.site.name} intro={S.site.description} />
+  <main id="main">
+    <section class="hero container" aria-labelledby="hero-title">
+      <p class="hero__eyebrow corner"><T zh={H.hero.eyebrow.zh} en={H.hero.eyebrow.en} /></p>
+      <h1 id="hero-title" class="hero__title">
+        {H.hero.title.map((l) => <span class="hero__line"><T zh={l.zh} en={l.en} /></span>)}
+      </h1>
+      <p class="hero__intro"><T zh={H.hero.intro.zh} en={H.hero.intro.en} /></p>
+      <div class="hero__actions">
+        <a class="btn-primary" href="/demo/"><T zh={H.hero.demo.zh} en={H.hero.demo.en} /></a>
+        <a class="btn-ghost" href="#start"><Icon name="download" size={14} /><T zh={download.zh} en={download.en} /></a>
+        <a class="btn-ghost" href="/docs/"><T zh={H.hero.docs.zh} en={H.hero.docs.en} /></a>
+      </div>
+      <ul class="hero__meta" role="list">
+        <li class="corner"><T zh={H.hero.platforms.zh} en={H.hero.platforms.en} /></li>
+        <li class="corner">{RELEASE.tag} · {RELEASE.published}</li>
+        <li class="corner"><T zh={H.hero.license.zh} en={H.hero.license.en} /></li>
+      </ul>
+    </section>
+
+
+    <div class="container sections">
+      <SectionFrame id="why" title={H.why.title} count={`0${H.why.items.length}`}>
+        <ol class="why" role="list">
+          {
+            H.why.items.map((it, i) => (
+              <li class="why__item">
+                <span class="why__n corner">{pad(i + 1)}</span>
+                <h3 class="why__title"><T zh={it.title.zh} en={it.title.en} /></h3>
+                <p class="why__body"><T zh={it.body.zh} en={it.body.en} /></p>
+              </li>
+            ))
+          }
+        </ol>
+      </SectionFrame>
+
+      <SectionFrame id="features" title={H.features.title} count={pad(H.features.groups.length)}>
+        <div class="feat">
+          {
+            H.features.groups.map((g) => (
+              <section class="feat__group">
+                <h3 class="feat__title"><T zh={g.title.zh} en={g.title.en} /></h3>
+                <ul class="feat__list" role="list">
+                  {g.items.map((it) => (
+                    <li class="feat__item"><T zh={it.zh} en={it.en} /></li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </div>
+      </SectionFrame>
+
+      <SectionFrame id="agents" title={H.agents.title} count={pad(AGENTS.length)} source="Owlbay/Armadra · README">
+        <div class="agents" role="table" aria-labelledby="agents-h">
+          <div class="agents__row agents__row--head list-row" role="row">
+            <span role="columnheader"><T zh={H.agents.cols.cli.zh} en={H.agents.cols.cli.en} /></span>
+            <span role="columnheader"><T zh={H.agents.cols.channel.zh} en={H.agents.cols.channel.en} /></span>
+            <span role="columnheader"><T zh={H.agents.cols.resume.zh} en={H.agents.cols.resume.en} /></span>
+            <span role="columnheader"><T zh={H.agents.cols.modes.zh} en={H.agents.cols.modes.en} /></span>
+          </div>
+          {
+            AGENTS.map((a) => (
+              <div class="agents__row list-row" role="row">
+                <span class="agents__name" role="cell">{a.name}</span>
+                <span class="agents__muted" role="cell">
+                  <T zh={H.agents.channel[a.channel].zh} en={H.agents.channel[a.channel].en} />
+                </span>
+                <code role="cell">{a.resume}</code>
+                <span class="agents__muted" role="cell">
+                  {a.modes ?? <T zh={H.agents.cliDefault.zh} en={H.agents.cliDefault.en} />}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+        <p class="note"><T zh={H.agents.note.zh} en={H.agents.note.en} /></p>
+      </SectionFrame>
+
+      <SectionFrame id="principles" title={H.principles.title} count={pad(H.principles.items.length)}>
+        <dl class="prin">
+          {
+            H.principles.items.map((p) => (
+              <div class="prin__row list-row">
+                <dt class="prin__title"><T zh={p.title.zh} en={p.title.en} /></dt>
+                <dd class="prin__body"><T zh={p.body.zh} en={p.body.en} /></dd>
+              </div>
+            ))
+          }
+        </dl>
+      </SectionFrame>
+
+      <SectionFrame id="start" title={H.start.title} source={RELEASE.tag} stamp={RELEASE.published}>
+        <div class="start">
+          <section class="start__col" aria-labelledby="start-dl">
+            <h3 id="start-dl" class="start__title"><T zh={H.start.download.zh} en={H.start.download.en} /></h3>
+            <p class="start__intro"><T zh={H.start.downloadIntro.zh} en={H.start.downloadIntro.en} /></p>
+            <Segmented
+              name="os"
+              label={H.start.title}
+              value="darwin"
+              options={OS_ORDER.map((os) => ({ value: os, label: H.start.os[os] }))}
+            />
+            {
+              OS_ORDER.map((os) => (
+                <ul class="dl" role="list" data-os={os} hidden={os !== 'darwin'}>
+                  {assetsFor(os).map((a) => (
+                    <li>
+                      <a class="dl__row list-row" href={a.url}>
+                        <span class="dl__arch"><T zh={H.start.arch[a.arch].zh} en={H.start.arch[a.arch].en} /></span>
+                        <span class="dl__kind"><T zh={H.start.kind[a.kind].zh} en={H.start.kind[a.kind].en} /></span>
+                        <span class="dl__size">{formatSize(a.size)}</span>
+                        <Icon name="download" size={14} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ))
+            }
+            <p class="start__links">
+              <a class="link-quiet" href={RELEASE.url.replace(/\/tag\/.*$/, '')}><T zh={H.start.allReleases.zh} en={H.start.allReleases.en} /> <Icon name="arrow-up-right" size={12} /></a>
+              <a class="link-quiet" href="/docs/install/"><T zh={H.start.guide.zh} en={H.start.guide.en} /> <Icon name="arrow-right" size={12} /></a>
+            </p>
+          </section>
+          <section class="start__col" aria-labelledby="start-src">
+            <h3 id="start-src" class="start__title"><T zh={H.start.source.zh} en={H.start.source.en} /></h3>
+            <p class="start__intro"><T zh={H.start.sourceIntro.zh} en={H.start.sourceIntro.en} /></p>
+            <CodeBlock code={sourceCode} label="shell" />
+          </section>
+        </div>
+      </SectionFrame>
+
+      <SectionFrame id="roadmap" title={H.roadmap.title} more={{ href: `${REPO_URL}/blob/main/docs/design/product-roadmap.md`, label: H.roadmap.more }}>
+        <p class="note note--top"><T zh={H.roadmap.intro.zh} en={H.roadmap.intro.en} /></p>
+        <div class="road" role="table" aria-label={H.roadmap.title.zh}>
+          <div class="road__row road__row--head list-row" role="row">
+            <span role="columnheader"><T zh={H.roadmap.cols.area.zh} en={H.roadmap.cols.area.en} /></span>
+            <span role="columnheader"><T zh={H.roadmap.cols.now.zh} en={H.roadmap.cols.now.en} /></span>
+            <span role="columnheader"><T zh={H.roadmap.cols.needs.zh} en={H.roadmap.cols.needs.en} /></span>
+          </div>
+          {
+            H.roadmap.items.map((r) => (
+              <div class="road__row list-row" role="row">
+                <span class="road__area" role="cell"><T zh={r.area.zh} en={r.area.en} /></span>
+                <span class="road__now" role="cell"><T zh={r.now.zh} en={r.now.en} /></span>
+                <span class="road__needs" role="cell"><T zh={r.needs.zh} en={r.needs.en} /></span>
+              </div>
+            ))
+          }
+        </div>
+      </SectionFrame>
+
+      <section class="cta" aria-labelledby="cta-title">
+        <h2 id="cta-title" class="cta__title"><T zh={H.cta.title.zh} en={H.cta.title.en} /></h2>
+        <p class="cta__intro"><T zh={H.cta.intro.zh} en={H.cta.intro.en} /></p>
+        <div class="hero__actions">
+          <a class="btn-primary" href="/demo/"><T zh={H.hero.demo.zh} en={H.hero.demo.en} /></a>
+          <a class="btn-ghost" href={REPO_URL}><Icon name="github" size={14} /><T zh={S.nav.github.zh} en={S.nav.github.en} /></a>
+        </div>
+      </section>
+    </div>
   </main>
   <Footer />
 </BaseLayout>
+
+<script>
+  // 下载区：按访客系统预选，切换分段时只显示对应系统的安装包
+  function pick(os: string) {
+    document.querySelectorAll<HTMLElement>('.dl[data-os]').forEach((ul) => (ul.hidden = ul.dataset.os !== os));
+    const seg = document.querySelector<HTMLElement>('[data-segmented="os"]');
+    seg?.querySelectorAll<HTMLElement>('.seg__item').forEach((b) => {
+      const on = b.dataset.value === os;
+      b.setAttribute('aria-checked', String(on));
+      b.tabIndex = on ? 0 : -1;
+    });
+  }
+  const ua = navigator.userAgent;
+  pick(/Windows/i.test(ua) ? 'windows' : /Linux|X11/i.test(ua) && !/Android/i.test(ua) ? 'linux' : 'darwin');
+  document.querySelector('[data-segmented="os"]')?.addEventListener('segmented:change', (e) => {
+    pick((e as CustomEvent<{ value: string }>).detail.value);
+  });
+</script>
+
+<style>
+  .hero {
+    padding-top: var(--sp-9);
+    padding-bottom: var(--sp-8);
+  }
+  .hero__eyebrow { color: var(--accent-text); }
+  .hero__title {
+    margin-top: var(--sp-4);
+    font: 500 var(--fs-display) / 1.05 var(--font-sans);
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .hero__line { display: block; }
+  :global(html[data-lang='en']) .hero__title { font-size: var(--fs-display-en); }
+  .hero__intro {
+    max-width: 62ch;
+    margin-top: var(--sp-5);
+    font: 400 var(--fs-body-lg) / var(--lh-body-lg) var(--font-sans);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    margin-top: var(--sp-6);
+  }
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    margin-top: var(--sp-6);
+  }
+
+  .sections {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--sp-8);
+  }
+  .sections > :global(.frame + .frame) { margin-top: 0; }
+
+  .why {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-6);
+    margin: 0;
+    padding: 0;
+  }
+  .why__title {
+    margin-top: var(--sp-3);
+    font: 500 var(--fs-h3) / 1.3 var(--font-sans);
+  }
+  .why__body {
+    margin-top: var(--sp-3);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .feat {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-6) var(--sp-6);
+  }
+  .feat__title {
+    padding-bottom: var(--sp-3);
+    border-bottom: 1px solid var(--line-soft);
+    font: 500 var(--fs-body-lg) / var(--lh-body-lg) var(--font-sans);
+  }
+  .feat__list { margin: 0; padding: 0; }
+  .feat__item {
+    padding-block: var(--sp-2);
+    border-bottom: 1px solid var(--line-soft);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--ink-2);
+  }
+
+  .agents__row {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.3fr);
+    gap: var(--sp-5);
+  }
+  .agents__row--head { color: var(--ink-3); min-height: var(--control-h); }
+  .agents__row--head:hover { background: none; }
+  .agents__name { font: 500 var(--fs-body) / var(--lh-body) var(--font-sans); color: var(--ink); }
+  .agents__muted { color: var(--ink-2); }
+  .agents code { color: var(--ink-2); }
+  .note {
+    max-width: 75ch;
+    margin-top: var(--sp-4);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--ink-3);
+  }
+  .note--top { margin-top: 0; margin-bottom: var(--sp-4); }
+
+  .prin { margin: 0; }
+  .prin__row {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: var(--sp-5);
+    align-items: baseline;
+    font: 400 var(--fs-body) / var(--lh-body) var(--font-sans);
+  }
+  .prin__row:hover { background: none; }
+  .prin__title { font-weight: 500; color: var(--ink); }
+  .prin__body { margin: 0; color: var(--ink-2); text-wrap: pretty; }
+
+  .start {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-7);
+  }
+  .start__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
+  .start__intro {
+    margin-top: var(--sp-2);
+    margin-bottom: var(--sp-4);
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--ink-3);
+  }
+  .dl { margin: var(--sp-3) 0 0; padding: 0; }
+  .dl__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto;
+    gap: var(--sp-4);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body-sm);
+  }
+  .dl__arch { color: var(--ink); }
+  .dl__kind { color: var(--ink-2); }
+  .dl__size { font-family: var(--font-mono); color: var(--ink-3); }
+  .start__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-5);
+    margin-top: var(--sp-4);
+    font-size: var(--fs-body-sm);
+  }
+  .start__links a { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); }
+
+  .road__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1.2fr);
+    gap: var(--sp-5);
+    align-items: baseline;
+    font: 400 var(--fs-body-sm) / var(--lh-body-sm) var(--font-sans);
+  }
+  .road__row:hover { background: none; }
+  .road__row--head { color: var(--ink-3); min-height: var(--control-h); font-family: var(--font-mono); font-size: var(--fs-mono); }
+  .road__area { color: var(--ink); font-weight: 500; }
+  .road__now { color: var(--ink-2); }
+  .road__needs { color: var(--ink-3); }
+
+  .cta {
+    padding-top: var(--sp-9);
+    padding-bottom: var(--sp-6);
+    text-align: left;
+  }
+  .cta__title { font: 500 var(--fs-h1) / 1.2 var(--font-sans); letter-spacing: -0.02em; }
+  .cta__intro { max-width: 62ch; margin-top: var(--sp-3); color: var(--ink-2); }
+
+  @media (max-width: 1024px) {
+    .why, .feat { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .start { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); }
+    .agents__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
+    .agents__row > :nth-child(4) { display: none; }
+  }
+  @media (max-width: 640px) {
+    .hero { padding-top: var(--sp-7); padding-bottom: var(--sp-6); }
+    .why, .feat { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+    .agents__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .agents__row > :nth-child(2) { display: none; }
+    .prin__row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-1); }
+    .road__row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-1); }
+    .road__row--head { display: none; }
+    .dl__row { grid-template-columns: minmax(0, 1fr) auto auto; }
+    .dl__kind { display: none; }
+  }
+</style>

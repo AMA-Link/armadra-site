@@ -1,0 +1,120 @@
+{
+  "version": "0.4.0",
+  "tag": "v0.4.0",
+  "published": "2026-10-10",
+  "url": "https://github.com/Owlbay/Armadra/releases/tag/v0.4.0",
+  "assets": [
+    {
+      "name": "Armadra_0.4.0_darwin-aarch64.dmg",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_darwin-aarch64.dmg",
+      "size": 156375115,
+      "os": "darwin",
+      "arch": "aarch64",
+      "kind": "dmg"
+    },
+    {
+      "name": "Armadra_0.4.0_darwin-aarch64.zip",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_darwin-aarch64.zip",
+      "size": 155472269,
+      "os": "darwin",
+      "arch": "aarch64",
+      "kind": "zip"
+    },
+    {
+      "name": "Armadra_0.4.0_darwin-x86_64.dmg",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_darwin-x86_64.dmg",
+      "size": 160281207,
+      "os": "darwin",
+      "arch": "x86_64",
+      "kind": "dmg"
+    },
+    {
+      "name": "Armadra_0.4.0_darwin-x86_64.zip",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_darwin-x86_64.zip",
+      "size": 159413559,
+      "os": "darwin",
+      "arch": "x86_64",
+      "kind": "zip"
+    },
+    {
+      "name": "Armadra_0.4.0_linux-aarch64.AppImage",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_linux-aarch64.AppImage",
+      "size": 150224525,
+      "os": "linux",
+      "arch": "aarch64",
+      "kind": "AppImage"
+    },
+    {
+      "name": "Armadra_0.4.0_linux-aarch64.deb",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_linux-aarch64.deb",
+      "size": 117557500,
+      "os": "linux",
+      "arch": "aarch64",
+      "kind": "deb"
+    },
+    {
+      "name": "Armadra_0.4.0_linux-aarch64.rpm",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_linux-aarch64.rpm",
+      "size": 96072997,
+      "os": "linux",
+      "arch": "aarch64",
+      "kind": "rpm"
+    },
+    {
+      "name": "Armadra_0.4.0_linux-x86_64.AppImage",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_linux-x86_64.AppImage",
+      "size": 160488779,
+      "os": "linux",
+      "arch": "x86_64",
+      "kind": "AppImage"
+    },
+    {
+      "name": "Armadra_0.4.0_linux-x86_64.deb",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_linux-x86_64.deb",
+      "size": 122346364,
+      "os": "linux",
+      "arch": "x86_64",
+      "kind": "deb"
+    },
+    {
+      "name": "Armadra_0.4.0_linux-x86_64.rpm",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_linux-x86_64.rpm",
+      "size": 100793493,
+      "os": "linux",
+      "arch": "x86_64",
+      "kind": "rpm"
+    },
+    {
+      "name": "Armadra_0.4.0_windows-aarch64-portable.zip",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_windows-aarch64-portable.zip",
+      "size": 181218795,
+      "os": "windows",
+      "arch": "aarch64",
+      "kind": "portable"
+    },
+    {
+      "name": "Armadra_0.4.0_windows-aarch64-setup.exe",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_windows-aarch64-setup.exe",
+      "size": 125456287,
+      "os": "windows",
+      "arch": "aarch64",
+      "kind": "setup"
+    },
+    {
+      "name": "Armadra_0.4.0_windows-x86_64-portable.zip",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_windows-x86_64-portable.zip",
+      "size": 182254214,
+      "os": "windows",
+      "arch": "x86_64",
+      "kind": "portable"
+    },
+    {
+      "name": "Armadra_0.4.0_windows-x86_64-setup.exe",
+      "url": "https://github.com/Owlbay/Armadra/releases/download/v0.4.0/Armadra_0.4.0_windows-x86_64-setup.exe",
+      "size": 131203963,
+      "os": "windows",
+      "arch": "x86_64",
+      "kind": "setup"
+    }
+  ]
+}
