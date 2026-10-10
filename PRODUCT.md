@@ -17,7 +17,6 @@ Astro 7 + TypeScript，纯静态输出，部署在 Cloudflare Workers 静态资�
 ## Product Purpose
 
 1. **首页**（`/`）：定位、三个产品出发点、能力一览、支持的 Agent、设计原则、快速开始、路线图。
-2. **在线演示**（`/demo/`）：浏览器里的模拟画布，演示多个 Agent 经连线协作。
 3. **文档**（`/docs/`）：入门、概念、使用与参考，中英双语。
 
 成功标准：访客首屏读懂定位；不安装就能看到「连线即上下文」的协作过程；能按文档完成安装与第一次协作。
@@ -40,4 +39,4 @@ Armadra 是本地优先的 AI Coding 画布：Claude Code、Codex、OpenCode、P
 
 ## Accessibility & Inclusion
 
-明暗主题都满足 WCAG AA；全站键盘可达；演示画布提供键盘操作与 `aria-live` 状态播报；尊重减少动效偏好。
+明暗主题都满足 WCAG AA；全站键盘可达；尊重减少动效偏好。

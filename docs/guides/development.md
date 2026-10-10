@@ -28,9 +28,9 @@
 
 | 路径 | 内容 |
 | --- | --- |
-| `src/pages/` | 首页、`/demo/`、`/docs/`、404 |
-| `src/components/` | `common/` 与 `ui/` 通用组件，`home/` 顶栏，`demo/` 演示画布与场景，`docs/` 文档目录 |
-| `src/scripts/` | 主题、语言、快捷键、复制；`demo/` 为演示的相机与回放 |
+| `src/pages/` | 首页、`/docs/`、404 |
+| `src/components/` | `common/` 与 `ui/` 通用组件，`home/` 顶栏，`docs/` 文档目录 |
+| `src/scripts/` | 主题、语言、快捷键、复制 |
 | `src/content/docs/{zh,en}/` | 文档正文，两种语言同名文件一一对应 |
 | `src/i18n/` | 界面文案（`strings.ts`）与首页文案（`home.ts`） |
 | `src/data/` | 支持的 Agent 表、最新发布快照 |
