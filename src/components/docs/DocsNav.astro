@@ -1,0 +1,71 @@
+---
+/** 文档左侧目录：按分组列出全部文档，当前页陶土色左缘 */
+import type { DocPair } from '../../lib/docs';
+import { GROUPS, groupLabel } from '../../lib/docs';
+import { S } from '../../i18n';
+import T from '../common/T.astro';
+
+interface Props {
+  pairs: DocPair[];
+  current?: string;
+}
+const { pairs, current } = Astro.props;
+---
+
+<nav class="docs-nav" aria-label={S.docs.nav.zh} data-aria-zh={S.docs.nav.zh} data-aria-en={S.docs.nav.en}>
+  {
+    GROUPS.map((g) => {
+      const items = pairs.filter((p) => p.group === g);
+      if (!items.length) return null;
+      const label = groupLabel(g);
+      return (
+        <section class="docs-nav__group">
+          <h2 class="docs-nav__title corner"><T zh={label.zh} en={label.en} /></h2>
+          <ul class="docs-nav__list" role="list">
+            {items.map((p) => (
+              <li>
+                <a class="docs-nav__link" href={`/docs/${p.slug}/`} aria-current={p.slug === current ? 'page' : undefined}>
+                  <T zh={p.zh.data.title} en={p.en.data.title} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })
+  }
+</nav>
+
+<style>
+  .docs-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+  }
+  .docs-nav__title { margin-bottom: var(--sp-2); }
+  .docs-nav__list { margin: 0; padding: 0; }
+  .docs-nav__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding-inline: var(--sp-3);
+    margin-inline: calc(-1 * var(--sp-3));
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .docs-nav__link:hover { color: var(--ink); background: var(--hover-row); }
+  .docs-nav__link[aria-current='page'] { color: var(--ink); }
+  .docs-nav__link[aria-current='page']::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: var(--accent-ui);
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNav from '../../components/home/TopNav.astro';
+import Footer from '../../components/common/Footer.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import SectionFrame from '../../components/common/SectionFrame.astro';
+import T from '../../components/common/T.astro';
+import Icon from '../../components/common/Icon.astro';
+import { GROUPS, getDocPairs, groupLabel } from '../../lib/docs';
+import { REPO_URL } from '../../lib/nav';
+import { S, fmtBi } from '../../i18n';
+
+const pairs = await getDocPairs();
+---
+
+<BaseLayout page="docs" title={S.docs.docTitle.zh} titleEn={S.docs.docTitle.en} description={S.docs.intro.zh}>
+  <TopNav page="docs" />
+  <main id="main" class="container docs-index">
+    <PageHeader title={S.docs.title} intro={S.docs.intro} />
+    <div class="docs-index__groups">
+      {
+        GROUPS.map((g) => {
+          const items = pairs.filter((p) => p.group === g);
+          const count = fmtBi(S.docs.count, { n: items.length });
+          return (
+            <SectionFrame id={`g-${g}`} title={groupLabel(g)} count={count}>
+              <ul class="docs-index__list" role="list">
+                {items.map((p) => (
+                  <li>
+                    <a class="docs-index__row list-row" href={`/docs/${p.slug}/`}>
+                      <span class="docs-index__title"><T zh={p.zh.data.title} en={p.en.data.title} /></span>
+                      <span class="docs-index__desc"><T zh={p.zh.data.description} en={p.en.data.description} /></span>
+                      <Icon name="arrow-right" size={14} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </SectionFrame>
+          );
+        })
+      }
+    </div>
+    <p class="docs-index__dev">
+      <a class="link-quiet" href={`${REPO_URL}/tree/main/docs`}>
+        <T zh={S.docs.devDocs.zh} en={S.docs.devDocs.en} />
+        <Icon name="arrow-up-right" size={12} />
+      </a>
+    </p>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .docs-index { padding-bottom: var(--sp-8); }
+  .docs-index__list { margin: 0; padding: 0; }
+  .docs-index__row {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+    gap: var(--sp-5);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+  .docs-index__title { color: var(--ink); font-weight: 500; }
+  .docs-index__desc { color: var(--ink-2); font-size: var(--fs-body-sm); line-height: var(--lh-body-sm); }
+  .docs-index__row :global(.icon) { color: var(--ink-3); }
+  .docs-index__dev { margin-top: var(--sp-5); font-size: var(--fs-body-sm); }
+  .docs-index__dev a { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); }
+  @media (max-width: 640px) {
+    .docs-index__row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-1) var(--sp-3); }
+    .docs-index__desc { grid-row: 2; grid-column: 1; }
+  }
+</style>
