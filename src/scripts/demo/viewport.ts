@@ -7,7 +7,7 @@ import { prefersReducedMotion } from '../motion';
 
 export interface Camera { x: number; y: number; k: number }
 
-const MIN_K = 0.3;
+const MIN_K = 0.18;
 const MAX_K = 1.6;
 const clampK = (k: number) => Math.min(MAX_K, Math.max(MIN_K, k));
 
