@@ -24,7 +24,7 @@ order: 3
 
 ```sh
 mkdir -p /srv/armadra && cd /srv/armadra
-curl -fsSLO https://raw.githubusercontent.com/Owlbay/Armadra/main/apps/server/docker/compose.yml
+curl -fsSLO https://raw.githubusercontent.com/AMA-Link/Armadra/main/apps/server/docker/compose.yml
 # 改 compose.yml 里的 ARMADRA_PUBLIC_ORIGIN 与 ARMADRA_ACME_EMAIL
 docker compose up -d
 docker compose logs armadra | grep "armadra-server pairing"
@@ -46,4 +46,4 @@ docker compose logs armadra | grep "armadra-server pairing"
 
 手机浏览器打开同一份页面，有底部导航、单节点焦点页与软键盘工具条。手机只是客户端，终端、Git 与 Agent 仍在电脑或服务器上执行。iOS / Android 原生应用在路线图上，目前在模拟器中验证。
 
-完整步骤（证书、反向代理、备份、升级回滚）见 Armadra 仓库的[服务器部署指南](https://github.com/Owlbay/Armadra/blob/main/docs/guides/server-deployment.md)。
+完整步骤（证书、反向代理、备份、升级回滚）见 Armadra 仓库的[服务器部署指南](https://github.com/AMA-Link/Armadra/blob/main/docs/guides/server-deployment.md)。

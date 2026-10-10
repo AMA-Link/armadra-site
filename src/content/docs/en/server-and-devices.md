@@ -24,7 +24,7 @@ A container is recommended:
 
 ```sh
 mkdir -p /srv/armadra && cd /srv/armadra
-curl -fsSLO https://raw.githubusercontent.com/Owlbay/Armadra/main/apps/server/docker/compose.yml
+curl -fsSLO https://raw.githubusercontent.com/AMA-Link/Armadra/main/apps/server/docker/compose.yml
 # set ARMADRA_PUBLIC_ORIGIN and ARMADRA_ACME_EMAIL in compose.yml
 docker compose up -d
 docker compose logs armadra | grep "armadra-server pairing"
@@ -46,4 +46,4 @@ The server shell supports passwords, passkeys, TOTP with recovery codes and GitH
 
 Phone browsers open the same pages, with bottom navigation, a single-node focus view and a soft-keyboard toolbar. The phone is only a client; terminals, Git and agents still run on the computer or server. Native iOS and Android apps are on the roadmap and currently verified in simulators.
 
-For the full procedure (certificates, reverse proxies, backups, upgrades and rollback), see the [server deployment guide](https://github.com/Owlbay/Armadra/blob/main/docs/guides/server-deployment.md) in the Armadra repository.
+For the full procedure (certificates, reverse proxies, backups, upgrades and rollback), see the [server deployment guide](https://github.com/AMA-Link/Armadra/blob/main/docs/guides/server-deployment.md) in the Armadra repository.

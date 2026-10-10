@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 从 GitHub 取 Owlbay/Armadra 的最新发布，写入 src/data/release.json。
+ * 从 GitHub 取 AMA-Link/Armadra 的最新发布，写入 src/data/release.json。
  * 构建时不联网，版本号与下载列表只在这里更新：pnpm sync:release
  * 有 GITHUB_TOKEN 时带上，避免匿名限流。
  */
@@ -12,7 +12,7 @@ const out = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'src/d
 const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'armadra-site' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 
-const res = await fetch('https://api.github.com/repos/Owlbay/Armadra/releases/latest', { headers });
+const res = await fetch('https://api.github.com/repos/AMA-Link/Armadra/releases/latest', { headers });
 if (!res.ok) {
   console.error(`GitHub API ${res.status}: ${await res.text()}`);
   process.exit(1);

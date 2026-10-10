@@ -35,4 +35,4 @@ Workflow 擅长把步骤明确的任务编排成可重复流程；Armadra 的节
 
 ## 在哪里反馈问题？
 
-软件问题请到 [Owlbay/Armadra](https://github.com/Owlbay/Armadra/issues/new/choose)；官网与文档的问题请到 [Owlbay/armadra-site](https://github.com/Owlbay/armadra-site/issues/new/choose)。
+软件问题请到 [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/issues/new/choose)；官网与文档的问题请到 [AMA-Link/armadra-site](https://github.com/AMA-Link/armadra-site/issues/new/choose)。

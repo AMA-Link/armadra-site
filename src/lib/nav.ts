@@ -16,9 +16,9 @@ export const NAV: readonly NavItem[] = [
   { id: 'changelog', href: '/changelog/', key: 'L', label: S.nav.changelog },
 ];
 
-export const REPO_URL = 'https://github.com/Owlbay/Armadra';
+export const REPO_URL = 'https://github.com/AMA-Link/Armadra';
 export const RELEASES_URL = `${REPO_URL}/releases/latest`;
-export const SITE_REPO_URL = 'https://github.com/Owlbay/armadra-site';
+export const SITE_REPO_URL = 'https://github.com/AMA-Link/armadra-site';
 
 /** 文档文章页归属文档 */
 export function navCurrent(page: PageId): PageId {

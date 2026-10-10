@@ -7,7 +7,7 @@ order: 2
 
 ## Download an installer
 
-Get the package for your system and architecture from [GitHub Releases](https://github.com/Owlbay/Armadra/releases/latest).
+Get the package for your system and architecture from [GitHub Releases](https://github.com/AMA-Link/Armadra/releases/latest).
 
 | System | Packages | Notes |
 | --- | --- | --- |
@@ -15,7 +15,7 @@ Get the package for your system and architecture from [GitHub Releases](https://
 | Windows | `-setup.exe` / `-portable.zip` | Installer or portable, x64 and ARM64 |
 | Linux | `.AppImage` / `.deb` / `.rpm` | x86_64 and aarch64 |
 
-> Packages are **not yet signed or notarized**, so the OS warns on first launch. On macOS choose "Open Anyway" in System Settings → Privacy & Security; on Windows choose "Run anyway" in the SmartScreen prompt. Signed releases are on the [roadmap](https://github.com/Owlbay/Armadra/blob/main/docs/design/product-roadmap.md).
+> Packages are **not yet signed or notarized**, so the OS warns on first launch. On macOS choose "Open Anyway" in System Settings → Privacy & Security; on Windows choose "Run anyway" in the SmartScreen prompt. Signed releases are on the [roadmap](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md).
 
 ## Prepare an agent CLI
 
@@ -31,7 +31,7 @@ Installing **tmux** is recommended: terminal sessions then survive app restarts.
 You need Node.js ≥ 22 and the pinned pnpm; macOS also needs the Xcode Command Line Tools.
 
 ```sh
-git clone https://github.com/Owlbay/Armadra.git
+git clone https://github.com/AMA-Link/Armadra.git
 cd Armadra
 pnpm install
 ./armadra.sh doctor        # check the toolchain
@@ -46,7 +46,7 @@ pnpm --filter @armadra/desktop dist    # desktop installers → apps/desktop/rel
 pnpm --filter @armadra/server build    # server shell → apps/server/out/main.js
 ```
 
-Ports, environment variables and data locations are in the [development guide](https://github.com/Owlbay/Armadra/blob/main/docs/guides/development.md) in the Armadra repository.
+Ports, environment variables and data locations are in the [development guide](https://github.com/AMA-Link/Armadra/blob/main/docs/guides/development.md) in the Armadra repository.
 
 ## Next
 
