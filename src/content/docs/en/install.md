@@ -28,7 +28,7 @@ Installing **tmux** is recommended: terminal sessions then survive app restarts.
 
 ## Run from source
 
-You need Node.js ≥ 22 and the pinned pnpm; macOS also needs the Xcode Command Line Tools.
+You need Node.js ≥ 24 and the pinned pnpm; macOS also needs the Xcode Command Line Tools.
 
 ```sh
 git clone https://github.com/Owlbay/Armadra.git

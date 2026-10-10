@@ -28,7 +28,7 @@ Armadra 启动的是你本机已经安装并登录的 CLI，它不替你安装�
 
 ## 从源码运行
 
-需要 Node.js ≥ 22 与项目锁定的 pnpm；macOS 还需要 Xcode Command Line Tools。
+需要 Node.js ≥ 24 与项目锁定的 pnpm；macOS 还需要 Xcode Command Line Tools。
 
 ```sh
 git clone https://github.com/Owlbay/Armadra.git
