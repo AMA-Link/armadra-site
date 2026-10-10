@@ -22,10 +22,13 @@ pnpm deploy:dry
    ```
 
    成功后会打印 `https://armadra-site.<子域>.workers.dev`，先在这个地址检查页面与响应头。
-3. 在 GitHub 仓库 Settings → Secrets and variables → Actions：
-   - Secrets：`CLOUDFLARE_API_TOKEN`、`CLOUDFLARE_ACCOUNT_ID`；
-   - Variables：`DEPLOY_ENABLED=true`，可选 `SITE_URL`（缺省 `https://armadra.com`）。
-4. 之后每次合并到 `main`，`.github/workflows/deploy.yml` 自动构建、检查站内链接并发布；也可以在 Actions 页手动运行。
+3. GitHub 仓库已配好 secret `CLOUDFLARE_ACCOUNT_ID` 与变量 `DEPLOY_ENABLED=true`、`SITE_URL=https://armadra.com`；只差令牌，在本机运行后粘贴第 1 步的令牌：
+
+   ```sh
+   gh secret set CLOUDFLARE_API_TOKEN -R Owlbay/armadra-site
+   ```
+
+4. 之后每次合并到 `main`，`.github/workflows/deploy.yml` 自动构建、检查站内链接并发布；也可以在 Actions 页手动运行。令牌缺失时工作流只打一条提示并跳过，不会失败。
 
 ## 绑定 armadra.com
 
