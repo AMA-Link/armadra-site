@@ -6,6 +6,9 @@ import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import AppModel from '../components/model/AppModel.astro';
 import Band from '../components/common/Band.astro';
+import HeroCanvas from '../components/home/HeroCanvas.astro';
+import Illo from '../components/home/Illo.astro';
+import { CHANGELOG } from '../data/changelog';
 import { H } from '../i18n/home';
 import { M } from '../i18n/model';
 import { AGENTS } from '../data/agents';
@@ -22,6 +25,7 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
   <main id="main" class="home">
     <!-- 首屏：只有标题与两个按钮，下方一条线引向软件 -->
     <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero__text">
       <h1 id="hero-title" class="hero__title">
         {H.hero.title.map((l, i) => <span class="hero__line" style={`--reveal-delay:${i * 120}ms`} data-reveal><T zh={l.zh} en={l.en} /></span>)}
       </h1>
@@ -29,6 +33,8 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
         <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
         <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.hero.docs.zh} en={H.hero.docs.en} /></a>
       </div>
+      </div>
+      <div class="hero__art" data-reveal style="--reveal-delay:200ms"><HeroCanvas /></div>
       <span class="hero__cue" aria-hidden="true"></span>
     </section>
 
@@ -99,8 +105,27 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
       </ol>
     </Band>
 
+    <!-- 工作方式：四列插图，列间箭头线 -->
+    <Band id="how" n={3} label={H.bands.how} aside={pad(H.how.steps.length)}>
+      <div class="container">
+        <h2 class="section-title" data-reveal><T zh={H.how.title.zh} en={H.how.title.en} /></h2>
+      </div>
+      <ol class="flow container" role="list">
+        {
+          H.how.steps.map((st, i) => (
+            <li class="flow__step" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <div class="flow__art"><Illo kind={`how-${i + 1}` as 'how-1'} /></div>
+              <span class="cols__n">{pad(i + 1)}</span>
+              <h3 class="flow__title"><T zh={st.title.zh} en={st.title.en} /></h3>
+              <p class="cols__line"><T zh={st.line.zh} en={st.line.en} /></p>
+            </li>
+          ))
+        }
+      </ol>
+    </Band>
+
     <!-- 能力：3×2 网格，格线分隔 -->
-    <Band id="features" n={3} label={H.bands.features} aside={pad(H.features.groups.length)}>
+    <Band id="features" n={4} label={H.bands.features} aside={pad(H.features.groups.length)}>
       <div class="container">
         <h2 class="section-title" data-reveal><T zh={H.features.title.zh} en={H.features.title.en} /></h2>
       </div>
@@ -120,8 +145,26 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
       </div>
     </Band>
 
+    <!-- 运行方式：三块设备插图 -->
+    <Band id="run" n={5} label={H.bands.run}>
+      <div class="container">
+        <h2 class="section-title" data-reveal><T zh={H.run.title.zh} en={H.run.title.en} /></h2>
+      </div>
+      <ul class="cols container" role="list">
+        {
+          H.run.items.map((it, i) => (
+            <li class="cols__item" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <div class="run__art"><Illo kind={it.id} /></div>
+              <h3 class="cols__title"><T zh={it.title.zh} en={it.title.en} /></h3>
+              <p class="cols__line"><T zh={it.line.zh} en={it.line.en} /></p>
+            </li>
+          ))
+        }
+      </ul>
+    </Band>
+
     <!-- 支持的 Agent：大字一行一个 -->
-    <Band id="agents" n={4} label={H.bands.agents} aside={pad(AGENTS.length)}>
+    <Band id="agents" n={6} label={H.bands.agents} aside={pad(AGENTS.length)}>
     <div class="agents container">
       <h2 class="section-title" data-reveal><T zh={H.agents.title.zh} en={H.agents.title.en} /></h2>
       <ul class="agents__list" role="list">
@@ -143,7 +186,7 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     </Band>
 
     <!-- 设计原则：六行，行间满宽线 -->
-    <Band id="principles" n={5} label={H.bands.principles} aside={pad(H.principles.items.length)}>
+    <Band id="principles" n={7} label={H.bands.principles} aside={pad(H.principles.items.length)}>
       <div class="container">
         <h2 class="section-title" data-reveal><T zh={H.principles.title.zh} en={H.principles.title.en} /></h2>
       </div>
@@ -161,8 +204,29 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
       </dl>
     </Band>
 
+    <!-- 最近更新：最近三版 -->
+    <Band id="recent" n={8} label={H.bands.recent} aside={`v${RELEASE.version}`}>
+      <div class="container recent__head">
+        <h2 class="section-title" data-reveal><T zh={H.recent.title.zh} en={H.recent.title.en} /></h2>
+        <a class="link-quiet recent__all" href="/changelog/"><T zh={H.recent.all.zh} en={H.recent.all.en} /> <Icon name="arrow-right" size={12} /></a>
+      </div>
+      <ul class="recent" role="list">
+        {
+          CHANGELOG.slice(0, 3).map((r, i) => (
+            <li class="rows__row" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+              <a class="recent__row container" href="/changelog/">
+                <span class="recent__v">{r.version}</span>
+                <span class="recent__title"><T zh={r.title.zh} en={r.title.en} /></span>
+                <time class="corner" datetime={r.date}>{r.date}</time>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </Band>
+
     <!-- 收尾 -->
-    <Band id="start" n={6} label={H.bands.start} aside={`v${RELEASE.version}`}>
+    <Band id="start" n={9} label={H.bands.start} aside={`v${RELEASE.version}`}>
     <div class="cta container">
       <h2 id="cta-title" class="cta__title">
         {H.cta.title.map((l, i) => <span class="hero__line" style={`--reveal-delay:${i * 120}ms`} data-reveal><T zh={l.zh} en={l.en} /></span>)}
@@ -337,6 +401,64 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     padding-block: var(--sp-9) var(--sp-7);
   }
 
+  /* 首屏：≥1025 左文右图 */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: var(--sp-7); }
+  @media (min-width: 1025px) {
+    .hero { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; }
+    /* 两栏时标题每行一句，不在句中折行 */
+    .hero__title { font-size: min(var(--fs-hero), 4.6vw); }
+  }
+  .hero__art { min-width: 0; }
+
+  /* 工作方式：四列，列间箭头线 */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0 auto;
+    padding: 0 var(--gutter) var(--sp-9);
+  }
+  .flow__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding: var(--sp-6) var(--sp-5) var(--sp-6) 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  .flow__step + .flow__step { padding-left: var(--sp-5); border-left: 1px solid var(--line); }
+  .flow__step + .flow__step::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: calc(var(--sp-6) + 48px);
+    width: 9px;
+    height: 9px;
+    border-top: 1px solid var(--ink-2);
+    border-right: 1px solid var(--ink-2);
+    background: var(--bg);
+    transform: rotate(45deg);
+  }
+  .flow__art { padding: var(--sp-3); border: 1px solid var(--line-soft); background: var(--app-canvas); }
+  .flow__title { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .run__art { padding: var(--sp-4); border: 1px solid var(--line-soft); background: var(--app-canvas); }
+
+  /* 最近更新 */
+  .recent__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-5); }
+  .recent__all { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); font-size: var(--fs-body-sm); white-space: nowrap; }
+  .recent { margin: 0; padding: 0 0 var(--sp-9); }
+  .recent__row {
+    display: grid;
+    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--sp-6);
+    padding-block: var(--sp-6);
+    text-decoration: none;
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .rows__row:has(.recent__row:hover) { background: var(--hover-row); }
+  .recent__v { font: 500 var(--fs-h1) / 1 var(--font-mono); letter-spacing: -0.03em; }
+  .recent__title { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+
   /* 三个出发点：三列，列间竖线 */
   .cols {
     display: grid;
@@ -419,11 +541,19 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
   }
   @media (max-width: 1024px) {
     .cols, .grid { grid-template-columns: minmax(0, 1fr); }
+    .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flow__step:nth-child(3) { border-left: 0; padding-left: 0; }
+    .flow__step + .flow__step:nth-child(3)::before { display: none; }
+    .recent__row { grid-template-columns: auto minmax(0, 1fr); }
+    .recent__row time { grid-column: 2; }
     .cols__item, .cols__item + .cols__item, .grid__cell, .grid__cell:nth-child(3n + 1) { padding: var(--sp-5) 0; border-left: 0; }
     .rows__inner { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
   }
   @media (max-width: 640px) {
     .hero { padding-block: var(--sp-8) var(--sp-9); }
+    .flow { grid-template-columns: minmax(0, 1fr); }
+    .flow__step, .flow__step + .flow__step { padding: var(--sp-5) 0; border-left: 0; }
+    .flow__step + .flow__step::before { display: none; }
     .agents__row { gap: var(--sp-3); padding-block: var(--sp-4); }
     .agents__tag { font-size: var(--fs-body-sm); }
     .section-title { padding-block: var(--sp-8) var(--sp-6); }
