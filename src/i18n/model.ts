@@ -17,16 +17,38 @@ export const M = {
     { name: 'web-app', canvases: [{ zh: '登录改版', en: 'Login revamp' }, { zh: '支付回调', en: 'Payment hooks' }] },
     { name: 'api-server', canvases: [{ zh: '限流', en: 'Rate limits' }] },
   ],
+  /** 右上工具簇：顺序照 apps/web/src/shell/ControlsCluster.tsx（竖排） */
   cluster: {
-    palette: { zh: '命令面板', en: 'Command palette' },
     explorer: { zh: '资源管理器', en: 'Explorer' },
     scm: { zh: '源码控制', en: 'Source control' },
     github: { zh: 'GitHub', en: 'GitHub' },
     resources: { zh: '资源', en: 'Resources' },
+    usage: { zh: '用量', en: 'Usage' },
+    prefs: { zh: '画布偏好', en: 'Canvas preferences' },
     close: { zh: '关闭', en: 'Close' },
+  },
+  prefs: [
+    { zh: '显示网格', en: 'Show grid' },
+    { zh: '显示小地图', en: 'Show minimap' },
+    { zh: '对齐吸附', en: 'Snap to align' },
+  ],
+  github: {
+    prs: [
+      { n: '#42', title: { zh: '登录页记住我', en: 'Remember me on login' }, state: { zh: '检查通过', en: 'Checks passed' } },
+      { n: '#41', title: { zh: '会话过期提示', en: 'Session expiry notice' }, state: { zh: '待评审', en: 'Review requested' } },
+    ],
+  },
+  resources: {
+    rows: [
+      { name: 'Claude Code', mem: '412 MB', cpu: 38 },
+      { name: 'Codex', mem: '268 MB', cpu: 21 },
+      { name: 'ama', mem: '96 MB', cpu: 4 },
+    ],
   },
   scm: {
     branch: 'feat/remember-me',
+    graph: { zh: '提交图', en: 'Commit graph' },
+    commits: ['feat(auth): 记住我 30 天', 'test(auth): session 用例', 'fix(auth): 登出清 cookie'],
     changes: { zh: '更改', en: 'Changes' },
     message: { zh: '提交信息', en: 'Commit message' },
     commit: { zh: '提交', en: 'Commit' },
@@ -80,14 +102,19 @@ export const M = {
     zoomOut: { zh: '缩小', en: 'Zoom out' },
     zoomIn: { zh: '放大', en: 'Zoom in' },
     fit: { zh: '适应窗口', en: 'Fit' },
+    /** 白板工具：顺序照 apps/web/src/shell/DockTools.tsx */
     tools: [
       { id: 'select', zh: '选择', en: 'Select' },
       { id: 'hand', zh: '手形', en: 'Hand' },
       { id: 'draw', zh: '画笔', en: 'Draw' },
+      { id: 'highlight', zh: '高亮', en: 'Highlight' },
       { id: 'shape', zh: '形状', en: 'Shapes' },
+      { id: 'line', zh: '直线', en: 'Line' },
       { id: 'arrow', zh: '箭头', en: 'Arrow' },
       { id: 'text', zh: '文字', en: 'Text' },
     ],
+    comment: { zh: '评论模式', en: 'Comment mode' },
+    saved: { zh: '已保存', en: 'Saved' },
   },
   add: {
     groups: [

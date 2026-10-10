@@ -36,6 +36,13 @@ export function initModel(model: HTMLElement): void {
     if (pinPop && except !== pinPop) pinPop.hidden = true;
   };
 
+  const main = model.querySelector<HTMLElement>('.main')!;
+  const closeDrawers = () => {
+    model.querySelectorAll<HTMLElement>('aside[data-model-panel]').forEach((p) => (p.hidden = true));
+    model.querySelectorAll('[data-model-drawer]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    delete main.dataset.drawer;
+  };
+
   let zoom = 3;
   const setZoom = (i: number) => {
     zoom = Math.max(0, Math.min(ZOOMS.length - 1, i));
@@ -56,6 +63,11 @@ export function initModel(model: HTMLElement): void {
       const pop = menuBtn.nextElementSibling as HTMLElement;
       pop.hidden = !open;
       if (open) pop.querySelector<HTMLElement>('[role="menuitem"]')?.focus({ preventScroll: true });
+      return;
+    }
+    const check = el.closest<HTMLElement>('[data-model-check]');
+    if (check) {
+      check.setAttribute('aria-checked', String(check.getAttribute('aria-checked') !== 'true'));
       return;
     }
     if (el.closest('[role="menuitem"]')) {
@@ -80,7 +92,7 @@ export function initModel(model: HTMLElement): void {
       model.querySelectorAll('[data-model-canvas]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
       return;
     }
-    if (btn?.matches('[data-model-lock]')) {
+    if (btn?.matches('[data-model-lock], [data-model-toggle]')) {
       btn.setAttribute('aria-pressed', String(btn.getAttribute('aria-pressed') !== 'true'));
       return;
     }
@@ -93,19 +105,35 @@ export function initModel(model: HTMLElement): void {
       setZoom(d === 0 ? 3 : zoom + d);
       return;
     }
+    // 右侧抽屉同时只开一个，打开时工具簇左移让开；源码控制是底部面板，与抽屉互不影响
     if (btn?.matches('[data-model-drawer]')) {
       const name = btn.dataset.modelDrawer!;
-      const panel = model.querySelector<HTMLElement>(`[data-model-panel="${name}"]`)!;
+      const panel = model.querySelector<HTMLElement>(`aside[data-model-panel="${name}"]`)!;
       const open = panel.hidden;
-      model.querySelectorAll<HTMLElement>('[data-model-panel]').forEach((p) => (p.hidden = true));
-      model.querySelectorAll('[data-model-drawer]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      closeDrawers();
       panel.hidden = !open;
       btn.setAttribute('aria-pressed', String(open));
+      if (open) main.dataset.drawer = name;
+      return;
+    }
+    if (btn?.matches('[data-model-bottom]')) {
+      const panel = model.querySelector<HTMLElement>('section[data-model-panel="scm"]')!;
+      const open = panel.hidden;
+      panel.hidden = !open;
+      btn.setAttribute('aria-pressed', String(open));
+      if (open) main.dataset.bottom = '';
+      else delete main.dataset.bottom;
       return;
     }
     if (el.closest('[data-model-close]')) {
-      model.querySelectorAll<HTMLElement>('[data-model-panel]').forEach((p) => (p.hidden = true));
-      model.querySelectorAll('[data-model-drawer]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      const host = el.closest<HTMLElement>('[data-model-panel]');
+      if (host?.tagName === 'SECTION') {
+        host.hidden = true;
+        delete main.dataset.bottom;
+        model.querySelector('[data-model-bottom]')?.setAttribute('aria-pressed', 'false');
+      } else {
+        closeDrawers();
+      }
       return;
     }
     if (el.closest('[data-model-commit]')) {

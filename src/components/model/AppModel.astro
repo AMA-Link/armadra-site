@@ -67,13 +67,13 @@ const tools = M.dock.tools;
             </svg>
 
             <!-- 便签 -->
-            <article class="node node--note" data-node="note" data-area="node-note" style="left:40px;top:70px;width:220px">
+            <article class="node node--note" data-node="note" data-area="node-note" style="left:28px;top:60px;width:210px">
               <header class="node__head"><span class="dot dot--note"></span><span class="node__name"><T {...t(M.node.note)} /></span></header>
               <p class="node__note"><T {...t(M.node.noteBody)} /></p>
             </article>
 
             <!-- 协调者 -->
-            <article class="node" data-node="ama" data-area="node-ama" data-status="working" style="left:40px;top:300px;width:270px">
+            <article class="node" data-node="ama" data-area="node-ama" data-status="working" style="left:28px;top:300px;width:250px">
               <header class="node__head">
                 <span class="dot dot--ama"></span>
                 <span class="node__name">ama <em><T {...t(M.node.coordinator)} /></em></span>
@@ -89,7 +89,7 @@ const tools = M.dock.tools;
             </article>
 
             <!-- Claude Code -->
-            <article class="node" data-node="claude" data-area="node-claude" data-status="waiting" style="left:380px;top:40px;width:300px">
+            <article class="node" data-node="claude" data-area="node-claude" data-status="waiting" style="left:318px;top:40px;width:290px">
               <header class="node__head">
                 <span class="dot dot--claude"></span>
                 <span class="node__name">Claude Code <em><T {...t(M.node.implement)} /></em></span>
@@ -122,7 +122,7 @@ const tools = M.dock.tools;
             </article>
 
             <!-- Codex -->
-            <article class="node" data-node="codex" data-area="node-codex" data-status="working" style="left:380px;top:400px;width:300px">
+            <article class="node" data-node="codex" data-area="node-codex" data-status="working" style="left:318px;top:400px;width:290px">
               <header class="node__head">
                 <span class="dot dot--codex"></span>
                 <span class="node__name">Codex <em><T {...t(M.node.review)} /></em></span>
@@ -138,7 +138,7 @@ const tools = M.dock.tools;
             </article>
 
             <!-- 差异 -->
-            <article class="node node--diff" data-node="diff" data-area="node-diff" style="left:760px;top:40px;width:330px">
+            <article class="node node--diff" data-node="diff" data-area="node-diff" style="left:646px;top:40px;width:250px">
               <header class="node__head">
                 <span class="dot dot--diff"></span>
                 <span class="node__name mono">session.ts</span>
@@ -147,14 +147,14 @@ const tools = M.dock.tools;
               <div class="diff">
                 <p class="dl"><span>@@</span>createSession(user, opts)</p>
                 <p class="dl dl--del"><span>−</span>const maxAge = DAY;</p>
-                <p class="dl dl--add"><span>+</span>const maxAge = opts.remember ? 30 * DAY : DAY;</p>
+                <p class="dl dl--add"><span>+</span>const maxAge = remember ? 30 * DAY : DAY;</p>
                 <p class="dl dl--add"><span>+</span>setCookie('sid', token, &#123; maxAge &#125;);</p>
                 <p class="dl"><span> </span>return token;</p>
               </div>
             </article>
 
             <!-- 浏览器 -->
-            <article class="node node--browser" data-node="browser" data-area="node-browser" style="left:760px;top:330px;width:330px">
+            <article class="node node--browser" data-node="browser" data-area="node-browser" style="left:646px;top:330px;width:250px">
               <header class="node__head">
                 <span class="dot dot--diff"></span>
                 <span class="url mono">{M.browser.url}</span>
@@ -170,51 +170,99 @@ const tools = M.dock.tools;
             </article>
 
             <!-- 评论钉与他人光标 -->
-            <button type="button" class="pin" data-area="pin" data-model-pin style="left:1072px;top:22px" aria-label={M.comment.zh} data-aria-zh={M.comment.zh} data-aria-en={M.comment.en}>2</button>
-            <span class="pop pin__pop" data-model-pin-pop hidden style="left:900px;top:-6px">
+            <button type="button" class="pin" data-area="pin" data-model-pin style="left:880px;top:24px" aria-label={M.comment.zh} data-aria-zh={M.comment.zh} data-aria-en={M.comment.en}>2</button>
+            <span class="pop pin__pop" data-model-pin-pop hidden style="left:706px;top:-4px">
               <b>Noah</b> <T zh="记住我的过期时间要和产品确认" en="Confirm the expiry with product" />
             </span>
-            <span class="cursor" data-area="cursor" style="left:640px;top:560px" aria-hidden="true">
+            <span class="cursor" data-area="cursor" style="left:560px;top:590px" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 1l11 6-5 1.5L6 14z" /></svg>
               <span>Noah</span>
             </span>
           </div>
         </div>
 
-        <!-- 右上工具簇 -->
-        <div class="cluster" data-area="cluster">
-          <button type="button" class="ib" aria-label={M.cluster.palette.zh} data-aria-zh={M.cluster.palette.zh} data-aria-en={M.cluster.palette.en}><MIcon name="command" /></button>
-          <button type="button" class="ib" data-model-drawer="explorer" aria-pressed="false" aria-label={M.cluster.explorer.zh} data-aria-zh={M.cluster.explorer.zh} data-aria-en={M.cluster.explorer.en}><MIcon name="files" /></button>
-          <button type="button" class="ib ib--badge" data-model-drawer="scm" aria-pressed="false" aria-label={M.cluster.scm.zh} data-aria-zh={M.cluster.scm.zh} data-aria-en={M.cluster.scm.en}><MIcon name="branch" /><b data-model-scm-badge>2</b></button>
-          <button type="button" class="ib" aria-label={M.cluster.github.zh}><MIcon name="github" /></button>
-          <button type="button" class="ib" aria-label={M.cluster.resources.zh} data-aria-zh={M.cluster.resources.zh} data-aria-en={M.cluster.resources.en}><MIcon name="activity" /></button>
-        </div>
-
-        <!-- 右侧抽屉 -->
-        <aside class="drawer" data-model-panel="scm" hidden>
-          <header class="drawer__head"><span><T {...t(M.cluster.scm)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh}><MIcon name="x" size={12} /></button></header>
-          <p class="drawer__branch mono"><MIcon name="branch" size={12} />{M.scm.branch}</p>
-          <p class="drawer__group"><T {...t(M.scm.changes)} /> <span data-model-scm-count>2</span></p>
-          <ul class="drawer__files" data-model-scm-files>
-            <li><b class="st st--m">M</b><span class="mono">src/auth/session.ts</span></li>
-            <li><b class="st st--a">A</b><span class="mono">tests/session.test.ts</span></li>
-          </ul>
-          <span class="drawer__input"><T {...t(M.scm.message)} /></span>
-          <button type="button" class="btn btn--solid btn--wide" data-model-commit>
-            <span data-commit-idle><T {...t(M.scm.commit)} /></span>
-            <span data-commit-done hidden><MIcon name="check" size={12} /><T {...t(M.scm.committed)} /></span>
-          </button>
-        </aside>
+        <!-- 右侧抽屉（资源管理器 / GitHub / 资源）：抽屉打开时工具簇左移让开，与软件一致 -->
         <aside class="drawer" data-model-panel="explorer" hidden>
-          <header class="drawer__head"><span><T {...t(M.cluster.explorer)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh}><MIcon name="x" size={12} /></button></header>
+          <header class="drawer__head"><span><T {...t(M.cluster.explorer)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh} data-aria-zh={M.cluster.close.zh} data-aria-en={M.cluster.close.en}><MIcon name="x" size={12} /></button></header>
           <ul class="drawer__tree mono">
             {M.explorer.files.map((f) => <li style={`padding-left:${(f.length - f.trimStart().length) * 6 + 10}px`}>{f.trim()}</li>)}
           </ul>
         </aside>
+        <aside class="drawer" data-model-panel="github" hidden>
+          <header class="drawer__head"><span><T {...t(M.cluster.github)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh} data-aria-zh={M.cluster.close.zh} data-aria-en={M.cluster.close.en}><MIcon name="x" size={12} /></button></header>
+          <ul class="drawer__list">
+            {M.github.prs.map((pr, i) => (
+              <li>
+                <MIcon name="pr" size={13} />
+                <span class="drawer__pr"><b class="mono">{pr.n}</b> <T {...t(pr.title)} /></span>
+                <em class:list={['drawer__state', { 'drawer__state--ok': i === 0 }]}><T {...t(pr.state)} /></em>
+              </li>
+            ))}
+          </ul>
+        </aside>
+        <aside class="drawer" data-model-panel="resources" hidden>
+          <header class="drawer__head"><span><T {...t(M.cluster.resources)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh} data-aria-zh={M.cluster.close.zh} data-aria-en={M.cluster.close.en}><MIcon name="x" size={12} /></button></header>
+          <ul class="drawer__list">
+            {M.resources.rows.map((r) => (
+              <li class="res">
+                <span class="res__name">{r.name}</span>
+                <span class="res__mem mono">{r.mem}</span>
+                <span class="res__bar"><i style={`width:${r.cpu * 2}%`} /></span>
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-        <!-- Dock -->
+        <!-- 右上工具簇：竖排，顺序照 apps/web/src/shell/ControlsCluster.tsx -->
+        <div class="cluster" data-area="cluster" data-model-cluster>
+          <button type="button" class="ib" data-model-drawer="explorer" aria-pressed="false" aria-label={M.cluster.explorer.zh} data-aria-zh={M.cluster.explorer.zh} data-aria-en={M.cluster.explorer.en}><MIcon name="tree" /></button>
+          <button type="button" class="ib ib--badge" data-model-bottom aria-pressed="false" aria-label={M.cluster.scm.zh} data-aria-zh={M.cluster.scm.zh} data-aria-en={M.cluster.scm.en}><MIcon name="branch" /><b data-model-scm-badge>2</b></button>
+          <button type="button" class="ib" data-model-drawer="github" aria-pressed="false" aria-label={M.cluster.github.zh} data-aria-zh={M.cluster.github.zh} data-aria-en={M.cluster.github.en}><MIcon name="pr" /></button>
+          <button type="button" class="ib" data-model-drawer="resources" aria-pressed="false" aria-label={M.cluster.resources.zh} data-aria-zh={M.cluster.resources.zh} data-aria-en={M.cluster.resources.en}><MIcon name="activity" /></button>
+          <button type="button" class="ib" aria-label={M.cluster.usage.zh} data-aria-zh={M.cluster.usage.zh} data-aria-en={M.cluster.usage.en}><MIcon name="gauge" /></button>
+          <span class="cluster__menu-wrap">
+            <button type="button" class="ib" data-model-menu aria-haspopup="menu" aria-expanded="false" aria-label={M.cluster.prefs.zh} data-aria-zh={M.cluster.prefs.zh} data-aria-en={M.cluster.prefs.en}><MIcon name="sliders" /></button>
+            <span class="pop menu menu--prefs" role="menu" hidden>
+              {M.prefs.map((p, i) => (
+                <button type="button" role="menuitemcheckbox" aria-checked={i < 2 ? 'true' : 'false'} class="pop__item pop__check" data-model-check>
+                  <span class="pop__tick"><MIcon name="check" size={11} /></span>
+                  <T {...t(p)} />
+                </button>
+              ))}
+            </span>
+          </span>
+        </div>
+
+        <!-- 底部停靠的 Git 工具窗口：源码控制在软件里是底部面板 -->
+        <section class="bottom" data-model-panel="scm" hidden>
+          <div class="bottom__col">
+            <header class="drawer__head"><span><T {...t(M.cluster.scm)} /></span></header>
+            <p class="drawer__branch mono"><MIcon name="branch" size={12} />{M.scm.branch}</p>
+            <p class="drawer__group"><T {...t(M.scm.changes)} /> <span data-model-scm-count>2</span></p>
+            <ul class="drawer__files" data-model-scm-files>
+              <li><b class="st st--m">M</b><span class="mono">src/auth/session.ts</span></li>
+              <li><b class="st st--a">A</b><span class="mono">tests/session.test.ts</span></li>
+            </ul>
+          </div>
+          <div class="bottom__col">
+            <span class="drawer__input"><T {...t(M.scm.message)} /></span>
+            <button type="button" class="btn btn--solid btn--wide" data-model-commit>
+              <span data-commit-idle><T {...t(M.scm.commit)} /></span>
+              <span data-commit-done hidden><MIcon name="check" size={12} /><T {...t(M.scm.committed)} /></span>
+            </button>
+          </div>
+          <div class="bottom__col">
+            <header class="drawer__head"><span><T {...t(M.scm.graph)} /></span><button type="button" class="ib ib--sm" data-model-close aria-label={M.cluster.close.zh} data-aria-zh={M.cluster.close.zh} data-aria-en={M.cluster.close.en}><MIcon name="x" size={12} /></button></header>
+            <ul class="graph mono">
+              {M.scm.commits.map((c) => <li><i />{c}</li>)}
+            </ul>
+          </div>
+        </section>
+
+        <!-- Dock：顺序照 apps/web/src/shell/Dock.tsx——锁 | 新建 撤销 重做 整理 白板工具 评论 | 保存点 缩放 -->
         <div class="dock" data-area="dock">
           <button type="button" class="ib" data-model-lock aria-pressed="false" aria-label={M.dock.lock.zh} data-aria-zh={M.dock.lock.zh} data-aria-en={M.dock.lock.en}><MIcon name="lock" /></button>
+          <i class="dock__sep"></i>
           <span class="dock__menu-wrap">
             <button type="button" class="ib ib--add" data-model-menu aria-haspopup="menu" aria-expanded="false" aria-label={M.dock.add.zh} data-aria-zh={M.dock.add.zh} data-aria-en={M.dock.add.en}><MIcon name="plus" /></button>
             <span class="pop menu menu--add" role="menu" hidden>
@@ -228,30 +276,22 @@ const tools = M.dock.tools;
               }
             </span>
           </span>
-          <i class="dock__sep"></i>
           <button type="button" class="ib" aria-label={M.dock.undo.zh} data-aria-zh={M.dock.undo.zh} data-aria-en={M.dock.undo.en}><MIcon name="undo" /></button>
           <button type="button" class="ib" aria-label={M.dock.redo.zh} data-aria-zh={M.dock.redo.zh} data-aria-en={M.dock.redo.en}><MIcon name="redo" /></button>
           <button type="button" class="ib" data-model-tidy aria-label={M.dock.tidy.zh} data-aria-zh={M.dock.tidy.zh} data-aria-en={M.dock.tidy.en}><MIcon name="tidy" /></button>
-          <i class="dock__sep"></i>
-          <button type="button" class="ib" data-model-zoom="-1" aria-label={M.dock.zoomOut.zh} data-aria-zh={M.dock.zoomOut.zh} data-aria-en={M.dock.zoomOut.en}><MIcon name="minus" /></button>
-          <button type="button" class="dock__zoom mono" data-model-zoom="0" aria-label={M.dock.fit.zh} data-aria-zh={M.dock.fit.zh} data-aria-en={M.dock.fit.en}><span data-model-zoom-label>100%</span></button>
-          <button type="button" class="ib" data-model-zoom="1" aria-label={M.dock.zoomIn.zh} data-aria-zh={M.dock.zoomIn.zh} data-aria-en={M.dock.zoomIn.en}><MIcon name="plus" /></button>
-          <i class="dock__sep"></i>
           {
             tools.map((tool, i) => (
-              <button
-                type="button"
-                class="ib"
-                data-model-tool
-                aria-pressed={i === 0 ? 'true' : 'false'}
-                aria-label={tool.zh}
-                data-aria-zh={tool.zh}
-                data-aria-en={tool.en}
-              >
+              <button type="button" class="ib" data-model-tool aria-pressed={i === 0 ? 'true' : 'false'} aria-label={tool.zh} data-aria-zh={tool.zh} data-aria-en={tool.en}>
                 <MIcon name={tool.id} />
               </button>
             ))
           }
+          <button type="button" class="ib" data-model-toggle aria-pressed="false" aria-label={M.dock.comment.zh} data-aria-zh={M.dock.comment.zh} data-aria-en={M.dock.comment.en}><MIcon name="comment" /></button>
+          <i class="dock__sep"></i>
+          <span class="dock__saved" aria-label={M.dock.saved.zh} data-aria-zh={M.dock.saved.zh} data-aria-en={M.dock.saved.en} role="img"></span>
+          <button type="button" class="ib" data-model-zoom="-1" aria-label={M.dock.zoomOut.zh} data-aria-zh={M.dock.zoomOut.zh} data-aria-en={M.dock.zoomOut.en}><MIcon name="minus" /></button>
+          <button type="button" class="dock__zoom mono" data-model-zoom="0" aria-label={M.dock.fit.zh} data-aria-zh={M.dock.fit.zh} data-aria-en={M.dock.fit.en}><span data-model-zoom-label>100%</span></button>
+          <button type="button" class="ib" data-model-zoom="1" aria-label={M.dock.zoomIn.zh} data-aria-zh={M.dock.zoomIn.zh} data-aria-en={M.dock.zoomIn.en}><MIcon name="plus" /></button>
         </div>
 
         <!-- 小地图 -->
@@ -516,7 +556,7 @@ const tools = M.dock.tools;
   .diffstat b { color: var(--app-ok); font-weight: 500; }
   .diffstat i { color: var(--app-danger); font-style: normal; }
   .diff { padding: 6px 0 8px; font: 400 10.5px / 18px var(--font-mono); }
-  .dl { display: flex; gap: 8px; padding: 0 10px; white-space: pre; overflow: hidden; }
+  .dl { display: flex; gap: 8px; padding: 0 10px; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
   .dl span { width: 12px; flex: none; color: var(--app-muted); }
   .dl--add { background: var(--app-add-bg); }
   .dl--del { background: var(--app-del-bg); }
@@ -576,32 +616,73 @@ const tools = M.dock.tools;
   .pop__item { padding: 5px 8px; border-radius: var(--app-radius-xs); text-align: left; font-size: 12px; white-space: nowrap; }
   .pop__item:hover, .pop__item:focus-visible { background: var(--app-hover); outline: none; }
 
-  /* 右上工具簇与抽屉 */
+  /* 右上工具簇（竖排）与抽屉 */
   .cluster {
     position: absolute;
-    top: 10px;
-    right: 12px;
+    top: 14px;
+    right: 14px;
+    z-index: 4;
     display: flex;
-    gap: 2px;
-    padding: 3px;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px;
     background: var(--app-dock);
     border: 1px solid var(--app-border);
     border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-pop); /* design-ok 软件工具簇的浮层阴影 */
+    transition: right 150ms var(--ease-out);
   }
+  .main[data-drawer] .cluster { right: 314px; }
+  .cluster__menu-wrap { position: relative; display: inline-flex; }
+  .menu--prefs { top: 0; right: 36px; min-width: 150px; }
+  .pop__check { display: flex; align-items: center; gap: 6px; }
+  .pop__tick { display: inline-grid; width: 12px; color: var(--app-brand-text); visibility: hidden; }
+  .pop__check[aria-checked='true'] .pop__tick { visibility: visible; }
   .drawer {
     position: absolute;
-    top: 52px;
-    right: 12px;
-    bottom: 124px;
-    width: 280px;
-    padding: 10px 12px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    width: 300px;
+    padding: 14px;
     background: var(--app-card);
-    border: 1px solid var(--app-border-strong);
-    border-radius: var(--app-radius);
-    box-shadow: var(--app-shadow-pop); /* design-ok 软件抽屉的浮层阴影 */
+    border-left: 1px solid var(--app-border-strong);
     animation: drawer-in 220ms var(--ease-out);
   }
-  .drawer[hidden] { display: none; }
+  .drawer[hidden], .bottom[hidden] { display: none; }
+  .drawer__list { margin: 12px 0 0; padding: 0; list-style: none; }
+  .drawer__list li { display: flex; align-items: center; gap: 8px; min-height: 34px; border-bottom: 1px solid var(--app-border); font-size: 11.5px; }
+  .drawer__pr { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .drawer__pr b { color: var(--app-muted); font-weight: 400; }
+  .drawer__state { font-style: normal; font-size: 10.5px; color: var(--app-warn); }
+  .drawer__state--ok { color: var(--app-ok); }
+  .res__name { flex: 1; }
+  .res__mem { color: var(--app-muted); font-size: 10.5px; }
+  .res__bar { width: 60px; height: 4px; border-radius: var(--app-pill); background: var(--app-hover); overflow: hidden; }
+  .res__bar i { display: block; height: 100%; background: var(--app-working); }
+  .bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr 1.2fr;
+    gap: 16px;
+    height: 210px;
+    padding: 12px 14px;
+    background: var(--app-card);
+    border-top: 1px solid var(--app-border-strong);
+    animation: bottom-in 220ms var(--ease-out);
+  }
+  .bottom__col + .bottom__col { padding-left: 16px; border-left: 1px solid var(--app-border); }
+  .main[data-bottom] .dock,
+  .main[data-bottom] .minimap { bottom: 224px; }
+  .graph { margin: 10px 0 0; padding: 0; list-style: none; font-size: 10.5px; color: var(--app-muted); }
+  .graph li { position: relative; display: flex; align-items: center; gap: 10px; height: 26px; padding-left: 4px; }
+  .graph li i { width: 8px; height: 8px; border-radius: var(--app-pill); background: var(--app-brand); box-shadow: 0 0 0 2px var(--app-card); } /* design-ok 提交图节点的描边 */
+  .graph li + li::before { content: ''; position: absolute; left: 7.5px; top: -13px; width: 1px; height: 18px; background: var(--app-brand); }
   .drawer__head { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
   .drawer__branch { display: flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--app-muted); font-size: 11px; }
   .drawer__group { margin-top: 14px; color: var(--app-muted); font-size: 11px; }
@@ -618,7 +699,7 @@ const tools = M.dock.tools;
   .dock {
     position: absolute;
     left: 50%;
-    bottom: 16px;
+    bottom: 14px;
     display: flex;
     align-items: center;
     gap: 2px;
@@ -632,13 +713,14 @@ const tools = M.dock.tools;
   .dock__sep { width: 1px; height: 18px; margin: 0 4px; background: var(--app-border-strong); }
   .ib--add { background: var(--app-brand-solid); color: var(--app-on-brand); }
   .ib--add:hover { background: var(--app-brand-solid); color: var(--app-on-brand); filter: brightness(1.12); }
+  .dock__saved { width: 6px; height: 6px; margin: 0 6px; border-radius: var(--app-pill); background: var(--app-ok); }
   .dock__zoom { min-width: 46px; height: 28px; border-radius: var(--app-radius-sm); color: var(--app-muted); font-size: 11px; }
   .dock__zoom:hover { background: var(--app-hover); color: var(--app-text); }
 
   .minimap {
     position: absolute;
-    right: 12px;
-    bottom: 16px;
+    right: 14px;
+    bottom: 14px;
     width: 150px;
     height: 96px;
     background: var(--app-dock);
@@ -669,9 +751,10 @@ const tools = M.dock.tools;
   .hotspots :global(button:hover) { --hs-s: 1.15; }
 
   @keyframes drawer-in { from { opacity: 0; transform: translateX(12px); } }
+  @keyframes bottom-in { from { opacity: 0; transform: translateY(12px); } }
   @media (prefers-reduced-motion: reduce) {
     .model__stage, .world { transition: none; }
-    .drawer { animation: none; }
+    .drawer, .bottom { animation: none; }
     [data-status='working'] .caret { animation: none; }
   }
 </style>

@@ -3,7 +3,8 @@
 export type MIconName =
   | 'panel' | 'search' | 'bell' | 'edit' | 'plus' | 'minus' | 'settings' | 'folder' | 'canvas'
   | 'command' | 'files' | 'branch' | 'github' | 'activity' | 'more' | 'x' | 'lock' | 'undo' | 'redo'
-  | 'tidy' | 'select' | 'hand' | 'draw' | 'shape' | 'arrow' | 'text' | 'reload' | 'check';
+  | 'tidy' | 'select' | 'hand' | 'draw' | 'shape' | 'arrow' | 'text' | 'reload' | 'check'
+  | 'tree' | 'pr' | 'gauge' | 'sliders' | 'comment' | 'highlight' | 'line';
 
 interface Props { name: MIconName; size?: number }
 const { name, size = 14 } = Astro.props;
@@ -37,6 +38,13 @@ const P: Record<MIconName, string[]> = {
   text: ['M5 6V4.5h14V6', 'M12 4.5v15', 'M9 19.5h6'],
   reload: ['M19 12a7 7 0 1 1-2-4.9', 'M19 4v4h-4'],
   check: ['M5 12.5l4.5 4.5L19 7.5'],
+  tree: ['M4 4h6v5H4z', 'M14 10h6v4h-6z', 'M14 17h6v4h-6z', 'M7 9v10h7', 'M7 12h7'],
+  pr: ['M6 4.5a2 2 0 1 0 0 4a2 2 0 1 0 0-4z', 'M6 8.5v11', 'M18 15.5a2 2 0 1 0 0 4a2 2 0 1 0 0-4z', 'M18 15.5V9a3 3 0 0 0-3-3h-4', 'M13 3.5L10.5 6 13 8.5'],
+  gauge: ['M12 4a8 8 0 1 0 8 8', 'M12 12l4-4'],
+  sliders: ['M4 7h10', 'M18 7h2', 'M16 5v4', 'M4 17h4', 'M12 17h8', 'M10 15v4'],
+  comment: ['M4 5h16v11H9l-5 4z'],
+  highlight: ['M14 4l6 6-8 8H6v-6z', 'M4 21h8'],
+  line: ['M5 19L19 5'],
 };
 const dot = name === 'more';
 ---
