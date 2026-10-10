@@ -18,8 +18,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const sourceCode = `git clone ${REPO_URL}.git
 cd Armadra
 pnpm install
-./armadra.sh doctor        # 检查工具链 / check the toolchain
-./armadra.sh run desktop   # 启动桌面壳 / start the desktop shell`;
+./armadra.sh doctor
+./armadra.sh run desktop`;
 ---
 
 <BaseLayout page="home" title={H.docTitle.zh} titleEn={H.docTitle.en}>
