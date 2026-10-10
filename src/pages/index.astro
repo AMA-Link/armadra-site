@@ -5,6 +5,7 @@ import Footer from '../components/common/Footer.astro';
 import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import AppModel from '../components/model/AppModel.astro';
+import Band from '../components/common/Band.astro';
 import { H } from '../i18n/home';
 import { M } from '../i18n/model';
 import { AGENTS } from '../data/agents';
@@ -32,6 +33,7 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     </section>
 
     <!-- 滚动叙事：模型 sticky，往下滚逐步高亮 -->
+    <Band id="app" n={1} label={H.bands.story} aside={pad(steps.length)}>
     <section
       class="story"
       aria-labelledby="story-title"
@@ -77,9 +79,51 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
       </div>
     </section>
 
+    </Band>
+
+    <!-- 三个出发点：三列，列间竖线 -->
+    <Band id="why" n={2} label={H.bands.why}>
+      <div class="container">
+        <h2 class="section-title" data-reveal><T zh={H.why.title.zh} en={H.why.title.en} /></h2>
+      </div>
+      <ol class="cols container" role="list">
+        {
+          H.why.items.map((it, i) => (
+            <li class="cols__item" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+              <span class="cols__n">{pad(i + 1)}</span>
+              <h3 class="cols__title"><T zh={it.title.zh} en={it.title.en} /></h3>
+              <p class="cols__line"><T zh={it.line.zh} en={it.line.en} /></p>
+            </li>
+          ))
+        }
+      </ol>
+    </Band>
+
+    <!-- 能力：3×2 网格，格线分隔 -->
+    <Band id="features" n={3} label={H.bands.features} aside={pad(H.features.groups.length)}>
+      <div class="container">
+        <h2 class="section-title" data-reveal><T zh={H.features.title.zh} en={H.features.title.en} /></h2>
+      </div>
+      <div class="grid container">
+        {
+          H.features.groups.map((g, i) => (
+            <section class="grid__cell" data-reveal style={`--reveal-delay:${(i % 3) * 80}ms`}>
+              <h3 class="grid__title"><T zh={g.title.zh} en={g.title.en} /></h3>
+              <ul class="grid__items" role="list">
+                {g.items.map((it) => (
+                  <li><T zh={it.zh} en={it.en} /></li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </Band>
+
     <!-- 支持的 Agent：大字一行一个 -->
-    <section class="agents container" aria-labelledby="agents-title">
-      <h2 id="agents-title" class="section-title" data-reveal><T zh={H.agents.title.zh} en={H.agents.title.en} /></h2>
+    <Band id="agents" n={4} label={H.bands.agents} aside={pad(AGENTS.length)}>
+    <div class="agents container">
+      <h2 class="section-title" data-reveal><T zh={H.agents.title.zh} en={H.agents.title.en} /></h2>
       <ul class="agents__list" role="list">
         {
           AGENTS.map((a, i) => (
@@ -95,10 +139,31 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
           ))
         }
       </ul>
-    </section>
+    </div>
+    </Band>
+
+    <!-- 设计原则：六行，行间满宽线 -->
+    <Band id="principles" n={5} label={H.bands.principles} aside={pad(H.principles.items.length)}>
+      <div class="container">
+        <h2 class="section-title" data-reveal><T zh={H.principles.title.zh} en={H.principles.title.en} /></h2>
+      </div>
+      <dl class="rows">
+        {
+          H.principles.items.map((p, i) => (
+            <div class="rows__row" data-reveal style={`--reveal-delay:${i * 40}ms`}>
+              <div class="rows__inner container">
+                <dt class="rows__title"><span class="rows__n">{pad(i + 1)}</span><T zh={p.title.zh} en={p.title.en} /></dt>
+                <dd class="rows__line"><T zh={p.line.zh} en={p.line.en} /></dd>
+              </div>
+            </div>
+          ))
+        }
+      </dl>
+    </Band>
 
     <!-- 收尾 -->
-    <section class="cta container" aria-labelledby="cta-title">
+    <Band id="start" n={6} label={H.bands.start} aside={`v${RELEASE.version}`}>
+    <div class="cta container">
       <h2 id="cta-title" class="cta__title">
         {H.cta.title.map((l, i) => <span class="hero__line" style={`--reveal-delay:${i * 120}ms`} data-reveal><T zh={l.zh} en={l.en} /></span>)}
       </h2>
@@ -107,7 +172,8 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
         <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.cta.quickstart.zh} en={H.cta.quickstart.en} /></a>
         <a class="btn-ghost" href="/changelog/"><T zh={H.cta.changelog.zh} en={H.cta.changelog.en} /><span class="mono">v{RELEASE.version}</span></a>
       </div>
-    </section>
+    </div>
+    </Band>
   </main>
   <Footer />
 </BaseLayout>
@@ -130,8 +196,8 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     background: var(--line);
     pointer-events: none;
   }
-  .home::before { left: max(calc(var(--gutter) / 2), calc((100% - var(--content-max)) / 2)); }
-  .home::after { right: max(calc(var(--gutter) / 2), calc((100% - var(--content-max)) / 2)); }
+  .home::before { left: var(--rail-x); }
+  .home::after { right: var(--rail-x); }
 
   /* 首屏 */
   .hero {
@@ -176,7 +242,6 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
   .story {
     position: relative;
     height: calc(var(--steps) * 70svh + 100svh);
-    border-top: 1px solid var(--line-strong);
   }
   .story__sticky {
     position: sticky;
@@ -272,8 +337,64 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     padding-block: var(--sp-9) var(--sp-7);
   }
 
+  /* 三个出发点：三列，列间竖线 */
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0 auto;
+    padding: 0 var(--gutter) var(--sp-9);
+  }
+  .cols__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+    padding: var(--sp-6) var(--sp-6) var(--sp-6) 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  .cols__item + .cols__item { padding-left: var(--sp-6); border-left: 1px solid var(--line); }
+  .cols__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
+  .cols__title { font: 500 var(--fs-h1) / 1.15 var(--font-sans); letter-spacing: -0.025em; }
+  .cols__line { color: var(--ink-2); font-size: var(--fs-body-lg); line-height: var(--lh-body-lg); text-wrap: pretty; }
+
+  /* 能力：3×2 网格 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 0 var(--gutter) var(--sp-9);
+  }
+  .grid__cell {
+    padding: var(--sp-6) var(--sp-5);
+    border-top: 1px solid var(--line-strong);
+    border-left: 1px solid var(--line);
+  }
+  .grid__cell:nth-child(3n + 1) { border-left: 0; padding-left: 0; }
+  .grid__title { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .grid__items { margin: var(--sp-5) 0 0; padding: 0; }
+  .grid__items li {
+    padding-block: var(--sp-2);
+    border-top: 1px dashed var(--line-soft);
+    color: var(--ink-2);
+    font-size: var(--fs-body-lg);
+    line-height: var(--lh-body-lg);
+  }
+
+  /* 设计原则：行间满宽线 */
+  .rows { margin: 0; padding-bottom: var(--sp-9); }
+  .rows__row { border-top: 1px solid var(--line); }
+  .rows__row:last-child { border-bottom: 1px solid var(--line); }
+  .rows__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--sp-6);
+    align-items: baseline;
+    padding-block: var(--sp-6);
+  }
+  .rows__title { display: flex; gap: var(--sp-4); align-items: baseline; font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .rows__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
+  .rows__line { margin: 0; color: var(--ink-2); font-size: var(--fs-body-lg); line-height: var(--lh-body-lg); }
+
   /* 支持的 Agent */
-  .agents { border-top: 1px solid var(--line-strong); }
+  .agents { padding-bottom: var(--sp-9); }
   .agents__list { margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
   .agents__row {
     display: grid;
@@ -295,6 +416,11 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     .story__bar { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
     .story__label { display: none; }
     .story__caption { font-size: var(--fs-h2); }
+  }
+  @media (max-width: 1024px) {
+    .cols, .grid { grid-template-columns: minmax(0, 1fr); }
+    .cols__item, .cols__item + .cols__item, .grid__cell, .grid__cell:nth-child(3n + 1) { padding: var(--sp-5) 0; border-left: 0; }
+    .rows__inner { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
   }
   @media (max-width: 640px) {
     .hero { padding-block: var(--sp-8) var(--sp-9); }
