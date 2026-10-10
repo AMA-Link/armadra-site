@@ -1,2 +1,4 @@
 allowBuilds:
   esbuild: true
+  # 只有 wrangler dev 需要 workerd 的二进制；部署与 dry-run 不需要
+  workerd: false
