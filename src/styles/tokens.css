@@ -113,6 +113,7 @@
   --page-col: 1080px;
   --page-inset: var(--gutter);
   --docs-max: 1320px;
+  --demo-max: 1440px; /* 首页录屏的最大显示宽度（比正文列宽） */
   /* 首页纵向导轨线到视口边的距离（与 .container 的外缘对齐） */
   --rail-x: max(calc(var(--gutter) / 2), calc((100vw - var(--content-max)) / 2));
   --docs-main-max: 1040px;
