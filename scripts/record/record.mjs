@@ -1,7 +1,8 @@
 // 官网首页录屏：在隔离数据目录里跑真实 Armadra（worktree 构建的 core + Vite 页面），
-// 画布上放任务便签、Claude Code（实现）、Codex（审查）与 Git 差异，真跑一次
-// 「实现 → 跑测试（节点头部批准）→ 经画布请 Codex 审查 → 采纳意见」，
-// 用无头 Chrome 的屏幕投射抓帧，变速合成循环 WebM 与 poster。
+// 画布上一个 Claude Code（主）连三个 Codex（从），全部用「完全自动」（bypass）启动。
+// 在 Claude 里输入一条需求：它用 canvas send 给三个 Codex 各派一件活，三个 Codex
+// 并行实现、跑测试、用 canvas post 回报，Claude 收齐后自己跑测试并总结。
+// 无头 Chrome 以 2 倍设备像素逐帧截图，交给 compose.mjs 变速合成循环 WebM 与 poster。
 //
 // 隔离与安全照 tools/probes/agent-e2e：数据目录、项目、浏览器 profile 全在 mktemp；
 // Codex 用临时 CODEX_HOME（只复制 auth.json）；Claude 用操作员自己的登录（钥匙串），
@@ -88,6 +89,22 @@ export function createSession(user, opts = {}) {
 `,
   );
   writeFileSync(
+    join(project, "src/password.js"),
+    `/** Returns true when the password is acceptable. */
+export function validatePassword(password) {
+  return typeof password === "string" && password.length >= 6;
+}
+`,
+  );
+  writeFileSync(
+    join(project, "src/email.js"),
+    `/** Normalizes an email address for storage. */
+export function normalizeEmail(email) {
+  return email;
+}
+`,
+  );
+  writeFileSync(
     join(project, "test/session.test.js"),
     `import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -100,6 +117,7 @@ test("session cookie is http-only", () => {
 `,
   );
   writeFileSync(join(project, "README.md"), "# web-app\n\nLogin and sessions.\n");
+  writeFileSync(join(project, ".gitignore"), "node_modules/\n.armadra/\n");
   const git = (...a) => execFileSync("git", ["-C", project, ...a], { stdio: "ignore" });
   git("init", "-q");
   git("-c", "user.name=Armadra", "-c", "user.email=demo@armadra.com", "add", ".");
@@ -125,7 +143,7 @@ test("session cookie is http-only", () => {
   const claudeInstallHome = join(scratch, "claude-install-home");
   mkdirSync(claudeInstallHome);
   const shell = join(scratch, "rec-shell");
-  writeFileSync(shell, `#!/bin/zsh -f\nexport CODEX_HOME='${codexHome}'\nunset CLAUDE_CONFIG_DIR\nexport PS1='%~ %# '\nexport PATH='${process.execPath.replace(/\/node$/, "")}':$PATH\nexec /bin/zsh -f "$@"\n`);
+  writeFileSync(shell, `#!/bin/zsh -f\nexport CODEX_HOME='${codexHome}'\nunset CLAUDE_CONFIG_DIR\n# core 的 XDG 指向临时目录（隔离它自己的迁移查找）；终端里还原，mise 等工具才找得到安装\nunset XDG_CONFIG_HOME XDG_DATA_HOME\nexport PS1='%~ %# '\nexport PATH='${process.execPath.replace(/\/node$/, "")}':$PATH\nexec /bin/zsh -f "$@"\n`);
   chmodSync(shell, 0o755);
 
   /* --------------------------------- core --------------------------------- */
@@ -201,22 +219,18 @@ test("session cookie is http-only", () => {
     id: randomUUID(), boardId: board.id, type, title, color, position: { x, y }, size: { width: w, height: h },
     labels: [], note: "", data, createdAt: stamp, updatedAt: stamp,
   });
-  const task = node("sticky", "Task", 0, 0, 260, 210, {
-    kind: "sticky",
-    content: "Login: “Remember me”\n\n- Keep the session for 30 days when checked, 1 day otherwise\n- Add a test, run node --test\n- Claude implements, Codex reviews",
-  }, "#ffd60a");
-  const claude = node("terminal", "Claude Code · implement", 290, 0, 560, 390, { kind: "terminal", agent: { id: "claude", permissionMode: "auto-edit" } });
-  const codex = node("terminal", "Codex · review", 290, 420, 560, 330, { kind: "terminal", agent: { id: "codex", permissionMode: "full-auto" } });
-  // 右栏是普通终端跑 node --test --watch：改动一落盘测试就重跑，画面上能看到结果
-  const diff = node("terminal", "Tests", 880, 0, 430, 750, { kind: "terminal" });
+  const claude = node("terminal", "Claude Code · lead", 0, 0, 600, 760, { kind: "terminal", agent: { id: "claude", permissionMode: "full-auto" } });
+  const workers = ["session.js", "password.js", "email.js"].map((file, i) =>
+    node("terminal", `Codex · ${file}`, 640, i * 260, 560, 240, { kind: "terminal", agent: { id: "codex", permissionMode: "full-auto" } }),
+  );
   const edge = (a, b, role) => ({ id: randomUUID(), boardId: board.id, source: a.id, target: b.id, kind: "link", ...(role ? { role } : {}), createdAt: stamp, updatedAt: stamp });
   await api(documentPath, {
     method: "PUT",
     body: {
       expectedUpdatedAt: initial.board.updatedAt,
-      nodes: [task, claude, codex, diff],
-      edges: [edge(task, claude), edge(claude, codex, "peer"), edge(claude, diff)],
-      viewport: { x: 30, y: 22, zoom: 0.8 },
+      nodes: [claude, ...workers],
+      edges: workers.map((w) => edge(claude, w, "supervises")),
+      viewport: { x: 34, y: 26, zoom: 0.8 },
       whiteboard: "",
     },
   });
@@ -292,6 +306,7 @@ test("session cookie is http-only", () => {
   await call("Emulation.setDeviceMetricsOverride", { width: W, height: H, deviceScaleFactor: 2, mobile: false });
   await call("Page.navigate", { url: pageUrl });
   await waitFor("画布节点渲染", () => evaluate(`return document.querySelectorAll(".react-flow__node").length >= 4;`), { timeout: 90_000 });
+
   await waitFor("启动画面消失", async () => !(await evaluate(`return document.getElementById("splash-root") ? 1 : 0;`)), { timeout: 30_000, interval: 250 });
 
   const click = async (x, y) => {
@@ -341,23 +356,16 @@ test("session cookie is http-only", () => {
     }
     return /for shortcuts|bypass permissions|accept edits/i.test(text) || status(claude.id)?.state === "idle";
   }, { timeout: 180_000, interval: 800 });
-  await waitFor("Codex 起到提示符", async () => {
-    const text = await screen(codex.id);
-    return /›|▌|codex/i.test(text) && text.length > 40;
-  }, { timeout: 180_000, interval: 800 });
+  for (const w of workers)
+    await waitFor(`${w.title} 起到提示符`, async () => {
+      const text = await screen(w.id);
+      return /›|▌|codex/i.test(text) && text.length > 40;
+    }, { timeout: 180_000, interval: 800 });
   await sleep(4000);
 
   // 收起侧栏，给画布腾地方（软件自己的按钮）
   await evaluate(`const b = document.querySelector('button[aria-label="收起侧栏"], button[aria-label="Collapse sidebar"]'); b?.click(); return !!b;`).then((ok) => log("收起侧栏", ok));
   await sleep(1200);
-
-  // 测试终端先跑起 watch
-  await waitFor("测试终端有会话", () => liveSession(diff.id)?.status === "running", { timeout: 60_000 });
-  await sleep(1500);
-  await focusNode(diff.id);
-  await typeSlow("clear && node --test --watch", 10);
-  await enter();
-  await sleep(3000);
 
   /* ------------------------------- 开始抓帧 ------------------------------- */
   const frames = []; // { at, file }
@@ -382,9 +390,12 @@ test("session cookie is http-only", () => {
 
   /* ------------------------------ 给 Claude 派活 ------------------------------ */
   const prompt =
-    "Add a remember-me option to createSession in src/session.js: when opts.remember is true the cookie lasts 30 days, otherwise 1 day. " +
-    "Add a test and run `node --test`. When the tests pass, send the linked Codex a short summary of your change with `armadra-hook canvas send`, " +
-    "asking it to review and reply with `armadra-hook canvas post`. Then stop — don't poll the inbox.";
+    "You lead the three linked Codex nodes. Give each one exactly one task with `armadra-hook canvas send` (one message per node): " +
+    "1) src/session.js: add a remember-me option, 30-day cookie when opts.remember is true, otherwise 1 day; " +
+    "2) src/password.js: require at least 10 characters with a letter and a digit; " +
+    "3) src/email.js: trim and lowercase, throw on an invalid address. " +
+    "Each should add tests, run `node --test`, and report back with `armadra-hook canvas post`. " +
+    "Then check your inbox every 20 seconds until all three have reported, run `node --test` yourself, and give me a short summary.";
   await focusNode(claude.id);
   mark("type-begin");
   await typeSlow(prompt, 22);
@@ -392,59 +403,25 @@ test("session cookie is http-only", () => {
   await enter();
   mark("type-end");
 
-  /* ------------------------- 守着：批准权限、等审查回来 ------------------------- */
-  const approve = async () => {
-    const pos = await evaluate(`
-      const n = document.querySelector('.react-flow__node[data-id="${claude.id}"]');
-      const b = n && [...n.querySelectorAll('.node-header-approval button')].find((x) => /允许|Allow/.test(x.getAttribute('aria-label') ?? x.textContent));
-      if (!b) return null;
-      const r = b.getBoundingClientRect();
-      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };`);
-    if (!pos) {
-      // 钩子等待超时后，Claude 会在自己的终端里再问一次：同样由「人」经页面回答第 1 项
-      const text = await screen(claude.id, 30);
-      if (/Do you want to proceed\?/.test(text) && /❯\s*1\.\s*Yes/.test(text)) {
-        mark("approval-shown");
-        await sleep(1500);
-        await focusNode(claude.id);
-        await enter();
-        mark("approval-clicked");
-        await sleep(1500);
-        return true;
-      }
-      return false;
-    }
-    mark("approval-shown");
-    await sleep(2200); // 让画面停在权限请求上
-    await click(pos.x, pos.y);
-    mark("approval-clicked");
-    return true;
-  };
-  const deadline = Date.now() + 15 * 60_000;
-  let reviewed = false;
-  let codexStarted = false;
-  let claudeSecondTurn = false;
-  let lastClaudeState = "";
+  /* --------------------------- 守着：等三人回报与总结 --------------------------- */
+  const deadline = Date.now() + 20 * 60_000;
+  const started = new Set();
+  const finished = new Set();
+  let allDone = 0;
   while (Date.now() < deadline) {
-    await approve();
-    const cs = status(claude.id)?.state ?? "";
-    const xs = status(codex.id)?.state ?? "";
-    if (!codexStarted && xs === "working") { codexStarted = true; mark("codex-working"); }
-    if (codexStarted && !reviewed && xs !== "working") {
-      reviewed = true;
-      mark("codex-done");
-      await sleep(2500);
-      await focusNode(claude.id);
-      mark("nudge-begin");
-      await typeSlow("Codex posted its review — read your inbox and apply it.", 26);
-      await sleep(500);
-      await enter();
-      mark("nudge-end");
+    for (const w of workers) {
+      const st = status(w.id)?.state ?? "";
+      if (!started.has(w.id) && st === "working") { started.add(w.id); mark(`worker-start:${w.title}`); }
+      if (started.has(w.id) && !finished.has(w.id) && st !== "working") { finished.add(w.id); mark(`worker-done:${w.title}`); }
     }
-    if (reviewed && cs === "working" && lastClaudeState !== "working") { claudeSecondTurn = true; mark("claude-second-turn"); }
-    if (reviewed && claudeSecondTurn && cs !== "working" && cs !== "blocked") { mark("claude-done"); break; }
-    if (reviewed && !claudeSecondTurn && Date.now() - events.find((e) => e.kind === "codex-done").at > 120_000) { mark("no-second-turn"); break; }
-    lastClaudeState = cs;
+    if (finished.size === workers.length && !allDone) { allDone = Date.now(); mark("workers-done"); }
+    const cs = status(claude.id)?.state ?? "";
+    // 三人都交了、Claude 也停下来：说明总结写完了
+    if (allDone && Date.now() - allDone > 5000 && cs !== "working") {
+      const text = await screen(claude.id, 40);
+      // Claude 一轮结束时状态栏打印「<动词> for 1m 15s · done 8:47 PM」：以它为准
+      if (/· done \d{1,2}:\d{2}/.test(text)) { mark("claude-done"); break; }
+    }
     await sleep(1000);
   }
   await sleep(4000);
@@ -454,5 +431,5 @@ test("session cookie is http-only", () => {
   writeFileSync(join(out, "events.json"), JSON.stringify({ events, frames: frames.map((f) => [f.at, f.file]) }, null, 1));
   log(`抓到 ${frames.length} 帧，事件 ${events.map((e) => e.kind).join(" → ")}`);
   writeFileSync(join(out, "diff.txt"), execFileSync("git", ["-C", project, "diff"]).toString());
-  for (const [name, id] of [["claude", claude.id], ["codex", codex.id]]) writeFileSync(join(out, `${name}-screen.txt`), await screen(id, 200));
+  for (const [name, id] of [["claude", claude.id], ...workers.map((w, i) => [`codex-${i + 1}`, w.id])]) writeFileSync(join(out, `${name}-screen.txt`), await screen(id, 200));
 }

@@ -22,7 +22,8 @@ const live = [[start, start + 2000], [at("type-begin"), at("type-end") + 1500]];
 const firstAsk = events.find((e) => e.kind === "approval-shown");
 if (firstAsk) live.push([firstAsk.at - 500, firstAsk.at + 4000]);
 if (at("nudge-begin")) live.push([at("nudge-begin"), at("nudge-end") + 1500]);
-live.push([end - 3000, end]);
+// 结尾多停一会，让总结能读完
+live.push([Math.min(end - 3000, at("claude-done") ?? end), end]);
 const inLive = (t) => live.some(([a, b]) => a !== undefined && t >= a && t <= b);
 const liveMs = live.reduce((s, [a, b]) => s + (a === undefined ? 0 : Math.max(0, Math.min(b, end) - Math.max(a, start))), 0);
 const restMs = end - start - liveMs;
@@ -42,6 +43,9 @@ while (t <= end) {
   picks.push(frames[i][1]);
   t += (1000 / FPS) * (inLive(t) ? liveSpeed : speed);
 }
+// 最后停在总结画面上几秒，循环回开头前读得完
+const HOLD = Number(process.env.HOLD ?? 5);
+for (let k = 0; k < HOLD * FPS; k += 1) picks.push(frames[frames.length - 1][1]);
 console.log(`输出 ${picks.length} 帧，约 ${(picks.length / FPS).toFixed(1)} 秒`);
 
 const encode = (args) =>
