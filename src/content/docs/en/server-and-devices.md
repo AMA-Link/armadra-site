@@ -1,9 +1,11 @@
 ---
-title: Server shell and devices
-description: Keep Armadra running on a server, reach it from browsers and phones, and share workspaces.
+title: Self-hosting and remote access
+description: Keep Armadra running on your own server, reach it from desktop and phone browsers, and share workspaces.
 group: guides
 order: 3
 ---
+
+For remote access or team collaboration, deploy Armadra on your own server. Below, this windowless, always-on deployment is called the **server shell**; to connect a phone to your desktop for a while, the desktop gateway is enough.
 
 ## Desktop gateway or server shell
 
