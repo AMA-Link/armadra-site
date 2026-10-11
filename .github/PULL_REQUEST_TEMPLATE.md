@@ -16,7 +16,7 @@ See .github/CONTRIBUTING.md. Write "无 / None" for sections that do not apply i
 ## 改动范围 / Scope
 
 - [ ] 页面与组件 / Pages and components（`src/pages`、`src/components`）
-- [ ] 软件模型 / App model（`src/components/model`、`src/scripts/model`）
+- [ ] 首页录屏 / Demo recording（`public/media`、`scripts/record`）
 - [ ] 文档内容 / Docs content（`src/content/docs`）
 - [ ] 设计 token / Design tokens（`src/styles`）
 - [ ] 部署与 CI / Deploy and CI
