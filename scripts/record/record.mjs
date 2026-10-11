@@ -1,7 +1,8 @@
-// 官网首页录屏：在隔离数据目录里跑真实 Armadra（worktree 构建的 core + Vite 页面），
-// 画布上一个 Claude Code（主）连三个 Codex（从），全部用「完全自动」（bypass）启动。
-// 在 Claude 里输入一条需求：它用 canvas send 给三个 Codex 各派一件活，三个 Codex
-// 并行实现、跑测试、用 canvas post 回报，Claude 收齐后自己跑测试并总结。
+// 官网首页录屏：在隔离数据目录里跑真实 Armadra（worktree 构建的 core + Vite 页面）。
+// 画布上起初只有一个 Claude Code（主），全部 Agent 用「完全自动」（bypass）启动。
+// 在 Claude 里输入一条需求：它先说明怎么分工，再用 `canvas team` 一次派出三个 Codex
+// （软件自己建子节点和派发线、在子节点空闲时投递任务），三个 Codex 并行实现、跑测试、
+// 用 canvas post 回报；收件箱提醒唤醒 Claude，它跑全部测试并总结。
 // 无头 Chrome 以 2 倍设备像素逐帧截图，交给 compose.mjs 变速合成循环 WebM 与 poster。
 //
 // 隔离与安全照 tools/probes/agent-e2e：数据目录、项目、浏览器 profile 全在 mktemp；
@@ -219,18 +220,14 @@ test("session cookie is http-only", () => {
     id: randomUUID(), boardId: board.id, type, title, color, position: { x, y }, size: { width: w, height: h },
     labels: [], note: "", data, createdAt: stamp, updatedAt: stamp,
   });
-  const claude = node("terminal", "Claude Code · lead", 0, 0, 600, 760, { kind: "terminal", agent: { id: "claude", permissionMode: "full-auto" } });
-  const workers = ["session.js", "password.js", "email.js"].map((file, i) =>
-    node("terminal", `Codex · ${file}`, 640, i * 260, 560, 240, { kind: "terminal", agent: { id: "codex", permissionMode: "full-auto" } }),
-  );
-  const edge = (a, b, role) => ({ id: randomUUID(), boardId: board.id, source: a.id, target: b.id, kind: "link", ...(role ? { role } : {}), createdAt: stamp, updatedAt: stamp });
+  const claude = node("terminal", "Claude Code · lead", 0, 0, 760, 820, { kind: "terminal", agent: { id: "claude", permissionMode: "full-auto" } });
   await api(documentPath, {
     method: "PUT",
     body: {
       expectedUpdatedAt: initial.board.updatedAt,
-      nodes: [claude, ...workers],
-      edges: workers.map((w) => edge(claude, w, "supervises")),
-      viewport: { x: 34, y: 26, zoom: 0.8 },
+      nodes: [claude],
+      edges: [],
+      viewport: { x: 60, y: 30, zoom: 1 },
       whiteboard: "",
     },
   });
@@ -300,12 +297,12 @@ test("session cookie is http-only", () => {
     if (a.exceptionDetails) throw new Error(a.exceptionDetails.text ?? "页面表达式抛错");
     return a.result.value;
   };
-  const W = 1120, H = 700;
+  const W = 1440, H = 900;
   await call("Page.enable");
   await call("Runtime.enable");
   await call("Emulation.setDeviceMetricsOverride", { width: W, height: H, deviceScaleFactor: 2, mobile: false });
   await call("Page.navigate", { url: pageUrl });
-  await waitFor("画布节点渲染", () => evaluate(`return document.querySelectorAll(".react-flow__node").length >= 4;`), { timeout: 90_000 });
+  await waitFor("画布节点渲染", () => evaluate(`return document.querySelectorAll(".react-flow__node").length >= 1;`), { timeout: 90_000 });
 
   await waitFor("启动画面消失", async () => !(await evaluate(`return document.getElementById("splash-root") ? 1 : 0;`)), { timeout: 30_000, interval: 250 });
 
@@ -356,11 +353,7 @@ test("session cookie is http-only", () => {
     }
     return /for shortcuts|bypass permissions|accept edits/i.test(text) || status(claude.id)?.state === "idle";
   }, { timeout: 180_000, interval: 800 });
-  for (const w of workers)
-    await waitFor(`${w.title} 起到提示符`, async () => {
-      const text = await screen(w.id);
-      return /›|▌|codex/i.test(text) && text.length > 40;
-    }, { timeout: 180_000, interval: 800 });
+
   await sleep(4000);
 
   // 收起侧栏，给画布腾地方（软件自己的按钮）
@@ -390,12 +383,13 @@ test("session cookie is http-only", () => {
 
   /* ------------------------------ 给 Claude 派活 ------------------------------ */
   const prompt =
-    "You lead the three linked Codex nodes. Give each one exactly one task with `armadra-hook canvas send` (one message per node): " +
-    "1) src/session.js: add a remember-me option, 30-day cookie when opts.remember is true, otherwise 1 day; " +
-    "2) src/password.js: require at least 10 characters with a letter and a digit; " +
-    "3) src/email.js: trim and lowercase, throw on an invalid address. " +
-    "Each should add tests, run `node --test`, and report back with `armadra-hook canvas post`. " +
-    "Then check your inbox every 20 seconds until all three have reported, run `node --test` yourself, and give me a short summary.";
+    "You're the lead for three Codex workers. First tell me in two or three sentences how you'll split this work. " +
+    "Then open all three at once with one `armadra-hook canvas team --permission-mode full-auto` command, one --member \"codex|<title>|<task>\" each: " +
+    "src/session.js — add a remember-me option, 30-day cookie when opts.remember is true, otherwise 1 day; " +
+    "src/password.js — require at least 10 characters with a letter and a digit; " +
+    "src/email.js — trim and lowercase, throw on an invalid address. " +
+    "Each task should say: add tests, run `node --test`, then report to your main with `armadra-hook canvas post`. " +
+    "After that, wait — you'll be notified when reports arrive. When all three are in, run `node --test` yourself and give me a short summary.";
   await focusNode(claude.id);
   mark("type-begin");
   await typeSlow(prompt, 22);
@@ -403,24 +397,70 @@ test("session cookie is http-only", () => {
   await enter();
   mark("type-end");
 
-  /* --------------------------- 守着：等三人回报与总结 --------------------------- */
+  /* ---------------------- 守着：等派发、三人回报与总结 ---------------------- */
+  const subs = () => db.prepare("SELECT id, title FROM nodes WHERE board_id = ? AND id != ? AND type = 'terminal'").all(board.id, claude.id);
+  // 镜头：用软件自己的「居中到节点」事件与 ⌘/Ctrl 滚轮缩放（与人在画布上操作同一条路）
+  const zoomNow = () => evaluate(`const b = [...document.querySelectorAll('button')].find((x) => /^适应$|^Fit$/.test(x.getAttribute('aria-label') ?? '')); return b ? parseInt(b.textContent, 10) : 100;`);
+  const zoomTo = async (target) => {
+    for (let k = 0; k < 40; k += 1) {
+      const z = await zoomNow();
+      if (Math.abs(z - target) <= 4) return;
+      await call("Input.dispatchMouseEvent", { type: "mouseWheel", x: W / 2, y: H / 2, deltaX: 0, deltaY: z < target ? -60 : 60, modifiers: 2 });
+      await sleep(60);
+    }
+  };
+  const centerOn = async (id) => {
+    await evaluate(`window.dispatchEvent(new CustomEvent("armadra:canvas:center-node", { detail: { nodeId: "${id}" } })); return 1;`);
+    await sleep(700);
+  };
+  const fitView = async () => {
+    const ok = await evaluate(`const b = [...document.querySelectorAll('button')].find((x) => /^适应$|^Fit$/.test(x.getAttribute('aria-label') ?? '')); b?.click(); return !!b;`);
+    log("适应窗口", ok);
+  };
   const deadline = Date.now() + 20 * 60_000;
+  let workers = [];
   const started = new Set();
   const finished = new Set();
   let allDone = 0;
+  let focusIndex = 0;
+  let lastFocus = 0;
+  let leadFocused = false;
   while (Date.now() < deadline) {
+    // 三人开工后轮流拉近看每个子节点；都完成后回到主节点看汇总
+    if (started.size > 0 && !allDone && Date.now() - lastFocus > 7000 && focusIndex < 6) {
+      const w = workers[focusIndex % workers.length];
+      await zoomTo(85);
+      await centerOn(w.id);
+      mark(`focus:${w.title}`);
+      focusIndex += 1;
+      lastFocus = Date.now();
+    }
+    if (allDone && !leadFocused) {
+      await zoomTo(85);
+      await centerOn(claude.id);
+      mark("focus-lead");
+      leadFocused = true;
+    }
+    if (workers.length < 3) {
+      const now = subs();
+      if (now.length > workers.length) {
+        workers = now;
+        if (workers.length >= 3) {
+          mark("dispatched");
+          await sleep(1200);
+          await fitView();
+        }
+      }
+    }
     for (const w of workers) {
       const st = status(w.id)?.state ?? "";
       if (!started.has(w.id) && st === "working") { started.add(w.id); mark(`worker-start:${w.title}`); }
       if (started.has(w.id) && !finished.has(w.id) && st !== "working") { finished.add(w.id); mark(`worker-done:${w.title}`); }
     }
-    if (finished.size === workers.length && !allDone) { allDone = Date.now(); mark("workers-done"); }
-    const cs = status(claude.id)?.state ?? "";
-    // 三人都交了、Claude 也停下来：说明总结写完了
-    if (allDone && Date.now() - allDone > 5000 && cs !== "working") {
-      const text = await screen(claude.id, 40);
+    if (workers.length >= 3 && finished.size === workers.length && !allDone) { allDone = Date.now(); mark("workers-done"); }
+    if (allDone && Date.now() - allDone > 5000 && (status(claude.id)?.state ?? "") !== "working") {
       // Claude 一轮结束时状态栏打印「<动词> for 1m 15s · done 8:47 PM」：以它为准
-      if (/· done \d{1,2}:\d{2}/.test(text)) { mark("claude-done"); break; }
+      if (/· done \d{1,2}:\d{2}/.test(await screen(claude.id, 40))) { mark("claude-done"); break; }
     }
     await sleep(1000);
   }
@@ -431,5 +471,5 @@ test("session cookie is http-only", () => {
   writeFileSync(join(out, "events.json"), JSON.stringify({ events, frames: frames.map((f) => [f.at, f.file]) }, null, 1));
   log(`抓到 ${frames.length} 帧，事件 ${events.map((e) => e.kind).join(" → ")}`);
   writeFileSync(join(out, "diff.txt"), execFileSync("git", ["-C", project, "diff"]).toString());
-  for (const [name, id] of [["claude", claude.id], ...workers.map((w, i) => [`codex-${i + 1}`, w.id])]) writeFileSync(join(out, `${name}-screen.txt`), await screen(id, 200));
+  for (const [name, id] of [["claude", claude.id], ...subs().map((w, i) => [`codex-${i + 1}`, w.id])]) writeFileSync(join(out, `${name}-screen.txt`), await screen(id, 200));
 }
