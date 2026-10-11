@@ -8,7 +8,6 @@ import TopNav from '../components/home/TopNav.astro';
 import Footer from '../components/common/Footer.astro';
 import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
-import AppModel from '../components/model/AppModel.astro';
 import { H } from '../i18n/home';
 import { S, fmtBi } from '../i18n';
 import { AGENTS } from '../data/agents';
@@ -16,6 +15,8 @@ import { RELEASE } from '../data/release';
 import { RELEASES_URL } from '../lib/nav';
 
 const download = fmtBi(H.get.download, { v: RELEASE.version });
+/** 录屏资源（public/media/），换片时改这里 */
+const DEMO = { webm: '/media/armadra-demo.webm', poster: '/media/armadra-demo.jpg', width: 1792, height: 1120 };
 ---
 
 <BaseLayout page="home" title={H.docTitle.zh} titleEn={H.docTitle.en}>
@@ -64,9 +65,25 @@ const download = fmtBi(H.get.download, { v: RELEASE.version });
       </div>
     </section>
 
-    <section class="sec sec--app" aria-label={H.app.zh} data-aria-zh={H.app.zh} data-aria-en={H.app.en}>
-      <AppModel />
-      <p class="app__caption"><T zh={H.app.zh} en={H.app.en} /></p>
+    <!-- 真实软件录屏：隔离环境里真跑 Claude Code 与 Codex，录制方法见 docs/guides/recording.md -->
+    <section class="sec sec--demo">
+      <video
+        class="demo"
+        data-demo
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        width={DEMO.width}
+        height={DEMO.height}
+        poster={DEMO.poster}
+        aria-label={H.demo.zh}
+        data-aria-zh={H.demo.zh}
+        data-aria-en={H.demo.en}
+      >
+        <source src={DEMO.webm} type="video/webm" />
+      </video>
     </section>
 
     <section class="sec" aria-labelledby="what-title">
@@ -145,6 +162,22 @@ const download = fmtBi(H.get.download, { v: RELEASE.version });
 </BaseLayout>
 
 <script>
+  // 偏好减少动效时不自动播放，停在 poster 上；点一下仍可播放
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll<HTMLVideoElement>('[data-demo]').forEach((video) => {
+    const apply = () => {
+      if (reduce.matches) {
+        video.pause();
+        video.controls = true;
+      } else {
+        video.controls = false;
+        void video.play().catch(() => {});
+      }
+    };
+    apply();
+    reduce.addEventListener('change', apply);
+  });
+
   // 获取方式的标签页：方向键切换，选中项可 Tab 进入
   document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((box) => {
     const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
@@ -256,9 +289,9 @@ const download = fmtBi(H.get.download, { v: RELEASE.version });
   }
   .get__link:hover { text-decoration-color: currentColor; }
 
-  /* 软件画面 */
-  .sec--app { padding-block: var(--sp-7); }
-  .app__caption { margin-top: var(--sp-4); color: var(--ink-3); font-size: var(--fs-body-sm); }
+  /* 录屏：整列宽、不加边框与说明 */
+  .sec--demo { padding: 0; }
+  .demo { display: block; width: 100%; height: auto; background: var(--bg-raised); }
 
   /* [*] 条目 */
   .stars { display: flex; flex-direction: column; gap: var(--sp-4); margin: var(--sp-5) 0 0; padding: 0; }
