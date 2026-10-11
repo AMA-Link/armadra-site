@@ -5,7 +5,9 @@ group: start
 order: 1
 ---
 
-Armadra 是一块本地优先的 **AI Coding 画布**。Claude Code、Codex、OpenCode、Pi、Oh My Pi 与 GitHub Copilot 以**真实终端节点**的形式放在无限画布上，保留各自的账户、模型与权限策略。你通过连线共享必要的上下文，通过消息和交接组织分工，在同一张画布上查看资料、执行过程与成果。
+Armadra 是一个本地优先的 AI 编程协作工作空间，让多个 AI 助手在同一张画布上分工、共享上下文并接续任务。
+
+Claude Code、Codex、OpenCode、Pi、Oh My Pi 与 GitHub Copilot 这些 AI 编程助手（Agent）各自作为一个节点放在画布上，节点里直接运行对应的 CLI，沿用它的账户、模型与权限设置。你连接 Agent 来共享任务上下文，通过消息和交接让任务顺畅接续，在同一个工作空间里查看资料、进展与结果。
 
 ## 从使用一个 Agent，到组织多个 Agent
 
@@ -33,7 +35,9 @@ Armadra 不重写 Agent。每个 Agent 节点启动的就是你已经在用的 C
 
 ## 运行方式
 
-- **桌面应用**：macOS、Windows、Linux 安装包，数据保存在本机 SQLite 与工作区的 `.armadra/`。
-- **无窗口服务器壳**：在服务器或 NAS 上常开，浏览器与手机经 HTTPS 访问同一份页面，支持账号与按工作空间共享。
+- **桌面应用**：macOS、Windows、Linux 安装包，工作空间记录保存在本机 SQLite 与工作区的 `.armadra/`，无需单独部署服务器。
+- **自托管部署与远程访问**：把 Armadra 部署到自己的服务器或 NAS（服务器壳，没有窗口、常开），电脑与手机浏览器经 HTTPS 访问同一份页面，支持成员账号与按工作空间共享，见[自托管部署与远程访问](/docs/server-and-devices/)。
+
+Agent 在承载工作空间的电脑或服务器上运行，模型请求和相关数据处理遵循所使用 CLI 与模型服务的设置及政策。
 
 准备好了就去[安装](/docs/install/)。

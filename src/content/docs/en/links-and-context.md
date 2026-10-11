@@ -1,11 +1,11 @@
 ---
-title: Links and context
-description: Links decide what an agent can read; peer and lead–member relationships.
+title: Links and context sharing
+description: Connect agents to share task context on demand; links decide what an agent can read, as peers or lead and member.
 group: concepts
 order: 2
 ---
 
-In Armadra, **links are context**: which nodes an agent can read is decided by the links on the canvas.
+In Armadra, you connect agents to share task context on demand: which nodes an AI coding agent can read is decided by the links on the canvas.
 
 ## What can be read
 
@@ -15,7 +15,7 @@ A linked agent can read, on demand, the other node's:
 - Terminal screen;
 - Notes, files, diffs and other related material, plus the node's unresolved comments.
 
-Reads are trimmed to a budget, so a long conversation is never dumped into another agent's session. Unlinked nodes are out of reach, and a leftover link to another workspace has no effect. Deleting a link revokes access.
+Reads are trimmed to a budget, so a long conversation is never dumped into another agent's session. Text is redacted for common credential formats before it is handed over; Armadra records the reader, time and byte count of each read, not the text itself. Unlinked nodes are out of reach, and a leftover link to another workspace has no effect. Deleting a link revokes access.
 
 ## Two relationships
 

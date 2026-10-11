@@ -5,15 +5,19 @@ group: reference
 order: 1
 ---
 
-## Does Armadra call models for me?
+## Are model services included?
 
-No. Armadra launches CLIs that are installed and signed in on your machine; each CLI calls models under its provider's rules, billed to your own provider accounts. The `ama` coordinator's model keys stay in the local secret store and are handed only to the ama process.
+No. Armadra works with the AI tools you configure. External CLIs use their own accounts and billing, and each CLI calls models under its provider's rules; model credentials for the `ama` coordinator are configured separately, kept in the local secret store and handed only to the ama process.
 
 ## Where is my data?
 
-The desktop install has no server. Workspace records live in local SQLite and the workspace's `.armadra/` folder. Credentials and raw terminal output never go into the canvas, logs or API responses.
+In desktop mode there is no separate server; workspace records live in local SQLite and the workspace's `.armadra/` folder.
 
-## Will it change my CLI configuration?
+- **Not persisted**: raw terminal output, secrets and `.env` files are not written into canvas data or logs. Node credentials and ama's model keys live only in the local secret store and are set only on the matching CLI process at launch; the database keeps just the entry names.
+- **Read through links**: a linked agent can read another node's recent terminal screen, transcript and summary on demand, within the link's permissions. Before it is handed over, that text is redacted for common credential formats and counted against the link's read budget; Armadra records who read how much and when, not the text itself. Redaction is pattern-based and can miss home-grown token formats, so don't type secrets straight into an agent's terminal.
+- **Model services**: when an agent calls a model, requests and related data are handled under the settings and policies of the CLI tools and model services you use.
+
+## Will it change my global CLI configuration?
 
 No. Hooks, skills and canvas notes are injected only when a CLI is launched from the canvas; the same CLI started outside is unaffected, and Armadra doesn't write the CLI's global configuration.
 

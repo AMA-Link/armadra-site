@@ -31,7 +31,7 @@ Pin comments on the canvas, reply in threads and `@`-mention people. When an age
 
 ## Saving and multi-user editing
 
-The canvas saves automatically. On the server shell several people can edit the same canvas in real time, seeing each other's cursors and selections; offline edits catch up on reconnect.
+The canvas saves automatically. On a self-hosted server (the server shell) several people can edit the same canvas in real time, seeing each other's cursors and selections; offline edits catch up on reconnect.
 
 ## Status
 
