@@ -20,6 +20,11 @@ const links = [
   <div class="site-footer__inner">
     <div class="site-footer__id">
       <p class="site-footer__rights"><T zh={rights.zh} en={rights.en} /></p>
+      <ul class="site-footer__mail" role="list">
+        {S.contact.items.map((c) => (
+          <li><T zh={c.label.zh} en={c.label.en} /> <a href={`mailto:${c.email}`}>{c.email}</a></li>
+        ))}
+      </ul>
     </div>
     <ul class="site-footer__links" role="list">
       {links.map((l) => <li><a href={l.href}><T zh={l.label.zh} en={l.label.en} /></a></li>)}
@@ -49,6 +54,9 @@ const links = [
   :global(main) .site-footer__inner,
   :global(.container) .site-footer__inner { max-width: none; padding-inline: 0; }
   .site-footer__id { color: var(--ink-3); }
+  .site-footer__mail { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-5); margin: var(--sp-2) 0 0; padding: 0; }
+  .site-footer__mail a { color: var(--ink-2); text-decoration: none; }
+  .site-footer__mail a:hover { color: var(--ink); text-decoration: underline; }
   .site-footer__links {
     display: flex;
     flex-wrap: wrap;
