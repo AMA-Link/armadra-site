@@ -1,7 +1,7 @@
 /* 文章正文排版（§4.15）。只作用于 .prose 内部 */
 
 .prose {
-  font: 400 var(--fs-prose) / 1.8 var(--font-sans);
+  font: 400 var(--fs-prose) / 1.8 var(--font-prose);
   color: var(--ink);
   overflow-wrap: anywhere;
   text-autospace: normal;

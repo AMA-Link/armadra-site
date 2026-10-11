@@ -8,7 +8,6 @@ import T from '../common/T.astro';
 import ThemeToggle from '../common/ThemeToggle.astro';
 import LangToggle from '../common/LangToggle.astro';
 import Icon from '../common/Icon.astro';
-import Kbd from '../ui/Kbd.astro';
 import { S } from '../../i18n';
 
 interface Props {
@@ -21,7 +20,7 @@ const current = navCurrent(page);
 ---
 
 <header
-  class:list={['topnav', `topnav--${variant}`]}
+  class:list={['topnav', `topnav--${variant}`, { 'topnav--column': page === 'home' }]}
 >
   <div class="container topnav__inner">
     <a class="topnav__brand" href="/" aria-label="Armadra">
@@ -38,7 +37,6 @@ const current = navCurrent(page);
             aria-current={current === item.id ? 'page' : undefined}
             aria-keyshortcuts={item.key}
           >
-            <Kbd k={item.key} class="topnav__kbd" />
             <span class="topnav__label">
               <T zh={item.label.zh} en={item.label.en} />
             </span>
@@ -67,6 +65,9 @@ const current = navCurrent(page);
     background: var(--bg);
     border-bottom: 1px solid var(--line-soft);
   }
+
+  /* 首页：顶栏也在带左右边框的一列里，与下方分区对齐 */
+  .topnav--column .topnav__inner { border-inline: 1px solid var(--line); }
 
   .topnav__inner {
     display: grid;
@@ -101,7 +102,8 @@ const current = navCurrent(page);
 
   .topnav__nav {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    margin-inline-end: var(--sp-5);
     align-items: center;
     gap: var(--sp-6);
   }
@@ -168,9 +170,6 @@ const current = navCurrent(page);
   @media (max-width: 1024px) {
     .topnav__nav {
       gap: var(--sp-5);
-    }
-    .topnav :global(.topnav__kbd) {
-      display: none;
     }
   }
 

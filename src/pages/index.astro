@@ -1,604 +1,310 @@
 ---
+/**
+ * 首页：一列带左右边框的版面，分区之间一条横线；只有首屏、软件画面、是什么、
+ * 支持的 Agent、本地优先、常见问题与联系。设计见 DESIGN.md「首页」。
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopNav from '../components/home/TopNav.astro';
 import Footer from '../components/common/Footer.astro';
 import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import AppModel from '../components/model/AppModel.astro';
-import Band from '../components/common/Band.astro';
-import HeroCanvas from '../components/home/HeroCanvas.astro';
-import Illo from '../components/home/Illo.astro';
-import { CHANGELOG } from '../data/changelog';
 import { H } from '../i18n/home';
-import { M } from '../i18n/model';
+import { S, fmtBi } from '../i18n';
 import { AGENTS } from '../data/agents';
 import { RELEASE } from '../data/release';
 import { RELEASES_URL } from '../lib/nav';
-import { S } from '../i18n';
 
-const steps = H.story.steps;
-const pad = (n: number) => String(n).padStart(2, '0');
-const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
+const download = fmtBi(H.get.download, { v: RELEASE.version });
 ---
 
 <BaseLayout page="home" title={H.docTitle.zh} titleEn={H.docTitle.en}>
   <TopNav page="home" />
-  <main id="main" class="home">
-    <!-- 首屏：只有标题与两个按钮，下方一条线引向软件 -->
-    <section class="hero container" aria-labelledby="hero-title">
-      <div class="hero__text">
-      <h1 id="hero-title" class="hero__title">
-        {H.hero.title.map((l, i) => <span class="hero__line" style={`--reveal-delay:${i * 120}ms`} data-reveal><T zh={l.zh} en={l.en} /></span>)}
-      </h1>
-      <div class="hero__actions" data-reveal style="--reveal-delay:260ms">
-        <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
-        <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.hero.docs.zh} en={H.hero.docs.en} /></a>
-      </div>
-      </div>
-      <div class="hero__art" data-reveal style="--reveal-delay:200ms"><HeroCanvas /></div>
-      <span class="hero__cue" aria-hidden="true"></span>
-    </section>
+  <main id="main" class="page">
+    <section class="sec sec--hero" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="hero__title"><T zh={H.hero.title.zh} en={H.hero.title.en} /></h1>
+      <p class="hero__intro">
+        {H.hero.intro.map((l) => <span class="hero__line"><T zh={l.zh} en={l.en} /></span>)}
+      </p>
 
-    <!-- 滚动叙事：模型 sticky，往下滚逐步高亮 -->
-    <Band id="app" n={1} label={H.bands.story} aside={pad(steps.length)}>
-    <section
-      class="story"
-      aria-labelledby="story-title"
-      data-story
-      data-steps={storyData}
-      data-hotspot-label={M.hotspot.zh}
-      style={`--steps:${steps.length}`}
-    >
-      <div class="story__sticky">
-        <div class="story__inner container">
-          <div class="story__bar">
-            <p class="corner story__label" id="story-title"><T zh={H.story.label.zh} en={H.story.label.en} /></p>
-            <ol class="story__segs" role="list">
-              {
-                steps.map((s, i) => (
-                  <li>
-                    <button type="button" class="story__seg" data-story-title aria-label={`${pad(i + 1)} ${s.title.zh}`} data-aria-zh={`${pad(i + 1)} ${s.title.zh}`} data-aria-en={`${pad(i + 1)} ${s.title.en}`}>
-                      <span class="story__n">{pad(i + 1)}</span>
-                      <span class="story__fill" />
-                    </button>
-                  </li>
-                ))
-              }
-            </ol>
-          </div>
-          <div class="story__model">
-            <AppModel />
-          </div>
-          <div class="story__captions" aria-live="polite">
-            {
-              steps.map((s, i) => (
-                <p class="story__caption" data-story-caption hidden={i !== 0}>
-                  <span class="story__caption-n">{pad(i + 1)}</span>
-                  <T zh={s.title.zh} en={s.title.en} />
-                </p>
-              ))
-            }
-          </div>
+      <div class="get" data-tabs>
+        <div class="get__tabs" role="tablist" aria-label={H.get.label.zh} data-aria-zh={H.get.label.zh} data-aria-en={H.get.label.en}>
+          {
+            H.get.tabs.map((tab, i) => (
+              <button
+                type="button"
+                role="tab"
+                class="get__tab"
+                id={`get-tab-${tab.id}`}
+                aria-controls={`get-${tab.id}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? 0 : -1}
+              >
+                <T zh={tab.label.zh} en={tab.label.en} />
+              </button>
+            ))
+          }
+        </div>
+        <div class="get__panel" role="tabpanel" id="get-download" aria-labelledby="get-tab-download">
+          <a class="get__link" href={RELEASES_URL}>
+            <Icon name="download" size={14} />
+            <T zh={download.zh} en={download.en} />
+            <Icon name="arrow-up-right" size={12} />
+          </a>
+        </div>
+        <div class="get__panel" role="tabpanel" id="get-source" aria-labelledby="get-tab-source" hidden data-code>
+          <pre class="code__pre get__cmd"><code>{H.get.source}</code></pre>
+          <button type="button" class="get__copy" data-copy aria-label={S.copy.aria.zh} data-aria-zh={S.copy.aria.zh} data-aria-en={S.copy.aria.en}><Icon name="copy" size={14} /></button>
+        </div>
+        <div class="get__panel" role="tabpanel" id="get-docker" aria-labelledby="get-tab-docker" hidden data-code>
+          <pre class="code__pre get__cmd"><code>{H.get.docker}</code></pre>
+          <button type="button" class="get__copy" data-copy aria-label={S.copy.aria.zh} data-aria-zh={S.copy.aria.zh} data-aria-en={S.copy.aria.en}><Icon name="copy" size={14} /></button>
+          <p class="get__hint"><T zh={H.get.dockerHint.zh} en={H.get.dockerHint.en} /></p>
         </div>
       </div>
-      <div class="story__steps" data-story-track aria-hidden="true">
-        {steps.map(() => <div class="story__step" data-story-step />)}
+    </section>
+
+    <section class="sec sec--app" aria-label={H.app.zh} data-aria-zh={H.app.zh} data-aria-en={H.app.en}>
+      <AppModel />
+      <p class="app__caption"><T zh={H.app.zh} en={H.app.en} /></p>
+    </section>
+
+    <section class="sec" aria-labelledby="what-title">
+      <h2 id="what-title" class="sec__title"><T zh={H.what.title.zh} en={H.what.title.en} /></h2>
+      <p class="sec__text"><T zh={H.what.intro.zh} en={H.what.intro.en} /></p>
+      <ul class="stars" role="list">
+        {
+          H.what.items.map((it) => (
+            <li>
+              <span class="stars__mark" aria-hidden="true">[*]</span>
+              <span>
+                <strong><T zh={it.term.zh} en={it.term.en} /></strong>
+                <span class="stars__line"><T zh={it.line.zh} en={it.line.en} /></span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn-primary sec__action" href="/docs/"><T zh={H.what.docs.zh} en={H.what.docs.en} /><Icon name="arrow-right" size={14} /></a>
+    </section>
+
+    <section class="sec" aria-labelledby="agents-title">
+      <h2 id="agents-title" class="sec__title"><T zh={H.agents.title.zh} en={H.agents.title.en} /></h2>
+      <ul class="agents" role="list">
+        {AGENTS.map((a) => <li>{a.name}</li>)}
+      </ul>
+      <p class="sec__text sec__text--muted"><T zh={H.agents.note.zh} en={H.agents.note.en} /></p>
+    </section>
+
+    <section class="sec" aria-labelledby="local-title">
+      <h2 id="local-title" class="sec__title"><T zh={H.local.title.zh} en={H.local.title.en} /></h2>
+      <p class="stars stars--one">
+        <span class="stars__mark" aria-hidden="true">[*]</span>
+        <span>
+          <T zh={H.local.line.zh} en={H.local.line.en} />
+          <a class="sec__inline" href="/docs/faq/"><T zh={H.local.more.zh} en={H.local.more.en} /></a>
+        </span>
+      </p>
+    </section>
+
+    <section class="sec" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="sec__title"><T zh={H.faq.title.zh} en={H.faq.title.en} /></h2>
+      <div class="faq">
+        {
+          H.faq.items.map((f) => (
+            <details class="faq__item">
+              <summary class="faq__q">
+                <span class="faq__icon" aria-hidden="true" />
+                <T zh={f.q.zh} en={f.q.en} />
+              </summary>
+              <p class="faq__a"><T zh={f.a.zh} en={f.a.en} /></p>
+            </details>
+          ))
+        }
       </div>
     </section>
 
-    </Band>
-
-    <!-- 三个出发点：三列，列间竖线 -->
-    <Band id="why" n={2} label={H.bands.why}>
-      <div class="container">
-        <h2 class="section-title" data-reveal><T zh={H.why.title.zh} en={H.why.title.en} /></h2>
-      </div>
-      <ol class="cols container" role="list">
+    <section class="sec" aria-labelledby="contact-title">
+      <h2 id="contact-title" class="sec__title"><T zh={S.contact.title.zh} en={S.contact.title.en} /></h2>
+      <ul class="stars" role="list">
         {
-          H.why.items.map((it, i) => (
-            <li class="cols__item" data-reveal style={`--reveal-delay:${i * 90}ms`}>
-              <span class="cols__n">{pad(i + 1)}</span>
-              <h3 class="cols__title"><T zh={it.title.zh} en={it.title.en} /></h3>
-              <p class="cols__line"><T zh={it.line.zh} en={it.line.en} /></p>
-            </li>
-          ))
-        }
-      </ol>
-    </Band>
-
-    <!-- 工作方式：四列插图，列间箭头线 -->
-    <Band id="how" n={3} label={H.bands.how} aside={pad(H.how.steps.length)}>
-      <div class="container">
-        <h2 class="section-title" data-reveal><T zh={H.how.title.zh} en={H.how.title.en} /></h2>
-      </div>
-      <ol class="flow container" role="list">
-        {
-          H.how.steps.map((st, i) => (
-            <li class="flow__step" data-reveal style={`--reveal-delay:${i * 90}ms`}>
-              <div class="flow__art"><Illo kind={`how-${i + 1}` as 'how-1'} /></div>
-              <span class="cols__n">{pad(i + 1)}</span>
-              <h3 class="flow__title"><T zh={st.title.zh} en={st.title.en} /></h3>
-              <p class="cols__line"><T zh={st.line.zh} en={st.line.en} /></p>
-            </li>
-          ))
-        }
-      </ol>
-    </Band>
-
-    <!-- 能力：3×2 网格，格线分隔 -->
-    <Band id="features" n={4} label={H.bands.features} aside={pad(H.features.groups.length)}>
-      <div class="container">
-        <h2 class="section-title" data-reveal><T zh={H.features.title.zh} en={H.features.title.en} /></h2>
-      </div>
-      <div class="grid container">
-        {
-          H.features.groups.map((g, i) => (
-            <section class="grid__cell" data-reveal style={`--reveal-delay:${(i % 3) * 80}ms`}>
-              <h3 class="grid__title"><T zh={g.title.zh} en={g.title.en} /></h3>
-              <ul class="grid__items" role="list">
-                {g.items.map((it) => (
-                  <li><T zh={it.zh} en={it.en} /></li>
-                ))}
-              </ul>
-            </section>
-          ))
-        }
-      </div>
-    </Band>
-
-    <!-- 运行方式：三块设备插图 -->
-    <Band id="run" n={5} label={H.bands.run}>
-      <div class="container">
-        <h2 class="section-title" data-reveal><T zh={H.run.title.zh} en={H.run.title.en} /></h2>
-      </div>
-      <ul class="cols container" role="list">
-        {
-          H.run.items.map((it, i) => (
-            <li class="cols__item" data-reveal style={`--reveal-delay:${i * 90}ms`}>
-              <div class="run__art"><Illo kind={it.id} /></div>
-              <h3 class="cols__title"><T zh={it.title.zh} en={it.title.en} /></h3>
-              <p class="cols__line"><T zh={it.line.zh} en={it.line.en} /></p>
+          S.contact.items.map((c) => (
+            <li>
+              <span class="stars__mark" aria-hidden="true">[*]</span>
+              <span>
+                <strong><T zh={c.label.zh} en={c.label.en} /></strong>
+                <a class="sec__inline" href={`mailto:${c.email}`}>{c.email}</a>
+              </span>
             </li>
           ))
         }
       </ul>
-    </Band>
-
-    <!-- 支持的 Agent：大字一行一个 -->
-    <Band id="agents" n={6} label={H.bands.agents} aside={pad(AGENTS.length)}>
-    <div class="agents container">
-      <h2 class="section-title" data-reveal><T zh={H.agents.title.zh} en={H.agents.title.en} /></h2>
-      <ul class="agents__list" role="list">
-        {
-          AGENTS.map((a, i) => (
-            <li class="agents__row" data-reveal style={`--reveal-delay:${i * 50}ms`}>
-              <span class="agents__n">{pad(i + 1)}</span>
-              <span class="agents__name">{a.name}</span>
-              {a.name === 'ama' && (
-                <span class="agents__tag">
-                  <T zh={H.agents.coordinator.zh} en={H.agents.coordinator.en} />
-                </span>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-    </Band>
-
-    <!-- 设计原则：六行，行间满宽线 -->
-    <Band id="principles" n={7} label={H.bands.principles} aside={pad(H.principles.items.length)}>
-      <div class="container">
-        <h2 class="section-title" data-reveal><T zh={H.principles.title.zh} en={H.principles.title.en} /></h2>
-      </div>
-      <dl class="rows">
-        {
-          H.principles.items.map((p, i) => (
-            <div class="rows__row" data-reveal style={`--reveal-delay:${i * 40}ms`}>
-              <div class="rows__inner container">
-                <dt class="rows__title"><span class="rows__n">{pad(i + 1)}</span><T zh={p.title.zh} en={p.title.en} /></dt>
-                <dd class="rows__line"><T zh={p.line.zh} en={p.line.en} /></dd>
-              </div>
-            </div>
-          ))
-        }
-      </dl>
-    </Band>
-
-    <!-- 最近更新：最近三版 -->
-    <Band id="recent" n={8} label={H.bands.recent} aside={`v${RELEASE.version}`}>
-      <div class="container recent__head">
-        <h2 class="section-title" data-reveal><T zh={H.recent.title.zh} en={H.recent.title.en} /></h2>
-        <a class="link-quiet recent__all" href="/changelog/"><T zh={H.recent.all.zh} en={H.recent.all.en} /> <Icon name="arrow-right" size={12} /></a>
-      </div>
-      <ul class="recent" role="list">
-        {
-          CHANGELOG.slice(0, 3).map((r, i) => (
-            <li class="rows__row" data-reveal style={`--reveal-delay:${i * 60}ms`}>
-              <a class="recent__row container" href="/changelog/">
-                <span class="recent__v">{r.version}</span>
-                <span class="recent__title"><T zh={r.title.zh} en={r.title.en} /></span>
-                <time class="corner" datetime={r.date}>{r.date}</time>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </Band>
-
-    <!-- 联系：三个邮箱 -->
-    <Band id="contact" n={9} label={S.contact.band}>
-      <div class="container">
-        <h2 class="section-title" data-reveal><T zh={S.contact.title.zh} en={S.contact.title.en} /></h2>
-      </div>
-      <ul class="cols container" role="list">
-        {
-          S.contact.items.map((c, i) => (
-            <li class="cols__item" data-reveal style={`--reveal-delay:${i * 80}ms`}>
-              <h3 class="cols__title"><T zh={c.label.zh} en={c.label.en} /></h3>
-              <a class="contact__mail" href={`mailto:${c.email}`}>{c.email}</a>
-              <p class="cols__line"><T zh={c.line.zh} en={c.line.en} /></p>
-            </li>
-          ))
-        }
-      </ul>
-    </Band>
-
-    <!-- 收尾 -->
-    <Band id="start" n={10} label={H.bands.start} aside={`v${RELEASE.version}`}>
-    <div class="cta container">
-      <h2 id="cta-title" class="cta__title">
-        {H.cta.title.map((l, i) => <span class="hero__line" style={`--reveal-delay:${i * 120}ms`} data-reveal><T zh={l.zh} en={l.en} /></span>)}
-      </h2>
-      <div class="hero__actions" data-reveal style="--reveal-delay:240ms">
-        <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.cta.download.zh} en={H.cta.download.en} /></a>
-        <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.cta.quickstart.zh} en={H.cta.quickstart.en} /></a>
-        <a class="btn-ghost" href="/changelog/"><T zh={H.cta.changelog.zh} en={H.cta.changelog.en} /><span class="mono">v{RELEASE.version}</span></a>
-      </div>
-    </div>
-    </Band>
+    </section>
   </main>
   <Footer />
 </BaseLayout>
 
 <script>
-  import { initStory } from '../scripts/model/story';
-  document.querySelectorAll<HTMLElement>('[data-story]').forEach((s) => initStory(s));
+  // 获取方式的标签页：方向键切换，选中项可 Tab 进入
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((box) => {
+    const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (i: number, focus = false) => {
+      tabs.forEach((t, j) => {
+        const on = j === i;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls')!);
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') select((i + 1) % tabs.length, true);
+        else if (e.key === 'ArrowLeft') select((i - 1 + tabs.length) % tabs.length, true);
+        else return;
+        e.preventDefault();
+      });
+    });
+  });
 </script>
 
 <style>
-  /* 全页两条纵向导轨线，贯穿各段 */
-  .home { position: relative; }
-  .home::before,
-  .home::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--line);
-    pointer-events: none;
+  /* 一列带左右边框的版面，分区之间一条横线 */
+  .page {
+    max-width: var(--page-col);
+    margin-inline: auto;
+    border-inline: 1px solid var(--line);
   }
-  .home::before { left: var(--rail-x); }
-  .home::after { right: var(--rail-x); }
+  .sec {
+    padding: var(--sp-8) var(--page-inset);
+    border-bottom: 1px solid var(--line);
+  }
+  .sec__title { font: 600 var(--fs-body) / 1.5 var(--font-sans); color: var(--ink); }
+  .sec__text { max-width: 70ch; margin-top: var(--sp-3); color: var(--ink-2); line-height: 1.7; }
+  .sec__text--muted { color: var(--ink-3); }
+  .sec__action { margin-top: var(--sp-6); }
+  .sec__inline { margin-inline-start: var(--sp-2); color: var(--ink); text-decoration-line: underline; text-decoration-color: var(--line-strong); }
+  .sec__inline:hover { text-decoration-color: currentColor; }
 
   /* 首屏 */
-  .hero {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-block: var(--sp-9);
-  }
-  .hero__title,
-  .cta__title {
-    font: 500 var(--fs-hero) / 1.1 var(--font-sans);
-    letter-spacing: -0.03em;
+  .sec--hero { padding-block: var(--sp-9) var(--sp-8); }
+  .hero__title {
+    font: 600 var(--fs-h1) / 1.25 var(--font-sans);
+    letter-spacing: -0.01em;
     text-wrap: balance;
   }
+  .hero__intro { margin-top: var(--sp-4); color: var(--ink-2); line-height: 1.7; }
   .hero__line { display: block; }
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sp-3);
+
+  .get {
+    position: relative;
     margin-top: var(--sp-7);
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
   }
-  .hero__actions .mono { color: var(--ink-3); font-size: var(--fs-mono); }
-  .hero__cue {
-    position: absolute;
-    left: max(var(--gutter), calc((100% - var(--content-max)) / 2 + var(--gutter)));
-    bottom: 0;
-    width: 1px;
-    height: var(--sp-8);
-    background: var(--ink);
-    transform-origin: top;
-    animation: cue 2.4s var(--ease-out) infinite;
-  }
-  @keyframes cue {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    51% { transform: scaleY(1); transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
-  }
-
-  /* 滚动叙事 */
-  .story {
+  .get__tabs { display: flex; gap: var(--sp-5); padding-inline: var(--sp-4); border-bottom: 1px solid var(--line); }
+  .get__tab {
     position: relative;
-    height: calc(var(--steps) * 55svh + 100svh);
-  }
-  .story__sticky {
-    position: sticky;
-    top: var(--nav-h);
-    height: calc(100svh - var(--nav-h));
-    overflow: hidden;
-  }
-  .story__inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--sp-5);
-    height: 100%;
-  }
-  .story__bar {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: end;
-    gap: var(--sp-6);
-  }
-  .story__segs {
-    display: grid;
-    grid-template-columns: repeat(var(--steps), minmax(0, 1fr));
-    gap: var(--sp-2);
-    margin: 0;
-    padding: 0;
-  }
-  .story__seg {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-2);
-    width: 100%;
     min-height: var(--control-h);
-    justify-content: flex-end;
-    text-align: left;
-  }
-  .story__n {
-    font: 400 var(--fs-mono-sm) / 1 var(--font-mono);
     color: var(--ink-3);
-    transition: color var(--dur-2) var(--ease-out);
+    transition: color var(--dur-1) var(--ease-out);
   }
-  .story__fill {
-    position: relative;
-    display: block;
-    height: 2px;
-    background: var(--line);
-    overflow: hidden;
-  }
-  .story__fill::after {
+  .get__tab:hover { color: var(--ink-2); }
+  .get__tab[aria-selected='true'] { color: var(--ink); }
+  .get__tab[aria-selected='true']::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--ink);
-    transform: scaleX(var(--seg, 0));
-    transform-origin: left;
-  }
-  .story__seg:hover .story__n,
-  .story__seg[data-active] .story__n { color: var(--accent-text); }
-  .story__seg[data-active] .story__fill::after { background: var(--accent-ui); }
-  .story__model {
-    width: 100%;
-    max-width: calc((100svh - var(--nav-h) - 220px) * 1200 / 760);
-    margin-inline: auto;
-  }
-  .story__captions { min-height: calc(var(--fs-h2) * 1.3); }
-  .story__caption {
-    display: flex;
-    align-items: baseline;
-    gap: var(--sp-4);
-    font: 500 var(--fs-h2) / 1.25 var(--font-sans);
-    letter-spacing: -0.015em;
-    animation: cap-in 500ms var(--ease-out);
-  }
-  .story__caption-n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
-  @keyframes cap-in { from { opacity: 0; transform: translateY(10px); } }
-
-  .story__steps {
     position: absolute;
     left: 0;
     right: 0;
-    top: 50svh;
-    bottom: 50svh;
-    display: flex;
-    flex-direction: column;
-    pointer-events: none;
+    bottom: -1px;
+    height: 2px;
+    background: var(--ink);
   }
-  .story__step { flex: 1; }
-
-  /* 分区标题 */
-  .section-title {
-    font: 500 var(--fs-section) / 1.15 var(--font-sans);
-    letter-spacing: -0.02em;
-    text-wrap: balance;
-    padding-block: var(--sp-8) var(--sp-6);
-  }
-
-  /* 首屏：≥1025 左文右图 */
-  .hero { display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: var(--sp-7); }
-  @media (min-width: 1025px) {
-    .hero { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; }
-    /* 两栏时标题每行一句，不在句中折行 */
-  }
-  .hero__art { min-width: 0; }
-
-  /* 工作方式：四列，列间箭头线 */
-  .flow {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    margin: 0 auto;
-    padding: 0 var(--gutter) var(--sp-8);
-  }
-  .flow__step {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-3);
-    padding: var(--sp-6) var(--sp-5) var(--sp-6) 0;
-    border-top: 1px solid var(--line-strong);
-  }
-  .flow__step + .flow__step { padding-left: var(--sp-5); border-left: 1px solid var(--line); }
-  .flow__step + .flow__step::before {
-    content: '';
-    position: absolute;
-    left: -5px;
-    top: calc(var(--sp-6) + 48px);
-    width: 9px;
-    height: 9px;
-    border-top: 1px solid var(--ink-2);
-    border-right: 1px solid var(--ink-2);
-    background: var(--bg);
-    transform: rotate(45deg);
-  }
-  .flow__art { padding: var(--sp-3); border: 1px solid var(--line-soft); background: var(--app-canvas); }
-  .flow__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
-  .run__art { padding: var(--sp-4); border: 1px solid var(--line-soft); background: var(--app-canvas); }
-
-  /* 最近更新 */
-  .recent__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-5); }
-  .recent__all { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); font-size: var(--fs-body-sm); white-space: nowrap; }
-  .recent { margin: 0; padding: 0 0 var(--sp-8); }
-  .recent__row {
-    display: grid;
-    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto;
-    align-items: baseline;
-    gap: var(--sp-6);
-    padding-block: var(--sp-4);
-    text-decoration: none;
-    transition: background-color var(--dur-1) var(--ease-out);
-  }
-  .rows__row:has(.recent__row:hover) { background: var(--hover-row); }
-  .recent__v { font: 500 var(--fs-h2) / 1 var(--font-mono); font-variant-numeric: tabular-nums; }
-  .recent__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
-
-  /* 三个出发点：三列，列间竖线 */
-  .cols {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin: 0 auto;
-    padding: 0 var(--gutter) var(--sp-8);
-  }
-  .cols__item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-4);
-    padding: var(--sp-5) var(--sp-5) var(--sp-5) 0;
-    border-top: 1px solid var(--line-strong);
-  }
-  .cols__item + .cols__item { padding-left: var(--sp-5); border-left: 1px solid var(--line); }
-  .cols__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
-  .cols__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
-  .cols__line { color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; text-wrap: pretty; }
-
-  /* 能力：3×2 网格 */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding: 0 var(--gutter) var(--sp-8);
-  }
-  .grid__cell {
-    padding: var(--sp-5);
-    border-top: 1px solid var(--line-strong);
-    border-left: 1px solid var(--line);
-  }
-  .grid__cell:nth-child(3n + 1) { border-left: 0; padding-left: 0; }
-  .grid__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
-  .grid__items { margin: var(--sp-5) 0 0; padding: 0; }
-  .grid__items li {
-    padding-block: var(--sp-2);
-    border-top: 1px dashed var(--line-soft);
+  .get__panel { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); min-height: 72px; padding: var(--sp-4); }
+  .get__panel[hidden] { display: none; }
+  .get__cmd {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow-x: auto;
     color: var(--ink-2);
-    font-size: var(--fs-body);
-    line-height: 1.6;
+    font: 400 var(--fs-body-sm) / 1.8 var(--font-mono);
+    white-space: pre;
   }
-
-  /* 设计原则：行间满宽线 */
-  .rows { margin: 0; padding-bottom: var(--sp-8); }
-  .rows__row { border-top: 1px solid var(--line); }
-  .rows__row:last-child { border-bottom: 1px solid var(--line); }
-  .rows__inner {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--sp-6);
-    align-items: baseline;
-    padding-block: var(--sp-4);
-  }
-  .rows__title { display: flex; gap: var(--sp-4); align-items: baseline; font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
-  .rows__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
-  .rows__line { margin: 0; color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; }
-
-  /* 联系 */
-  .contact__mail {
+  .get__copy {
+    display: inline-grid;
+    place-items: center;
+    width: var(--control-h);
+    height: var(--control-h);
     align-self: flex-start;
-    font: 400 var(--fs-body) / var(--lh-body) var(--font-mono);
+    color: var(--ink-3);
+    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  }
+  .get__copy:hover { color: var(--ink); background: var(--hover-row); }
+  .get__hint { flex-basis: 100%; color: var(--ink-3); font-size: var(--fs-body-sm); }
+  .get__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: var(--control-h);
     color: var(--ink);
     text-decoration-line: underline;
     text-decoration-color: var(--line-strong);
-    text-underline-offset: 0.25em;
-    overflow-wrap: anywhere;
+    text-underline-offset: 0.3em;
   }
-  .contact__mail:hover { text-decoration-color: currentColor; }
+  .get__link:hover { text-decoration-color: currentColor; }
 
-  /* 支持的 Agent */
-  .agents { padding-bottom: var(--sp-8); }
-  .agents__list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--sp-7);
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--line-strong);
-  }
-  .agents__row {
-    display: grid;
-    grid-template-columns: 4ch auto 1fr;
-    align-items: baseline;
-    gap: var(--sp-5);
-    padding-block: var(--sp-3);
-    border-bottom: 1px solid var(--line);
-  }
-  .agents__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--ink-3); }
-  .agents__name { font: 500 var(--fs-agent) / 1.2 var(--font-sans); letter-spacing: -0.015em; }
-  .agents__tag { justify-self: end; color: var(--accent-text); font: 500 var(--fs-body) / 1 var(--font-sans); }
+  /* 软件画面 */
+  .sec--app { padding-block: var(--sp-7); }
+  .app__caption { margin-top: var(--sp-4); color: var(--ink-3); font-size: var(--fs-body-sm); }
 
-  /* 收尾 */
-  .cta { padding-block: var(--sp-8) var(--sp-9); }
+  /* [*] 条目 */
+  .stars { display: flex; flex-direction: column; gap: var(--sp-4); margin: var(--sp-5) 0 0; padding: 0; }
+  .stars li,
+  .stars--one { display: grid; grid-template-columns: 4ch minmax(0, 1fr); gap: var(--sp-2); line-height: 1.7; }
+  .stars__mark { color: var(--ink-3); }
+  .stars strong { font-weight: 600; color: var(--ink); margin-inline-end: var(--sp-3); }
+  .stars__line,
+  .stars--one { color: var(--ink-2); }
 
-  @media (max-width: 900px) {
-    .story { height: calc(var(--steps) * 65svh + 100svh); }
-    .story__bar { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
-    .story__label { display: none; }
-    .story__caption { font-size: var(--fs-h3); }
+  /* 支持的 Agent：一行排开 */
+  .agents { display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-6); margin: var(--sp-5) 0 0; padding: 0; color: var(--ink); }
+  .agents li::before { content: '/ '; color: var(--ink-4); }
+
+  /* 常见问题 */
+  .faq { margin-top: var(--sp-4); }
+  .faq__q {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    min-height: var(--control-h);
+    cursor: pointer;
+    list-style: none;
+    color: var(--ink);
   }
-  @media (max-width: 1024px) {
-    .cols, .grid { grid-template-columns: minmax(0, 1fr); }
-    .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .flow__step:nth-child(3) { border-left: 0; padding-left: 0; }
-    .flow__step + .flow__step:nth-child(3)::before { display: none; }
-    .recent__row { grid-template-columns: auto minmax(0, 1fr); }
-    .recent__row time { grid-column: 2; }
-    .cols__item, .cols__item + .cols__item, .grid__cell, .grid__cell:nth-child(3n + 1) { padding: var(--sp-5) 0; border-left: 0; }
-    .rows__inner { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
+  .faq__q::-webkit-details-marker { display: none; }
+  .faq__icon {
+    position: relative;
+    flex: none;
+    width: var(--sp-3);
+    height: var(--sp-3);
+    background:
+      linear-gradient(var(--ink-3), var(--ink-3)) center / 100% 1px no-repeat,
+      linear-gradient(var(--ink-3), var(--ink-3)) center / 1px 100% no-repeat;
+    transition: transform var(--dur-2) var(--ease-out);
   }
+  .faq__item[open] .faq__icon { transform: rotate(45deg); }
+  .faq__a { max-width: 70ch; padding: 0 0 var(--sp-4) calc(var(--sp-3) + var(--sp-4)); color: var(--ink-2); line-height: 1.7; }
+
   @media (max-width: 640px) {
-    .agents__list { grid-template-columns: minmax(0, 1fr); }
-    .hero { padding-block: var(--sp-7) var(--sp-8); }
-    .flow { grid-template-columns: minmax(0, 1fr); }
-    .flow__step, .flow__step + .flow__step { padding: var(--sp-5) 0; border-left: 0; }
-    .flow__step + .flow__step::before { display: none; }
-    .agents__row { gap: var(--sp-3); padding-block: var(--sp-4); }
-    .agents__tag { font-size: var(--fs-body-sm); }
-    .section-title { padding-block: var(--sp-7) var(--sp-5); }
+    .sec { padding-block: var(--sp-7); }
+    .sec--hero { padding-block: var(--sp-8) var(--sp-7); }
+    .get__tabs { gap: var(--sp-4); }
+    .hero__line { display: inline; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero__cue { animation: none; transform: none; }
-    .story__caption { animation: none; }
+    .faq__icon { transition: none; }
   }
 </style>

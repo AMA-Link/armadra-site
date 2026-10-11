@@ -2,7 +2,6 @@
 /**
  * Armadra 软件界面模型：用 HTML / CSS 画出的应用窗口（不是截图）。
  * 固定设计尺寸 1200×760，由 scripts/model/ 按容器等比缩放；可点的小功能也在那里接线。
- * data-area 标出可被滚动叙事高亮的区域，取值见 i18n/home.ts 的 story.steps[].areas。
  */
 import T from '../common/T.astro';
 import MIcon from './MIcon.astro';
@@ -312,8 +311,6 @@ const tools = M.dock.tools;
     <template data-model-line="passed"><T {...t(M.ask.passed)} /></template>
     <template data-model-line="denied"><T {...t(M.ask.denied)} /></template>
 
-    <!-- 跳步编号点：与滚动叙事对应 -->
-    <div class="hotspots" data-model-hotspots aria-hidden="false"></div>
   </div>
 </div>
 
@@ -352,14 +349,6 @@ const tools = M.dock.tools;
     font: 400 13px / 1.4 var(--font-sans);
   }
 
-  /* 高亮：叙事进行中，不在本步的区域压暗；访客动手点模型时（data-free）取消压暗 */
-  .model[data-step] [data-area] { transition: opacity 500ms var(--ease-out), filter 500ms var(--ease-out); }
-  .model[data-step]:not([data-free]) [data-area]:not(.is-focus):not(.is-host) { opacity: 0.22; filter: saturate(0.4); }
-  .model[data-step]:not([data-free]) .node.is-focus,
-  .model[data-step]:not([data-free]) .side.is-focus,
-  .model[data-step]:not([data-free]) .dock.is-focus,
-  .model[data-step]:not([data-free]) .cluster.is-focus,
-  .model[data-step]:not([data-free]) .ask.is-focus { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   /* 通用小部件 */
   .ib {
@@ -730,25 +719,6 @@ const tools = M.dock.tools;
   .minimap i { position: absolute; border-radius: var(--app-radius-xs); background: var(--app-border-strong); }
   .minimap b { position: absolute; left: 2%; top: 4%; width: 96%; height: 90%; border: 1px solid var(--app-brand); border-radius: var(--app-radius-xs); }
 
-  /* 跳步编号点 */
-  .hotspots { position: absolute; inset: 0; pointer-events: none; }
-  .hotspots :global(button) {
-    position: absolute;
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    border-radius: var(--app-pill);
-    background: var(--accent);
-    color: var(--app-on-brand);
-    font: 600 12px / 1 var(--font-mono);
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(var(--hs-s, 1));
-    box-shadow: 0 0 0 4px var(--selection); /* design-ok 编号点的光环 */
-    transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
-  }
-  .hotspots :global(button[aria-current='step']) { --hs-s: 1.25; }
-  .hotspots :global(button:hover) { --hs-s: 1.15; }
 
   @keyframes drawer-in { from { opacity: 0; transform: translateX(12px); } }
   @keyframes bottom-in { from { opacity: 0; transform: translateY(12px); } }

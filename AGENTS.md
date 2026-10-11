@@ -23,7 +23,7 @@
 - 页面由 `components/ui/` 与 `SectionFrame`、`.list-row` 组合，不新写一次性的标题、分区、行或按钮样式。
 - 界面文案只放 `src/i18n/strings.ts`；文档正文放 `src/content/docs/{zh,en}/`，两种语言同名文件一一对应。
 - 导航项只在 `src/lib/nav.ts` 定义。
-- 首页软件模型：界面在 `src/components/model/`，模型里的文字在 `src/i18n/model.ts`（照软件真实文案），叙事步骤在 `src/i18n/home.ts` 的 `story.steps`；模型外观对齐 Armadra 软件，软件界面变了要同步。
+- 首页软件模型：界面在 `src/components/model/`，模型里的文字在 `src/i18n/model.ts`（照软件真实文案）；模型外观对齐 Armadra 软件（先对照 `apps/web/src/shell/` 的组件代码），软件界面变了要同步。
 - 更新日志放 `src/data/changelog.ts`，取自 Armadra `CHANGELOG.md` 中用户可感知的改动，中英同步，不写契约号、迁移号与 PR 号。
 - 引入第三方源码前先确认许可证，并登记到 `THIRD_PARTY_NOTICES.md`。
 

@@ -88,7 +88,9 @@
   --app-pill: 999px;
 
   /* 字体 */
-  --font-sans: "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  /* 界面字体：全站等宽（参考 opencode.ai），文档长文用 --font-prose */
+  --font-sans: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
+  --font-prose: "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
   --font-mono: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
 
   /* 字号阶梯（§2.3） */
@@ -148,7 +150,11 @@
   --nav-h: 64px;
   --bar-h: 52px;
   --sidebar-w: 232px;
-  --content-max: 1200px;
+  /* 全站一列宽 1080，内容左右缩进即 --gutter（参考 opencode.ai）；文档页三栏另用 --docs-max */
+  --content-max: 1080px;
+  --page-col: 1080px;
+  --page-inset: var(--gutter);
+  --docs-max: 1320px;
   /* 首页纵向导轨线到视口边的距离（与 .container 的外缘对齐） */
   --rail-x: max(calc(var(--gutter) / 2), calc((100vw - var(--content-max)) / 2));
   --docs-main-max: 1040px;
@@ -169,7 +175,7 @@
   :root { --gutter: 40px; }
 }
 @media (min-width: 1025px) {
-  :root { --gutter: 48px; }
+  :root { --gutter: 64px; }
 }
 /* 减少动效偏好下不清零时长：颜色与透明度过渡保留，位移类动效在 motion.css 中单独关闭 */
 

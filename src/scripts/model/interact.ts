@@ -52,7 +52,6 @@ export function initModel(model: HTMLElement): void {
 
   model.addEventListener('click', (e) => {
     const el = e.target as HTMLElement;
-    if (el.closest('button, label, input')) model.dataset.free = '';
     const btn = el.closest<HTMLElement>('button');
 
     const menuBtn = el.closest<HTMLElement>('[data-model-menu]');
