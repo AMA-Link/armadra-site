@@ -1,6 +1,6 @@
 # 录屏指南
 
-首页的软件画面是一段真实 Armadra 的录屏（现为 `public/media/armadra-demo-dispatch.webm` 与 poster `armadra-demo-dispatch.jpg`）。资源缓存一天，换片时换文件名并改 `src/pages/index.astro` 的 `DEMO`。不剪辑出软件做不到的行为：画面里的 Claude Code 与 Codex 是真实 CLI，真实地改代码、跑测试、经画布协作。
+首页的软件画面是一段真实 Armadra 的录屏（现为 `public/media/armadra-demo-tree.webm` 与 poster `armadra-demo-tree.jpg`）。资源缓存一天，换片时换文件名并改 `src/pages/index.astro` 的 `DEMO`。不剪辑出软件做不到的行为：画面里的 Claude Code 与 Codex 是真实 CLI，真实地改代码、跑测试、经画布协作。
 
 ## 录了什么
 
@@ -8,8 +8,8 @@
 
 1. 画布上一开始只有 Claude Code（主）。不预先摆子节点、不预写连线——预写的连线会被当成上下文连线显示。
 2. 在 Claude Code 里输入一条需求：先用两三句话说明分工，再用一条 `armadra-hook canvas team --permission-mode full-auto` 派出三个 Codex——`src/session.js` 记住我、`src/password.js` 密码规则、`src/email.js` 邮箱校验，各自补测试、跑 `node --test`、用 `canvas post` 回报。
-3. 子节点由主节点派出后出现在画布上，带派发连线与「从 @…」标记；镜头缩到 85% 依次拉近每个子节点，收齐回报后回到主节点看汇总。
-4. 合成只截取几个片段，每段按原速播放、段间直接切，不加速：开始输入、主节点说明分工并派发、每个子节点 5 秒（取第二轮拉近，那时已有改动和测试结果）、主节点汇总，最后停在总结画面上 5 秒（`HOLD`）。
+3. 子节点由主节点派出后出现在画布上，带派发连线与「从 @…」标记；随即点底栏「一键整理」，主节点居中在上、三个子节点在正下方排成一行，再适应窗口。镜头缩到 85% 依次拉近每个子节点，收齐回报后回到主节点看汇总，最后拉远停在全貌上。
+4. 合成只截取几个片段，每段按原速播放、段间直接切，不加速：开始输入、主节点说明分工并派发、每个子节点 5 秒（取第二轮拉近，那时已有改动和测试结果）、主节点汇总、拉远看全貌，最后停在全貌上 5 秒（`HOLD`）。
 
 ## 怎么重录
 
@@ -27,8 +27,8 @@ sips -Z 1920 -s formatOptions 80 /tmp/armadra-demo-poster-full.jpg --out public/
 
 - `record.mjs`：起隔离的 core（数据目录、项目、浏览器 profile 全在临时目录）、Vite 页面与无头 Chrome（1440×900），按上面的步骤驱动页面，以 2 倍设备像素逐帧截图，记下事件时间。
 - `compose.mjs`：按事件截取片段、原速拼接，编码为 VP8 WebM；用 Playwright 自带的 ffmpeg（`~/Library/Caches/ms-playwright/ffmpeg-*/ffmpeg-mac`）。
-- 码率缺省 900k，约 50 秒成片 6 MB；文字发糊时调高 `BITRATE`，同时注意体积。
-- poster 取最后一帧（总结画面），用 macOS 自带的 `sips` 缩到 1920 宽（Playwright 的 ffmpeg 不带 JPEG 编码器）。
+- 码率缺省 900k，约 57 秒成片 6 MB；文字发糊时调高 `BITRATE`，同时注意体积。
+- poster 取最后一帧（全貌），用 macOS 自带的 `sips` 缩到 1920 宽（Playwright 的 ffmpeg 不带 JPEG 编码器）。
 
 ## 安全
 
