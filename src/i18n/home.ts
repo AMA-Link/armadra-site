@@ -1,103 +1,81 @@
 /**
- * 首页文案：只留标题级的短句，不写解释段落。事实出自 AMA-Link/Armadra 的 README 与产品说明。
+ * 首页文案：参考 opencode.ai 的写法——一个标题、两行说明、一组 [*] 条目、一组常见问题。
+ * 事实出自 AMA-Link/Armadra 的 README 与 docs/guides/，不写没有依据的数字。
  */
 export const H = {
   docTitle: { zh: 'Armadra · 多 Agent 协作的 AI Coding 画布', en: 'Armadra · An AI coding canvas for agents that work together' },
   hero: {
-    title: [
-      { zh: '让不同的 Agent，', en: 'Put your agents on one canvas,' },
-      { zh: '在同一张画布上协作', en: 'and let them work together' },
-    ],
-    download: { zh: '下载', en: 'Download' },
-    docs: { zh: '快速上手', en: 'Quickstart' },
-  },
-  /** 滚动叙事：每一步一句话，模型高亮 areas 里列出的区域 */
-  story: {
-    label: { zh: '软件里有什么', en: 'Inside the app' },
-    steps: [
-      { title: { zh: '每个 Agent 都是真实终端', en: 'Every agent is a real terminal' }, areas: ['node-claude', 'node-codex'] },
-      { title: { zh: '连线决定谁能读到什么', en: 'Links decide who reads what' }, areas: ['edges', 'node-note', 'node-claude', 'node-codex'] },
-      { title: { zh: '权限请求，在节点头部回答', en: 'Answer permissions in the header' }, areas: ['ask'] },
-      { title: { zh: '协调者分派，结果收回', en: 'A coordinator assigns and gathers' }, areas: ['node-ama', 'edges-dispatch'] },
-      { title: { zh: '代码、Git 与浏览器都在画布上', en: 'Code, Git and a browser on the canvas' }, areas: ['node-diff', 'node-browser', 'cluster'] },
-      { title: { zh: '白板、评论与多人协作', en: 'Whiteboard, comments, teammates' }, areas: ['dock', 'pin', 'cursor'] },
-      { title: { zh: '项目和画布，在侧栏切换', en: 'Projects and canvases in the sidebar' }, areas: ['side'] },
+    title: { zh: '多 Agent 协作的 AI Coding 画布', en: 'The AI coding canvas for agents that work together' },
+    intro: [
+      { zh: '把 Claude Code、Codex 等 CLI Agent 放在同一张无限画布上，', en: 'Put Claude Code, Codex and other CLI agents on one infinite canvas,' },
+      { zh: '用连线共享上下文，用消息和交接组织分工。', en: 'share context along links, and split the work with messages and handoffs.' },
     ],
   },
-  /** 分区带的编号与名称（带头一行） */
-  bands: {
-    story: { zh: '软件', en: 'The app' },
-    why: { zh: '出发点', en: 'Why' },
-    how: { zh: '工作方式', en: 'How it works' },
-    features: { zh: '能力', en: 'Capabilities' },
-    run: { zh: '运行方式', en: 'Where it runs' },
-    recent: { zh: '最近更新', en: 'Recent releases' },
-    agents: { zh: 'Agent', en: 'Agents' },
-    principles: { zh: '原则', en: 'Principles' },
-    start: { zh: '开始', en: 'Start' },
+  get: {
+    label: { zh: '获取方式', en: 'Get Armadra' },
+    tabs: [
+      { id: 'download', label: { zh: '下载', en: 'Download' } },
+      { id: 'source', label: { zh: '源码', en: 'Source' } },
+      { id: 'docker', label: { zh: '服务器', en: 'Server' } },
+    ],
+    download: { zh: '前往 GitHub Releases 下载 v{v}', en: 'Get v{v} from GitHub Releases' },
+    source: 'git clone https://github.com/AMA-Link/Armadra && cd Armadra && pnpm install && ./armadra.sh run desktop',
+    docker: 'curl -fsSLO https://raw.githubusercontent.com/AMA-Link/Armadra/main/apps/server/docker/compose.yml\ndocker compose up -d',
+    dockerHint: { zh: '启动前先把 compose.yml 里的 ARMADRA_PUBLIC_ORIGIN 改成你的地址。', en: 'Set ARMADRA_PUBLIC_ORIGIN in compose.yml to your address first.' },
   },
-  why: {
-    title: { zh: '三个出发点', en: 'Three starting points' },
+  app: { zh: '软件界面（可以点）', en: 'The app (try clicking)' },
+  what: {
+    title: { zh: '什么是 Armadra？', en: 'What is Armadra?' },
+    intro: {
+      zh: 'Armadra 是本地优先的画布，让多个 CLI Agent 围绕同一个目标协作。',
+      en: 'Armadra is a local-first canvas where several CLI agents work toward one goal.',
+    },
     items: [
-      { title: { zh: '工作可以接续', en: 'Work carries over' }, line: { zh: '相连的 Agent 读取摘要、转录与资料，阶段性交接。', en: 'Linked agents read summaries, transcripts and material, and hand off at milestones.' } },
-      { title: { zh: '模型可以分工', en: 'Models split the work' }, line: { zh: '经济模型做边界明确的事，强模型做复杂判断。', en: 'Economical models take bounded tasks; stronger ones make the hard calls.' } },
-      { title: { zh: '过程可以查看', en: 'The process stays visible' }, line: { zh: 'Agent、资料、差异与成果摊在同一张画布上。', en: 'Agents, material, diffs and results on one canvas.' } },
+      { term: { zh: '真实 CLI', en: 'Real CLIs' }, line: { zh: '每个节点运行 CLI 本身，账户、模型与权限都沿用它自己的', en: 'Each node runs the CLI itself, with its own accounts, models and permissions' } },
+      { term: { zh: '连线即上下文', en: 'Links are context' }, line: { zh: '能读到什么由画布上的连线决定', en: 'Links on the canvas decide what can be read' } },
+      { term: { zh: '消息与交接', en: 'Messages and handoffs' }, line: { zh: '收件箱、投递与预览后再接受的交接', en: 'Inbox, delivery and handoffs you preview first' } },
+      { term: { zh: '协调者 ama', en: 'The ama coordinator' }, line: { zh: '拆分任务、组队并行、收回结果', en: 'Splits tasks, runs teams in parallel, gathers results' } },
+      { term: { zh: '代码工作面', en: 'Code surface' }, line: { zh: '编辑器、多仓库 Git、GitHub 与浏览器节点', en: 'Editor, multi-repo Git, GitHub and a browser node' } },
+      { term: { zh: '服务器与多端', en: 'Server and devices' }, line: { zh: '无窗口服务器壳，浏览器与手机访问同一份页面', en: 'A headless server shell; browsers and phones open the same pages' } },
+      { term: { zh: '开源', en: 'Open source' }, line: { zh: 'MIT 许可，代码在 GitHub', en: 'MIT licensed, on GitHub' } },
     ],
-  },
-  how: {
-    title: { zh: '四步组织一次协作', en: 'Four steps to a collaboration' },
-    steps: [
-      { title: { zh: '放上 Agent', en: 'Place agents' }, line: { zh: '每个节点启动一个真实 CLI。', en: 'Each node starts a real CLI.' } },
-      { title: { zh: '连线', en: 'Link them' }, line: { zh: '连线决定谁能读谁。', en: 'Links decide who reads whom.' } },
-      { title: { zh: '分派与交接', en: 'Assign and hand off' }, line: { zh: '协调者派活，阶段结果交接。', en: 'A coordinator assigns; results are handed off.' } },
-      { title: { zh: '收回结果', en: 'Gather results' }, line: { zh: '差异、测试与结论回到画布。', en: 'Diffs, tests and conclusions land on the canvas.' } },
-    ],
-  },
-  run: {
-    title: { zh: '在桌面，也在服务器上', en: 'On your desktop, and on a server' },
-    items: [
-      { id: 'desktop', title: { zh: '桌面应用', en: 'Desktop app' }, line: { zh: '本地优先，关窗口后台照跑。', en: 'Local first; keeps running after you close the window.' } },
-      { id: 'server', title: { zh: '服务器壳', en: 'Server shell' }, line: { zh: '常开，多人按工作空间共享。', en: 'Always on, shared per workspace.' } },
-      { id: 'phone', title: { zh: '手机', en: 'Phone' }, line: { zh: '扫码配对，随时查看与批准。', en: 'Pair by QR; check in and approve anywhere.' } },
-    ],
-  },
-  recent: {
-    title: { zh: '最近更新', en: 'Recent releases' },
-    all: { zh: '全部更新日志', en: 'Full changelog' },
-  },
-  features: {
-    title: { zh: '围绕画布的一整套工作面', en: 'A whole work surface around the canvas' },
-    groups: [
-      { title: { zh: '画布与白板', en: 'Canvas and whiteboard' }, items: [{ zh: '九种节点', en: 'Nine node types' }, { zh: '手绘、形状与 Mermaid', en: 'Freehand, shapes, Mermaid' }, { zh: '评论与 @ 提及', en: 'Comments and @mentions' }] },
-      { title: { zh: 'Agent 协作', en: 'Agent collaboration' }, items: [{ zh: '按连线读取上下文', en: 'Context along links' }, { zh: '收件箱与投递', en: 'Inbox and delivery' }, { zh: '预览后再交接', en: 'Handoffs you preview first' }] },
-      { title: { zh: '协调者与工作流', en: 'Coordinator and workflows' }, items: [{ zh: '并行、流水线、汇总', en: 'Parallel, pipeline, fan-in' }, { zh: '每人一条 worktree', en: 'A worktree per member' }, { zh: '模板定时重跑', en: 'Templates on a schedule' }] },
-      { title: { zh: '终端与主机', en: 'Terminals and hosts' }, items: [{ zh: 'tmux 会话跨重启', en: 'tmux sessions survive restarts' }, { zh: '空闲自动休眠', en: 'Idle agents hibernate' }, { zh: 'SSH 远端执行', en: 'Remote execution over SSH' }] },
-      { title: { zh: '代码工作面', en: 'Code surface' }, items: [{ zh: '编辑器与语言服务', en: 'Editor and language services' }, { zh: '多仓库 Git', en: 'Multi-repo Git' }, { zh: 'GitHub PR 评审', en: 'GitHub PR review' }] },
-      { title: { zh: '远程与多端', en: 'Remote and devices' }, items: [{ zh: '无窗口服务器壳', en: 'Headless server shell' }, { zh: '账号与共享', en: 'Accounts and sharing' }, { zh: '手机扫码配对', en: 'Pair a phone by QR' }] },
-    ],
-  },
-  principles: {
-    title: { zh: '设计原则', en: 'Design principles' },
-    items: [
-      { title: { zh: '一个 core，两种壳', en: 'One core, two shells' }, line: { zh: '桌面与服务器装配同一份 core 与页面。', en: 'Desktop and server assemble the same core and pages.' } },
-      { title: { zh: '真实 CLI', en: 'Real CLIs' }, line: { zh: '账户、模型与权限都沿用 CLI 自己的。', en: 'Accounts, models and permissions stay the CLI’s own.' } },
-      { title: { zh: '连线即上下文', en: 'Links are context' }, line: { zh: '能读到什么，由画布上的连线决定。', en: 'Links on the canvas decide what can be read.' } },
-      { title: { zh: '本地优先', en: 'Local first' }, line: { zh: '桌面安装没有服务端，数据留在本机。', en: 'No server for the desktop; data stays on your machine.' } },
-      { title: { zh: '如实的状态', en: 'Honest status' }, line: { zh: '未知就显示未知，不显示成 0 或成功。', en: 'Unknown shows as unknown, never as zero or success.' } },
-      { title: { zh: '最小侵入', en: 'Minimal footprint' }, line: { zh: '只在画布启动时注入，画布外的 CLI 不受影响。', en: 'Injected only when launched from the canvas.' } },
-    ],
+    docs: { zh: '阅读文档', en: 'Read the docs' },
   },
   agents: {
     title: { zh: '支持的 Agent', en: 'Supported agents' },
-    coordinator: { zh: '协调者', en: 'Coordinator' },
+    note: { zh: '另可添加自定义 CLI。', en: 'Custom CLIs can be added too.' },
   },
-  cta: {
-    title: [
-      { zh: '把第一组 Agent', en: 'Put your first agents' },
-      { zh: '放上画布', en: 'on the canvas' },
+  local: {
+    title: { zh: '本地优先', en: 'Local first' },
+    line: {
+      zh: '桌面安装没有服务端，记录保存在本机；凭据与终端原文不进画布、日志或接口响应。',
+      en: 'The desktop install has no server and keeps records on your machine; credentials and raw terminal output never reach the canvas, logs or API responses.',
+    },
+    more: { zh: '了解更多', en: 'Learn more' },
+  },
+  faq: {
+    title: { zh: '常见问题', en: 'FAQ' },
+    items: [
+      {
+        q: { zh: 'Armadra 会替我调用模型吗？', en: 'Does Armadra call models for me?' },
+        a: { zh: '不会。它启动你本机已经安装并登录的 CLI，模型调用与费用都按各 CLI 提供方的规则。', en: 'No. It launches CLIs already installed and signed in on your machine; model calls and billing follow each provider.' },
+      },
+      {
+        q: { zh: '会改动我的 CLI 配置吗？', en: 'Will it change my CLI configuration?' },
+        a: { zh: '不会。Hook 与技能只在从画布启动时注入，画布外启动的 CLI 不受影响。', en: 'No. Hooks and skills are injected only when launched from the canvas; the same CLI started elsewhere is untouched.' },
+      },
+      {
+        q: { zh: '关掉窗口后 Agent 还在跑吗？', en: 'Do agents keep running after I close the window?' },
+        a: { zh: '在。关闭窗口不停止后台；用 tmux 后端时会话还能跨应用重启存活。', en: 'Yes. Closing the window keeps the background running; with tmux, sessions survive restarts.' },
+      },
+      {
+        q: { zh: '可以多人一起用吗？', en: 'Can several people use it together?' },
+        a: { zh: '可以。服务器壳支持账号、按工作空间共享和多人实时编辑。', en: 'Yes. The server shell supports accounts, per-workspace sharing and real-time multi-user editing.' },
+      },
+      {
+        q: { zh: 'Armadra 收费吗？', en: 'How much does it cost?' },
+        a: { zh: 'Armadra 本身以 MIT 许可开源，免费使用；模型费用由你使用的 CLI 提供方收取。', en: 'Armadra is MIT-licensed and free; model costs are billed by the CLI providers you use.' },
+      },
     ],
-    download: { zh: '下载 Armadra', en: 'Download Armadra' },
-    quickstart: { zh: '快速上手', en: 'Quickstart' },
-    changelog: { zh: '更新日志', en: 'Changelog' },
   },
 } as const;
