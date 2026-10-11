@@ -28,8 +28,8 @@ export const H = {
   },
   /** 首页录屏：读屏与无法播放时的说明 */
   demo: {
-    zh: 'Armadra 录屏：Claude Code 作为主节点，把三件活分给三个 Codex 并行完成，收齐回报后跑全部测试并总结。',
-    en: 'Armadra recording: Claude Code leads, hands three tasks to three Codex nodes working in parallel, then collects their reports, runs every test and sums up.',
+    zh: 'Armadra 录屏：Claude Code 作为主节点先说明分工，再一次派出三个 Codex 子节点并行完成，收齐回报后跑全部测试并总结。',
+    en: 'Armadra recording: Claude Code leads, explains the split, then dispatches three Codex child nodes that work in parallel; once their reports arrive it runs every test and sums up.',
   },
   example: {
     title: { zh: '从一个任务，到多个 Agent 协作', en: 'Turn a task into a shared effort' },
