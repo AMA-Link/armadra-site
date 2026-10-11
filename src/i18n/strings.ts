@@ -34,8 +34,8 @@ export const S = {
   site: {
     name: { zh: 'Armadra', en: 'Armadra' },
     description: {
-      zh: 'Armadra 是本地优先的 AI Coding 画布：Claude Code、Codex 等 CLI Agent 以真实终端节点放在同一张无限画布上，按连线共享上下文、分工协作。',
-      en: 'Armadra is a local-first AI coding canvas: Claude Code, Codex and other CLI agents run as real terminal nodes on one infinite canvas, sharing context along links and splitting the work.',
+      zh: 'Armadra 是一个本地优先的 AI 编程协作工作空间，让多个 AI 助手在同一张画布上分工、共享上下文并接续任务。',
+      en: 'Armadra is a local-first workspace for collaborative AI coding. Bring multiple coding agents onto one canvas to divide tasks, share context, and hand off work.',
     },
   },
 
@@ -52,8 +52,8 @@ export const S = {
     docTitle: { zh: '文档 · Armadra', en: 'Docs · Armadra' },
     title: { zh: '文档', en: 'Documentation' },
     intro: {
-      zh: '从安装到多 Agent 协作：先读「入门」，再按需查概念与使用指南。',
-      en: 'From installing to multi-agent collaboration: start with Getting started, then look up concepts and guides as you need them.',
+      zh: '从安装到多个 AI 编程助手（Agent）协作：先读「入门」，再按需查概念与使用指南。',
+      en: 'From installing to collaborating with several AI coding agents: start with Getting started, then look up concepts and guides as you need them.',
     },
     groups: {
       start: { zh: '入门', en: 'Getting started' },
