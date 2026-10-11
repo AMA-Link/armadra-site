@@ -12,12 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SKIP = new Set(['src/styles/tokens.css']);
-/**
- * 软件模型是 Armadra 界面的等比缩放复刻：尺寸照软件取值（px），整体再按容器缩放，
- * 所以只查颜色、transition: all 与圆角，不查字号与间距。颜色仍须来自 --app-* 等变量。
- */
-const MODEL_DIR = 'src/components/model/';
-const MODEL_RULES = new Set(['字面颜色（请用颜色变量）', 'transition: all', '非零圆角']);
+
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -77,7 +72,7 @@ for (const file of walk(path.join(root, 'src'))) {
   for (const [start, css] of styleBlocks(file, text)) {
     css.split('\n').forEach((line, i) => {
       if (line.includes('design-ok') || /^\s*(\/\*|\*)/.test(line)) return;
-      for (const r of RULES) if ((!rel.startsWith(MODEL_DIR) || MODEL_RULES.has(r.name)) && r.test(line)) problems.push(`${rel}:${start + i}  ${r.name}  ${line.trim()}`);
+      for (const r of RULES) if (r.test(line)) problems.push(`${rel}:${start + i}  ${r.name}  ${line.trim()}`);
     });
   }
 }
