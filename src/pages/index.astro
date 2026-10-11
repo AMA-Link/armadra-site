@@ -1,7 +1,7 @@
 ---
 /**
- * 首页：一列带左右边框的版面，分区之间一条横线；只有首屏、软件画面、是什么、
- * 支持的 Agent、本地优先、常见问题与联系。设计见 DESIGN.md「首页」。
+ * 首页：一列带左右边框的版面，分区之间一条横线。顺序：首屏、软件画面、协作示例、
+ * 核心能力、支持的工具、部署与数据、常见问题、开始使用与联系。设计见 DESIGN.md「首页」。
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopNav from '../components/home/TopNav.astro';
@@ -10,11 +10,11 @@ import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import { H } from '../i18n/home';
 import { S, fmtBi } from '../i18n';
-import { AGENTS } from '../data/agents';
 import { RELEASE } from '../data/release';
 import { RELEASES_URL } from '../lib/nav';
 
 const download = fmtBi(H.get.download, { v: RELEASE.version });
+const version = fmtBi(H.start.text, { v: RELEASE.version });
 /** 录屏资源（public/media/），换片时改这里 */
 const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-demo-team.jpg', width: 1792, height: 1120 };
 ---
@@ -24,9 +24,12 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
   <main id="main" class="page">
     <section class="sec sec--hero" aria-labelledby="hero-title">
       <h1 id="hero-title" class="hero__title"><T zh={H.hero.title.zh} en={H.hero.title.en} /></h1>
-      <p class="hero__intro">
-        {H.hero.intro.map((l) => <span class="hero__line"><T zh={l.zh} en={l.en} /></span>)}
-      </p>
+      <p class="hero__intro"><T zh={H.hero.intro.zh} en={H.hero.intro.en} /></p>
+      <div class="actions">
+        <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
+        <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.hero.quickstart.zh} en={H.hero.quickstart.en} /><Icon name="arrow-right" size={14} /></a>
+      </div>
+      <p class="hero__note"><T zh={H.hero.note.zh} en={H.hero.note.en} /></p>
 
       <div class="get" data-tabs>
         <div class="get__tabs" role="tablist" aria-label={H.get.label.zh} data-aria-zh={H.get.label.zh} data-aria-en={H.get.label.en}>
@@ -86,12 +89,16 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
       </video>
     </section>
 
-    <section class="sec" aria-labelledby="what-title">
-      <h2 id="what-title" class="sec__title"><T zh={H.what.title.zh} en={H.what.title.en} /></h2>
-      <p class="sec__text"><T zh={H.what.intro.zh} en={H.what.intro.en} /></p>
+    <section class="sec" aria-labelledby="example-title">
+      <h2 id="example-title" class="sec__title"><T zh={H.example.title.zh} en={H.example.title.en} /></h2>
+      <p class="sec__text"><T zh={H.example.text.zh} en={H.example.text.en} /></p>
+    </section>
+
+    <section class="sec" aria-labelledby="features-title">
+      <h2 id="features-title" class="sec__title"><T zh={H.features.title.zh} en={H.features.title.en} /></h2>
       <ul class="stars" role="list">
         {
-          H.what.items.map((it) => (
+          H.features.items.map((it) => (
             <li>
               <span class="stars__mark" aria-hidden="true">[*]</span>
               <span>
@@ -102,26 +109,32 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
           ))
         }
       </ul>
-      <a class="btn-primary sec__action" href="/docs/"><T zh={H.what.docs.zh} en={H.what.docs.en} /><Icon name="arrow-right" size={14} /></a>
+      <a class="btn-ghost sec__action" href="/docs/"><T zh={H.features.docs.zh} en={H.features.docs.en} /><Icon name="arrow-right" size={14} /></a>
     </section>
 
-    <section class="sec" aria-labelledby="agents-title">
-      <h2 id="agents-title" class="sec__title"><T zh={H.agents.title.zh} en={H.agents.title.en} /></h2>
-      <ul class="agents" role="list">
-        {AGENTS.map((a) => <li>{a.name}</li>)}
+    <section class="sec" aria-labelledby="tools-title">
+      <h2 id="tools-title" class="sec__title"><T zh={H.tools.title.zh} en={H.tools.title.en} /></h2>
+      <p class="sec__text"><T zh={H.tools.text.zh} en={H.tools.text.en} /></p>
+      <p class="sec__text sec__text--muted"><T zh={H.tools.note.zh} en={H.tools.note.en} /></p>
+    </section>
+
+    <section class="sec" aria-labelledby="deploy-title">
+      <h2 id="deploy-title" class="sec__title"><T zh={H.deploy.title.zh} en={H.deploy.title.en} /></h2>
+      <ul class="stars" role="list">
+        {
+          H.deploy.items.map((it, i) => (
+            <li>
+              <span class="stars__mark" aria-hidden="true">[*]</span>
+              <span class="stars__line">
+                <T zh={it.zh} en={it.en} />
+                {i === H.deploy.items.length - 1 && (
+                  <a class="sec__inline" href="/docs/faq/"><T zh={H.deploy.more.zh} en={H.deploy.more.en} /></a>
+                )}
+              </span>
+            </li>
+          ))
+        }
       </ul>
-      <p class="sec__text sec__text--muted"><T zh={H.agents.note.zh} en={H.agents.note.en} /></p>
-    </section>
-
-    <section class="sec" aria-labelledby="local-title">
-      <h2 id="local-title" class="sec__title"><T zh={H.local.title.zh} en={H.local.title.en} /></h2>
-      <p class="stars stars--one">
-        <span class="stars__mark" aria-hidden="true">[*]</span>
-        <span>
-          <T zh={H.local.line.zh} en={H.local.line.en} />
-          <a class="sec__inline" href="/docs/faq/"><T zh={H.local.more.zh} en={H.local.more.en} /></a>
-        </span>
-      </p>
     </section>
 
     <section class="sec" aria-labelledby="faq-title">
@@ -138,6 +151,15 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
             </details>
           ))
         }
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="start-title">
+      <h2 id="start-title" class="sec__title"><T zh={H.start.title.zh} en={H.start.title.en} /></h2>
+      <p class="sec__text"><T zh={version.zh} en={version.en} /></p>
+      <div class="actions">
+        <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
+        <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.hero.quickstart.zh} en={H.hero.quickstart.en} /><Icon name="arrow-right" size={14} /></a>
       </div>
     </section>
 
@@ -228,12 +250,13 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
     letter-spacing: -0.01em;
     text-wrap: balance;
   }
-  .hero__intro { margin-top: var(--sp-4); color: var(--ink-2); line-height: 1.7; }
-  .hero__line { display: block; }
+  .hero__intro { max-width: 70ch; margin-top: var(--sp-4); color: var(--ink-2); line-height: 1.7; }
+  .hero__note { margin-top: var(--sp-4); color: var(--ink-3); font-size: var(--fs-body-sm); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6); }
 
   .get {
     position: relative;
-    margin-top: var(--sp-7);
+    margin-top: var(--sp-6);
     border: 1px solid var(--line);
     background: var(--bg-raised);
   }
@@ -302,10 +325,6 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
   .stars__line,
   .stars--one { color: var(--ink-2); }
 
-  /* 支持的 Agent：一行排开 */
-  .agents { display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-6); margin: var(--sp-5) 0 0; padding: 0; color: var(--ink); }
-  .agents li::before { content: '/ '; color: var(--ink-4); }
-
   /* 常见问题 */
   .faq { margin-top: var(--sp-4); }
   .faq__q {
@@ -335,7 +354,6 @@ const DEMO = { webm: '/media/armadra-demo-team.webm', poster: '/media/armadra-de
     .sec { padding-block: var(--sp-7); }
     .sec--hero { padding-block: var(--sp-8) var(--sp-7); }
     .get__tabs { gap: var(--sp-4); }
-    .hero__line { display: inline; }
   }
   @media (prefers-reduced-motion: reduce) {
     .faq__icon { transition: none; }
