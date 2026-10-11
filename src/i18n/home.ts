@@ -25,8 +25,8 @@ export const H = {
   },
   /** 首页录屏：读屏与无法播放时的说明 */
   demo: {
-    zh: 'Armadra 录屏：Claude Code 实现「记住我」并跑测试，在节点头部批准命令，经画布请 Codex 审查，审查结果回到 Claude。',
-    en: 'Armadra recording: Claude Code implements “Remember me” and runs the tests, the command is approved in the node header, Codex reviews over the canvas, and the review goes back to Claude.',
+    zh: 'Armadra 录屏：Claude Code 作为主节点，把三件活分给三个 Codex 并行完成，收齐回报后跑全部测试并总结。',
+    en: 'Armadra recording: Claude Code leads, hands three tasks to three Codex nodes working in parallel, then collects their reports, runs every test and sums up.',
   },
   what: {
     title: { zh: '什么是 Armadra？', en: 'What is Armadra?' },
