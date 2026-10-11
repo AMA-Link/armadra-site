@@ -28,7 +28,8 @@ const wanted = [
   ["主节点说明分工、派出三个子节点", first("dispatched") - 12 * s, first("dispatched") + 6 * s],
   // 拉近到每个子节点后看 5 秒，一人一次；第一轮子节点刚启动、居中动画也没走完，有第二轮就用第二轮
   ...((f) => (f.length >= 6 ? f.slice(3, 6) : f.slice(0, 3)))(events.filter((e) => e.kind.startsWith("focus:"))).map((e) => [e.kind.slice(6), e.at + 0.8 * s, e.at + 5.8 * s]),
-  ["回到主节点看汇总", (first("focus-lead") ?? first("claude-done") - 14 * s) + 0.8 * s, end],
+  ["回到主节点看汇总", (first("focus-lead") ?? first("claude-done") - 14 * s) + 0.8 * s, first("overview") ?? end],
+  ["拉远看全貌", first("overview") + 0.4 * s, end],
 ].filter(([, a, b]) => Number.isFinite(a) && Number.isFinite(b) && b > a);
 
 // 合并重叠片段，裁进录制范围

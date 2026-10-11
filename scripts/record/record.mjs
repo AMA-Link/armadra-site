@@ -417,6 +417,11 @@ test("session cookie is http-only", () => {
     const ok = await evaluate(`const b = [...document.querySelectorAll('button')].find((x) => /^适应$|^Fit$/.test(x.getAttribute('aria-label') ?? '')); b?.click(); return !!b;`);
     log("适应窗口", ok);
   };
+  // 底栏「一键整理」：按主从树排，主节点居中在子节点那一行的正上方
+  const tidy = async () => {
+    const ok = await evaluate(`const b = [...document.querySelectorAll('button')].find((x) => /^一键整理$|^Tidy up$/.test(x.getAttribute('aria-label') ?? '')); b?.click(); return !!b;`);
+    log("一键整理", ok);
+  };
   const deadline = Date.now() + 20 * 60_000;
   let workers = [];
   const started = new Set();
@@ -448,6 +453,8 @@ test("session cookie is http-only", () => {
         if (workers.length >= 3) {
           mark("dispatched");
           await sleep(1200);
+          await tidy();
+          await sleep(800);
           await fitView();
         }
       }
@@ -464,6 +471,11 @@ test("session cookie is http-only", () => {
     }
     await sleep(1000);
   }
+  // 汇总在主节点特写里停留几秒，再拉远到全貌（主节点与三个已完成的子节点），结尾停在全貌上
+  await sleep(4000);
+  await fitView();
+  await sleep(600);
+  mark("overview");
   await sleep(4000);
   mark("end");
   capturing = false;

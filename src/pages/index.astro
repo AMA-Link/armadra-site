@@ -16,7 +16,7 @@ import { RELEASES_URL } from '../lib/nav';
 const download = fmtBi(H.get.download, { v: RELEASE.version });
 const version = fmtBi(H.start.text, { v: RELEASE.version });
 /** 录屏资源（public/media/），换片时改这里 */
-const DEMO = { webm: '/media/armadra-demo-dispatch.webm', poster: '/media/armadra-demo-dispatch.jpg', width: 1920, height: 1200 };
+const DEMO = { webm: '/media/armadra-demo-tree.webm', poster: '/media/armadra-demo-tree.jpg', width: 1920, height: 1200 };
 ---
 
 <BaseLayout page="home" title={H.docTitle.zh} titleEn={H.docTitle.en}>
@@ -312,20 +312,9 @@ const DEMO = { webm: '/media/armadra-demo-dispatch.webm', poster: '/media/armadr
   }
   .get__link:hover { text-decoration-color: currentColor; }
 
-  /* 录屏：整列宽、不加边框与说明 */
-  /* 录屏比正文列宽：宽屏时向两侧伸出到 --demo-max，让画面里的字够大 */
-  .sec--demo { padding: 0; overflow: visible; }
-  .demo {
-    position: relative;
-    left: 50%;
-    display: block;
-    width: min(calc(100vw - 2 * var(--gutter)), var(--demo-max));
-    max-width: none;
-    height: auto;
-    transform: translateX(-50%);
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-  }
+  /* 录屏：整列宽，与上下分区共用框线，不加说明 */
+  .sec--demo { padding: 0; }
+  .demo { display: block; width: 100%; height: auto; background: var(--bg-raised); }
 
   /* [*] 条目 */
   .stars { display: flex; flex-direction: column; gap: var(--sp-4); margin: var(--sp-5) 0 0; padding: 0; }
