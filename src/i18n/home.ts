@@ -23,7 +23,11 @@ export const H = {
     docker: 'curl -fsSLO https://raw.githubusercontent.com/AMA-Link/Armadra/main/apps/server/docker/compose.yml\ndocker compose up -d',
     dockerHint: { zh: '启动前先把 compose.yml 里的 ARMADRA_PUBLIC_ORIGIN 改成你的地址。', en: 'Set ARMADRA_PUBLIC_ORIGIN in compose.yml to your address first.' },
   },
-  app: { zh: '软件界面（可以点）', en: 'The app (try clicking)' },
+  /** 首页录屏：读屏与无法播放时的说明 */
+  demo: {
+    zh: 'Armadra 录屏：Claude Code 实现「记住我」并跑测试，在节点头部批准命令，经画布请 Codex 审查，审查结果回到 Claude。',
+    en: 'Armadra recording: Claude Code implements “Remember me” and runs the tests, the command is approved in the node header, Codex reviews over the canvas, and the review goes back to Claude.',
+  },
   what: {
     title: { zh: '什么是 Armadra？', en: 'What is Armadra?' },
     intro: {

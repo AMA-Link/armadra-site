@@ -56,6 +56,9 @@ const headers = `/*
 
 /brand/*
   Cache-Control: public, max-age=86400
+
+/media/*
+  Cache-Control: public, max-age=86400
 `;
 
 fs.writeFileSync(path.join(dist, '_headers'), headers);
