@@ -14,6 +14,7 @@ import { M } from '../i18n/model';
 import { AGENTS } from '../data/agents';
 import { RELEASE } from '../data/release';
 import { RELEASES_URL } from '../lib/nav';
+import { S } from '../i18n';
 
 const steps = H.story.steps;
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -225,8 +226,26 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
       </ul>
     </Band>
 
+    <!-- 联系：三个邮箱 -->
+    <Band id="contact" n={9} label={S.contact.band}>
+      <div class="container">
+        <h2 class="section-title" data-reveal><T zh={S.contact.title.zh} en={S.contact.title.en} /></h2>
+      </div>
+      <ul class="cols container" role="list">
+        {
+          S.contact.items.map((c, i) => (
+            <li class="cols__item" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+              <h3 class="cols__title"><T zh={c.label.zh} en={c.label.en} /></h3>
+              <a class="contact__mail" href={`mailto:${c.email}`}>{c.email}</a>
+              <p class="cols__line"><T zh={c.line.zh} en={c.line.en} /></p>
+            </li>
+          ))
+        }
+      </ul>
+    </Band>
+
     <!-- 收尾 -->
-    <Band id="start" n={9} label={H.bands.start} aside={`v${RELEASE.version}`}>
+    <Band id="start" n={10} label={H.bands.start} aside={`v${RELEASE.version}`}>
     <div class="cta container">
       <h2 id="cta-title" class="cta__title">
         {H.cta.title.map((l, i) => <span class="hero__line" style={`--reveal-delay:${i * 120}ms`} data-reveal><T zh={l.zh} en={l.en} /></span>)}
@@ -269,13 +288,13 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: calc(100svh - var(--nav-h));
-    padding-block: var(--sp-9) var(--sp-10);
+    padding-block: var(--sp-9);
   }
   .hero__title,
   .cta__title {
-    font: 500 var(--fs-hero) / 1.02 var(--font-sans);
-    letter-spacing: -0.04em;
+    font: 500 var(--fs-hero) / 1.1 var(--font-sans);
+    letter-spacing: -0.03em;
+    text-wrap: balance;
   }
   .hero__line { display: block; }
   .hero__actions {
@@ -290,7 +309,7 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     left: max(var(--gutter), calc((100% - var(--content-max)) / 2 + var(--gutter)));
     bottom: 0;
     width: 1px;
-    height: var(--sp-10);
+    height: var(--sp-8);
     background: var(--ink);
     transform-origin: top;
     animation: cue 2.4s var(--ease-out) infinite;
@@ -305,7 +324,7 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
   /* 滚动叙事 */
   .story {
     position: relative;
-    height: calc(var(--steps) * 70svh + 100svh);
+    height: calc(var(--steps) * 55svh + 100svh);
   }
   .story__sticky {
     position: sticky;
@@ -370,13 +389,13 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     max-width: calc((100svh - var(--nav-h) - 220px) * 1200 / 760);
     margin-inline: auto;
   }
-  .story__captions { min-height: calc(var(--fs-h1) * 1.3); }
+  .story__captions { min-height: calc(var(--fs-h2) * 1.3); }
   .story__caption {
     display: flex;
     align-items: baseline;
     gap: var(--sp-4);
-    font: 500 var(--fs-h1) / 1.2 var(--font-sans);
-    letter-spacing: -0.025em;
+    font: 500 var(--fs-h2) / 1.25 var(--font-sans);
+    letter-spacing: -0.015em;
     animation: cap-in 500ms var(--ease-out);
   }
   .story__caption-n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
@@ -396,9 +415,10 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
 
   /* 分区标题 */
   .section-title {
-    font: 500 var(--fs-display) / 1.05 var(--font-sans);
-    letter-spacing: -0.03em;
-    padding-block: var(--sp-9) var(--sp-7);
+    font: 500 var(--fs-section) / 1.15 var(--font-sans);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    padding-block: var(--sp-8) var(--sp-6);
   }
 
   /* 首屏：≥1025 左文右图 */
@@ -406,7 +426,6 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
   @media (min-width: 1025px) {
     .hero { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; }
     /* 两栏时标题每行一句，不在句中折行 */
-    .hero__title { font-size: min(var(--fs-hero), 4.6vw); }
   }
   .hero__art { min-width: 0; }
 
@@ -415,7 +434,7 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     margin: 0 auto;
-    padding: 0 var(--gutter) var(--sp-9);
+    padding: 0 var(--gutter) var(--sp-8);
   }
   .flow__step {
     position: relative;
@@ -439,69 +458,69 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     transform: rotate(45deg);
   }
   .flow__art { padding: var(--sp-3); border: 1px solid var(--line-soft); background: var(--app-canvas); }
-  .flow__title { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .flow__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
   .run__art { padding: var(--sp-4); border: 1px solid var(--line-soft); background: var(--app-canvas); }
 
   /* 最近更新 */
   .recent__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-5); }
   .recent__all { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); font-size: var(--fs-body-sm); white-space: nowrap; }
-  .recent { margin: 0; padding: 0 0 var(--sp-9); }
+  .recent { margin: 0; padding: 0 0 var(--sp-8); }
   .recent__row {
     display: grid;
     grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto;
     align-items: baseline;
     gap: var(--sp-6);
-    padding-block: var(--sp-6);
+    padding-block: var(--sp-4);
     text-decoration: none;
     transition: background-color var(--dur-1) var(--ease-out);
   }
   .rows__row:has(.recent__row:hover) { background: var(--hover-row); }
-  .recent__v { font: 500 var(--fs-h1) / 1 var(--font-mono); letter-spacing: -0.03em; }
-  .recent__title { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .recent__v { font: 500 var(--fs-h2) / 1 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .recent__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
 
   /* 三个出发点：三列，列间竖线 */
   .cols {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0 auto;
-    padding: 0 var(--gutter) var(--sp-9);
+    padding: 0 var(--gutter) var(--sp-8);
   }
   .cols__item {
     display: flex;
     flex-direction: column;
     gap: var(--sp-4);
-    padding: var(--sp-6) var(--sp-6) var(--sp-6) 0;
+    padding: var(--sp-5) var(--sp-5) var(--sp-5) 0;
     border-top: 1px solid var(--line-strong);
   }
-  .cols__item + .cols__item { padding-left: var(--sp-6); border-left: 1px solid var(--line); }
+  .cols__item + .cols__item { padding-left: var(--sp-5); border-left: 1px solid var(--line); }
   .cols__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
-  .cols__title { font: 500 var(--fs-h1) / 1.15 var(--font-sans); letter-spacing: -0.025em; }
-  .cols__line { color: var(--ink-2); font-size: var(--fs-body-lg); line-height: var(--lh-body-lg); text-wrap: pretty; }
+  .cols__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
+  .cols__line { color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; text-wrap: pretty; }
 
   /* 能力：3×2 网格 */
   .grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding: 0 var(--gutter) var(--sp-9);
+    padding: 0 var(--gutter) var(--sp-8);
   }
   .grid__cell {
-    padding: var(--sp-6) var(--sp-5);
+    padding: var(--sp-5);
     border-top: 1px solid var(--line-strong);
     border-left: 1px solid var(--line);
   }
   .grid__cell:nth-child(3n + 1) { border-left: 0; padding-left: 0; }
-  .grid__title { font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .grid__title { font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
   .grid__items { margin: var(--sp-5) 0 0; padding: 0; }
   .grid__items li {
     padding-block: var(--sp-2);
     border-top: 1px dashed var(--line-soft);
     color: var(--ink-2);
-    font-size: var(--fs-body-lg);
-    line-height: var(--lh-body-lg);
+    font-size: var(--fs-body);
+    line-height: 1.6;
   }
 
   /* 设计原则：行间满宽线 */
-  .rows { margin: 0; padding-bottom: var(--sp-9); }
+  .rows { margin: 0; padding-bottom: var(--sp-8); }
   .rows__row { border-top: 1px solid var(--line); }
   .rows__row:last-child { border-bottom: 1px solid var(--line); }
   .rows__inner {
@@ -509,35 +528,54 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--sp-6);
     align-items: baseline;
-    padding-block: var(--sp-6);
+    padding-block: var(--sp-4);
   }
-  .rows__title { display: flex; gap: var(--sp-4); align-items: baseline; font: 500 var(--fs-h2) / 1.25 var(--font-sans); letter-spacing: -0.015em; }
+  .rows__title { display: flex; gap: var(--sp-4); align-items: baseline; font: 500 var(--fs-h3) / 1.3 var(--font-sans); }
   .rows__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--accent-text); }
-  .rows__line { margin: 0; color: var(--ink-2); font-size: var(--fs-body-lg); line-height: var(--lh-body-lg); }
+  .rows__line { margin: 0; color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; }
+
+  /* 联系 */
+  .contact__mail {
+    align-self: flex-start;
+    font: 400 var(--fs-body) / var(--lh-body) var(--font-mono);
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 0.25em;
+    overflow-wrap: anywhere;
+  }
+  .contact__mail:hover { text-decoration-color: currentColor; }
 
   /* 支持的 Agent */
-  .agents { padding-bottom: var(--sp-9); }
-  .agents__list { margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+  .agents { padding-bottom: var(--sp-8); }
+  .agents__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--sp-7);
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line-strong);
+  }
   .agents__row {
     display: grid;
     grid-template-columns: 4ch auto 1fr;
     align-items: baseline;
     gap: var(--sp-5);
-    padding-block: var(--sp-5);
-    border-bottom: 1px solid var(--line-strong);
+    padding-block: var(--sp-3);
+    border-bottom: 1px solid var(--line);
   }
   .agents__n { font: 400 var(--fs-mono) / 1 var(--font-mono); color: var(--ink-3); }
-  .agents__name { font: 500 var(--fs-agent) / 1.1 var(--font-sans); letter-spacing: -0.03em; }
+  .agents__name { font: 500 var(--fs-agent) / 1.2 var(--font-sans); letter-spacing: -0.015em; }
   .agents__tag { justify-self: end; color: var(--accent-text); font: 500 var(--fs-body) / 1 var(--font-sans); }
 
   /* 收尾 */
-  .cta { padding-block: var(--sp-10); }
+  .cta { padding-block: var(--sp-8) var(--sp-9); }
 
   @media (max-width: 900px) {
-    .story { height: calc(var(--steps) * 80svh + 100svh); }
+    .story { height: calc(var(--steps) * 65svh + 100svh); }
     .story__bar { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
     .story__label { display: none; }
-    .story__caption { font-size: var(--fs-h2); }
+    .story__caption { font-size: var(--fs-h3); }
   }
   @media (max-width: 1024px) {
     .cols, .grid { grid-template-columns: minmax(0, 1fr); }
@@ -550,13 +588,14 @@ const storyData = JSON.stringify(steps.map((s) => ({ areas: s.areas })));
     .rows__inner { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
   }
   @media (max-width: 640px) {
-    .hero { padding-block: var(--sp-8) var(--sp-9); }
+    .agents__list { grid-template-columns: minmax(0, 1fr); }
+    .hero { padding-block: var(--sp-7) var(--sp-8); }
     .flow { grid-template-columns: minmax(0, 1fr); }
     .flow__step, .flow__step + .flow__step { padding: var(--sp-5) 0; border-left: 0; }
     .flow__step + .flow__step::before { display: none; }
     .agents__row { gap: var(--sp-3); padding-block: var(--sp-4); }
     .agents__tag { font-size: var(--fs-body-sm); }
-    .section-title { padding-block: var(--sp-8) var(--sp-6); }
+    .section-title { padding-block: var(--sp-7) var(--sp-5); }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero__cue { animation: none; transform: none; }

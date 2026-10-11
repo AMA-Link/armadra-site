@@ -78,6 +78,17 @@ export const S = {
     full: { zh: '完整记录', en: 'Full history' },
   },
 
+  /** 联系邮箱：首页「联系」分区、页脚与安全策略共用 */
+  contact: {
+    title: { zh: '联系我们', en: 'Contact us' },
+    band: { zh: '联系', en: 'Contact' },
+    items: [
+      { email: 'contact@armadra.com', label: { zh: '咨询合作', en: 'Partnerships' }, line: { zh: '合作、采购与媒体', en: 'Partnerships, purchasing and press' } },
+      { email: 'support@armadra.com', label: { zh: '技术支持', en: 'Support' }, line: { zh: '安装、使用与故障', en: 'Installation, usage and problems' } },
+      { email: 'security@armadra.com', label: { zh: '安全报告', en: 'Security' }, line: { zh: '漏洞请私下报告', en: 'Report vulnerabilities privately' } },
+    ],
+  },
+
   notFound: {
     docTitle: { zh: '页面不存在 · Armadra', en: 'Not found · Armadra' },
     title: { zh: '这个页面不存在', en: 'This page does not exist' },

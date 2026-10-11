@@ -35,4 +35,6 @@ Workflow tools excel at turning well-defined steps into repeatable pipelines. Ar
 
 ## Where do I report problems?
 
-App issues go to [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/issues/new/choose); website and docs issues go to [AMA-Link/armadra-site](https://github.com/AMA-Link/armadra-site/issues/new/choose).
+For help with installation or problems, email [support@armadra.com](mailto:support@armadra.com); for partnerships, [contact@armadra.com](mailto:contact@armadra.com); report vulnerabilities privately to [security@armadra.com](mailto:security@armadra.com).
+
+App issues can also go to [AMA-Link/Armadra](https://github.com/AMA-Link/Armadra/issues/new/choose); website and docs issues go to [AMA-Link/armadra-site](https://github.com/AMA-Link/armadra-site/issues/new/choose).

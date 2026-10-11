@@ -93,9 +93,10 @@
 
   /* 字号阶梯（§2.3） */
   --fs-display: clamp(32px, 1.2rem + 3.6vw, 80px);
-  --fs-hero: clamp(44px, 1.6rem + 5.6vw, 128px); /* 首页首屏与收尾的特大标题 */
+  --fs-hero: clamp(34px, 1.3rem + 2.6vw, 60px); /* 首页首屏与收尾标题 */
+  --fs-section: clamp(26px, 1.1rem + 1.1vw, 36px); /* 首页分区标题：比首屏小一级、比条目标题大一级 */
   --fs-step: clamp(18px, 0.9rem + 0.7vw, 26px); /* 滚动叙事的步骤标题 */
-  --fs-agent: clamp(28px, 1.2rem + 2.4vw, 56px); /* 支持的 Agent 大字行 */
+  --fs-agent: clamp(22px, 1rem + 0.6vw, 28px); /* 支持的 Agent 列表行 */
   --fs-h1: clamp(28px, 1.4rem + 1.2vw, 40px);
   --fs-h2: clamp(22px, 1.2rem + 0.6vw, 28px);
   --fs-h3: 20px;
