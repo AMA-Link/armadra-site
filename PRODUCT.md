@@ -12,11 +12,11 @@ Astro 7 + TypeScript，纯静态输出，部署在 Cloudflare Workers 静态资�
 
 - **第一次听说 Armadra 的开发者**：从 GitHub、社区或分享链接过来，想在一分钟内知道它解决什么问题、和单独用 Claude Code / Codex 有什么不同。
 - **准备试用的人**：要下载地址、系统要求和第一次上手的步骤。
-- **已在使用的人**：查概念（连线、消息、交接、协调者）与服务器壳部署。
+- **已在使用的人**：查概念（连线与上下文共享、消息、交接、协调者）与自托管部署。
 
 ## Product Purpose
 
-1. **首页**（`/`）：参考 opencode.ai 的一列版式——标题与获取方式、软件画面、是什么、支持的 Agent、本地优先、常见问题、联系。
+1. **首页**（`/`）：一列版式，先讲用户能完成什么，再讲 Agent 如何协作，最后讲技术细节——产品定位（下载与快速上手）、软件画面、协作示例、核心能力、支持的工具、部署与数据、常见问题、开始使用与联系。
 2. **更新日志**（`/changelog/`）：按版本倒序，每版一句标题加几条要点。
 3. **文档**（`/docs/`）：入门、概念、使用与参考，中英双语。
 
@@ -24,7 +24,15 @@ Astro 7 + TypeScript，纯静态输出，部署在 Cloudflare Workers 静态资�
 
 ## Positioning
 
-Armadra 是本地优先的 AI Coding 画布：Claude Code、Codex、OpenCode、Pi、Oh My Pi、GitHub Copilot 与协调者 `ama` 以真实终端节点放在同一张无限画布上，保留各自的账户、模型与权限策略，通过连线共享上下文、通过消息和交接分工。
+- 中：Armadra 是一个本地优先的 AI 编程协作工作空间，让多个 AI 助手在同一张画布上分工、共享上下文并接续任务。
+- EN: Armadra is a local-first workspace for collaborative AI coding. Bring multiple coding agents onto one canvas to divide tasks, share context, and hand off work.
+
+站点描述、文档简介首段与本节使用同一句。
+
+## Terminology
+
+- 中文首次出现写「AI 编程助手（Agent）」，之后用「Agent」；英文用 AI coding agent、workspace、canvas、context sharing、handoff、self-hosting。
+- 首页不用内部用语：「真实 CLI」→ 直接使用你熟悉的 AI 编程工具；「连线即上下文」→ 连接 Agent，按需共享任务上下文；「代码工作面」→ 在同一工作空间查看代码、变更与运行结果；「无窗口服务器壳」→ 自托管部署与远程访问。文档讲实现时可以保留技术术语，首次出现先用面向用户的说法。
 
 ## Brand Commitments
 

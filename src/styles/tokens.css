@@ -46,7 +46,7 @@
 
 
   /* 字体 */
-  /* 界面字体：全站等宽（参考 opencode.ai），文档长文用 --font-prose */
+  /* 界面字体：全站等宽，文档长文用 --font-prose */
   --font-sans: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
   --font-prose: "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
   --font-mono: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
@@ -108,7 +108,7 @@
   --nav-h: 64px;
   --bar-h: 52px;
   --sidebar-w: 232px;
-  /* 全站一列宽 1080，内容左右缩进即 --gutter（参考 opencode.ai）；文档页三栏另用 --docs-max */
+  /* 全站一列宽 1080，内容左右缩进即 --gutter；文档页三栏另用 --docs-max */
   --content-max: 1080px;
   --page-col: 1080px;
   --page-inset: var(--gutter);
