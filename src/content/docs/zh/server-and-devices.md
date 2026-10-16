@@ -46,6 +46,6 @@ docker compose logs armadra | grep "armadra-server pairing"
 
 ## 手机
 
-手机浏览器打开同一份页面，有底部导航、单节点焦点页与软键盘工具条。手机只是客户端，终端、Git 与 Agent 仍在电脑或服务器上执行。iOS / Android 原生应用在路线图上，目前在模拟器中验证。
+手机浏览器打开同一份页面，有底部导航、单节点焦点页与软键盘工具条。手机只是客户端，终端、Git 与 Agent 仍在电脑或服务器上执行。Android 应用见[安装](/docs/install/)；iOS 应用在路线图上，目前在模拟器中验证。
 
 完整步骤（证书、反向代理、备份、升级回滚）见 Armadra 仓库的[服务器部署指南](https://github.com/AMA-Link/Armadra/blob/main/docs/guides/server-deployment.md)。

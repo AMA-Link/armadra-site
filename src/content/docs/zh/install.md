@@ -7,15 +7,31 @@ order: 2
 
 ## 下载安装包
 
-在 [GitHub Releases](https://github.com/AMA-Link/Armadra/releases/latest) 下载对应系统与架构的安装包。
+当前版本 [v0.6.0](https://github.com/AMA-Link/Armadra/releases/tag/v0.6.0)。下载对应系统与架构的安装包。
 
 | 系统 | 安装包 | 说明 |
 | --- | --- | --- |
-| macOS | `.dmg` / `.zip` | Apple 芯片选 `aarch64`，Intel 选 `x86_64`；需要 macOS 13.3 或更新 |
-| Windows | `-setup.exe` / `-portable.zip` | 安装版或免安装版，x64 与 ARM64 |
-| Linux | `.AppImage` / `.deb` / `.rpm` | x86_64 与 aarch64 |
+| macOS（Apple 芯片） | [`Armadra_0.6.0_darwin-aarch64.dmg`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-aarch64.dmg) / [`Armadra_0.6.0_darwin-aarch64.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-aarch64.zip) | 需要 macOS 13.3 或更新 |
+| macOS（Intel） | [`Armadra_0.6.0_darwin-x86_64.dmg`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-x86_64.dmg) / [`Armadra_0.6.0_darwin-x86_64.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-x86_64.zip) | 同上 |
+| Windows x64 | [`Armadra_0.6.0_windows-x86_64-setup.exe`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-x86_64-setup.exe) / [`Armadra_0.6.0_windows-x86_64-portable.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-x86_64-portable.zip) | 安装版或免安装版 |
+| Windows ARM64 | [`Armadra_0.6.0_windows-aarch64-setup.exe`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-aarch64-setup.exe) / [`Armadra_0.6.0_windows-aarch64-portable.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-aarch64-portable.zip) | 同上 |
+| Linux x86_64 | [`Armadra_0.6.0_linux-x86_64.AppImage`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-x86_64.AppImage) / [`Armadra_0.6.0_linux-x86_64.deb`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-x86_64.deb) / [`Armadra_0.6.0_linux-x86_64.rpm`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-x86_64.rpm) | |
+| Linux aarch64 | [`Armadra_0.6.0_linux-aarch64.AppImage`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-aarch64.AppImage) / [`Armadra_0.6.0_linux-aarch64.deb`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-aarch64.deb) / [`Armadra_0.6.0_linux-aarch64.rpm`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-aarch64.rpm) | |
+| Android | [`armadra-mobile_0.6.0_android.apk`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/armadra-mobile_0.6.0_android.apk) | 手动安装，见下 |
 
 > 当前安装包**尚未签名与公证**，首次打开时系统会提示风险。macOS 上可以在「系统设置 → 隐私与安全性」里选择「仍要打开」；Windows 上在 SmartScreen 提示里选择「仍要运行」。签名发布在[路线图](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md)上。
+
+## Android 与 iOS
+
+下载 APK 后手动安装，需要在系统设置里允许该来源安装未知来源应用。iOS 版尚未上架，暂时没有下载方式。
+
+## 更新
+
+从 0.6.0 起可以在应用内更新。0.5.x 及更早版本没有这个入口，需要手动装一次 0.6.0。
+
+## 端到端加密
+
+从 0.6.0 起，经中转的连接是端到端加密的，中转只转发密文。中转版本需要 ≥ 0.4.0。默认中转是 `https://relay.armadra.com`。
 
 ## 准备 Agent CLI
 
