@@ -46,6 +46,6 @@ The server shell supports passwords, passkeys, TOTP with recovery codes and GitH
 
 ## Phones
 
-Phone browsers open the same pages, with bottom navigation, a single-node focus view and a soft-keyboard toolbar. The phone is only a client; terminals, Git and agents still run on the computer or server. Native iOS and Android apps are on the roadmap and currently verified in simulators.
+Phone browsers open the same pages, with bottom navigation, a single-node focus view and a soft-keyboard toolbar. The phone is only a client; terminals, Git and agents still run on the computer or server. The Android app is on the [Install](/docs/install/) page; the iOS app is on the roadmap and currently verified in simulators.
 
 For the full procedure (certificates, reverse proxies, backups, upgrades and rollback), see the [server deployment guide](https://github.com/AMA-Link/Armadra/blob/main/docs/guides/server-deployment.md) in the Armadra repository.

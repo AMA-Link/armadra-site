@@ -7,15 +7,31 @@ order: 2
 
 ## Download an installer
 
-Get the package for your system and architecture from [GitHub Releases](https://github.com/AMA-Link/Armadra/releases/latest).
+Current version: [v0.6.0](https://github.com/AMA-Link/Armadra/releases/tag/v0.6.0). Download the package for your system and architecture.
 
 | System | Packages | Notes |
 | --- | --- | --- |
-| macOS | `.dmg` / `.zip` | `aarch64` for Apple silicon, `x86_64` for Intel; macOS 13.3 or later |
-| Windows | `-setup.exe` / `-portable.zip` | Installer or portable, x64 and ARM64 |
-| Linux | `.AppImage` / `.deb` / `.rpm` | x86_64 and aarch64 |
+| macOS (Apple silicon) | [`Armadra_0.6.0_darwin-aarch64.dmg`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-aarch64.dmg) / [`Armadra_0.6.0_darwin-aarch64.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-aarch64.zip) | macOS 13.3 or later |
+| macOS (Intel) | [`Armadra_0.6.0_darwin-x86_64.dmg`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-x86_64.dmg) / [`Armadra_0.6.0_darwin-x86_64.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_darwin-x86_64.zip) | Same |
+| Windows x64 | [`Armadra_0.6.0_windows-x86_64-setup.exe`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-x86_64-setup.exe) / [`Armadra_0.6.0_windows-x86_64-portable.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-x86_64-portable.zip) | Installer or portable |
+| Windows ARM64 | [`Armadra_0.6.0_windows-aarch64-setup.exe`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-aarch64-setup.exe) / [`Armadra_0.6.0_windows-aarch64-portable.zip`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_windows-aarch64-portable.zip) | Same |
+| Linux x86_64 | [`Armadra_0.6.0_linux-x86_64.AppImage`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-x86_64.AppImage) / [`Armadra_0.6.0_linux-x86_64.deb`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-x86_64.deb) / [`Armadra_0.6.0_linux-x86_64.rpm`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-x86_64.rpm) | |
+| Linux aarch64 | [`Armadra_0.6.0_linux-aarch64.AppImage`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-aarch64.AppImage) / [`Armadra_0.6.0_linux-aarch64.deb`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-aarch64.deb) / [`Armadra_0.6.0_linux-aarch64.rpm`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/Armadra_0.6.0_linux-aarch64.rpm) | |
+| Android | [`armadra-mobile_0.6.0_android.apk`](https://github.com/AMA-Link/Armadra/releases/download/v0.6.0/armadra-mobile_0.6.0_android.apk) | Manual install, see below |
 
 > Packages are **not yet signed or notarized**, so the OS warns on first launch. On macOS choose "Open Anyway" in System Settings → Privacy & Security; on Windows choose "Run anyway" in the SmartScreen prompt. Signed releases are on the [roadmap](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md).
+
+## Android and iOS
+
+Download the APK and install it manually; allow installing apps from unknown sources for that source in system settings. The iOS app is not published yet, so there is no download.
+
+## Updating
+
+From 0.6.0 you can update inside the app. 0.5.x and earlier have no such entry, so install 0.6.0 manually once.
+
+## End-to-end encryption
+
+From 0.6.0, connections through a relay are end-to-end encrypted, so the relay only forwards ciphertext. The relay must be version 0.4.0 or later. The default relay is `https://relay.armadra.com`.
 
 ## Prepare an agent CLI
 
