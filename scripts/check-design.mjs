@@ -16,7 +16,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SKIP = new Set(['src/styles/tokens.css']);
 
 /** 过渡期别名（tokens.css 末尾的旧名）。STRICT 打开后，组件里再出现就报错。 */
-const STRICT = false;
+const STRICT = true;
 const LEGACY = /var\(--(ink(-[234])?|bg-raised|bg-panel|accent(-ui|-text)?|line(-soft|-strong)?|hover-row|selected-(bg|ink)|selection|focus|scrollbar|font-(sans|prose|mono)|dur-[123]|sp-\d+|bar-h|page-(col|inset)|docs-main-max|fs-[a-z0-9-]+|lh-(body-lg|body-sm|mono(-nav|-sm|-xs)?|ui))\)/;
 
 function walk(dir, out = []) {
