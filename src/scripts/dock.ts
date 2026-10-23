@@ -5,7 +5,7 @@
  */
 const BASE = 40;
 const REACH = 60;
-const MAX_EXTRA = 40;
+const MAX_EXTRA = 12;
 
 export function initDock(): void {
   const dock = document.querySelector<HTMLElement>('[data-dock]');
