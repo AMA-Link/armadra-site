@@ -37,8 +37,8 @@ const { variant = 'icon', class: className } = Astro.props;
 
 <style>
   /* 只显示与当前主题对应的图标；选择器需高于下方 .theme-toggle--icon > span */
-  :global(html[data-scheme='dark']) .theme-toggle .tt-when-light,
-  :global(html[data-scheme='light']) .theme-toggle .tt-when-dark { display: none; }
+  :global(html[data-theme='dark']) .theme-toggle .tt-when-light,
+  :global(html[data-theme='light']) .theme-toggle .tt-when-dark { display: none; }
 
   .theme-toggle--icon {
     display: inline-grid;

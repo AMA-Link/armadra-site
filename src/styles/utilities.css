@@ -1,4 +1,4 @@
-/* 全局类契约（§8.2）：包 B、C 可直接使用 */
+/* 全局类契约：页面与组件共用的版心、发丝线、列表行、按钮与链接角色 */
 
 .container {
   width: 100%;
@@ -20,34 +20,34 @@
   border: 0;
 }
 
-/* 虚线统一用背景实现，线段 4px 间隔 4px */
-.hr-dash {
+/* 发丝线：两端渐隐的 1px 线，用于分区之间；竖线上下渐隐 */
+.hairline-x {
   height: 1px;
   border: 0;
-  background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+  background: var(--border-strong);
+  mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
 }
-.vr-dash {
+.hairline-y {
   width: 1px;
-  background: repeating-linear-gradient(180deg, var(--line) 0 4px, transparent 4px 8px);
+  background: var(--border-strong);
+  mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
 }
 
+/* 元信息：等宽、13px、次要色，数字等宽对齐 */
 .mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
 }
-
-/* 角标：等宽 11px/500/0.06em 全大写；中文不转换（大写对汉字无效） */
-.corner {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-xs);
-  line-height: var(--lh-mono-xs);
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.meta {
+  font: 400 var(--text-body) / var(--lh-body) var(--font-code);
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
-  color: var(--ink-3);
+  color: var(--muted-foreground);
+}
+/* 角标与分组小标题：等宽、小号、500，不大写 */
+.corner {
+  font: 500 var(--text-caption) / var(--lh-caption) var(--font-code);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
 }
 
 /* 网络区域：命令分官方源 / 中国大陆镜像两份时，只显示当前区域（html[data-region]，默认官方源） */
@@ -56,74 +56,109 @@
   display: none;
 }
 
-/* 列表行：文章、项目等「一行一条」的列表共用的骨架；列布局由各组件定义。
-   行背景外扩到容器内边（--row-pad），≤640 不外扩，分隔线与栅格边对齐 */
+/* 列表行：「一行一条」的骨架，行高 36；列布局由各组件定义 */
 .list-row {
-  --row-pad: var(--sp-3);
   display: grid;
   align-items: center;
   min-height: var(--row-h);
-  padding: var(--sp-3) var(--row-pad);
-  margin-inline: calc(-1 * var(--row-pad));
-  border-bottom: 1px solid var(--line-soft);
+  padding: var(--space-group) var(--space-inset);
+  border-radius: var(--r-control);
   color: inherit;
-  text-decoration: none;
-  font: 400 var(--fs-mono) / var(--lh-mono) var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
-  transition: background-color var(--dur-1) var(--ease-out);
+  font: 400 var(--text-body) / var(--lh-body) var(--font-ui);
+  transition: background-color var(--dur-fast) var(--ease-color);
 }
 .list-row[hidden] { display: none; }
 .list-row:focus-visible { outline-offset: -2px; }
-@media (hover: hover) {
-  .list-row:hover { background: var(--hover-row); }
-}
-@media (max-width: 640px) {
-  .list-row { --row-pad: 0px; }
+@media (hover: hover) and (pointer: fine) {
+  .list-row:hover { background: var(--hover); }
 }
 
-/* 行 hover：背景延伸到容器内边（默认 16px），不改变布局 */
-.row-hover {
-  --row-bleed: var(--sp-4);
-  margin-inline: calc(-1 * var(--row-bleed));
-  padding-inline: var(--row-bleed);
-  transition: background-color var(--dur-1) var(--ease-out);
-}
-.row-hover:hover { background: var(--hover-row); }
-.row-hover:focus-visible { outline-offset: -2px; }
-
-/* 反白主按钮 */
+/* 按钮：32 高（触屏 44），主按钮品牌蓝实底，次按钮 1px 描边；.btn--lg 为首屏 CTA（44） */
 .btn-primary,
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--sp-2);
+  gap: var(--space-group);
   min-height: var(--control-h);
-  padding: 0 var(--sp-4);
-  font: 500 var(--fs-ui) / 1 var(--font-sans);
-  text-decoration: none;
-  border-radius: 0;
+  padding: 0 var(--space-inset);
+  font: 500 var(--text-body) / 1 var(--font-ui);
+  white-space: nowrap;
+  border-radius: var(--r-control);
   cursor: pointer;
-  transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out),
-    border-color var(--dur-1) var(--ease-out), scale var(--dur-1) var(--ease-out);
+  transition: background-color var(--dur-fast) var(--ease-color), color var(--dur-fast) var(--ease-color),
+    border-color var(--dur-fast) var(--ease-color), scale var(--dur-instant) var(--ease-out);
 }
+.btn--lg { min-height: var(--control-touch); padding-inline: var(--space-block); }
 .btn-primary {
-  background: var(--ink);
-  color: var(--bg);
-  border: 1px solid var(--ink);
+  background: var(--brand-solid);
+  color: var(--on-accent);
+  border: 1px solid var(--brand-solid);
 }
-.btn-primary:hover { background: var(--ink-2); border-color: var(--ink-2); }
-
-/* 1px 描边按钮 */
 .btn-ghost {
   background: transparent;
-  color: var(--ink-2);
-  border: 1px solid var(--line);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
 }
-.btn-ghost:hover { color: var(--ink); border-color: var(--line-strong); background: var(--hover-row); }
-.btn-ghost:disabled { color: var(--ink-4); cursor: default; background: transparent; }
+.btn-ghost:disabled { color: var(--faint); cursor: default; background: transparent; }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover { background: var(--brand); border-color: var(--brand); }
+  .btn-ghost:hover { background: var(--hover); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :is(.btn-primary, .btn-ghost):hover:active { scale: var(--press-scale); }
+}
 
-/* 安静链接：无下划线，hover 变 --ink */
-.link-quiet { color: var(--ink-2); text-decoration: none; }
-.link-quiet:hover { color: var(--ink); }
+/* 文字链接：13px 500，悬停变品牌文字色并出现点状下划线 */
+.link {
+  font-weight: 500;
+  text-decoration: underline dotted transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--dur-instant) var(--ease-color), text-decoration-color var(--dur-instant) var(--ease-color);
+}
+@media (hover: hover) and (pointer: fine) {
+  .link:hover { color: var(--brand-text); text-decoration-color: currentColor; }
+}
+/* 次要链接：次要色，悬停同上 */
+.link-quiet {
+  color: var(--muted-foreground);
+  text-decoration: underline dotted transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--dur-instant) var(--ease-color), text-decoration-color var(--dur-instant) var(--ease-color);
+}
+@media (hover: hover) and (pointer: fine) {
+  .link-quiet:hover { color: var(--brand-text); text-decoration-color: currentColor; }
+}
+
+/* 带箭头的文字链接：箭头悬停右移 4px */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-item);
+}
+.link-arrow .icon { transition: transform var(--dur-base) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .link-arrow:hover .icon { transform: translateX(4px); }
+}
+
+/* 徽标：胶囊、11px 等宽 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding-inline: var(--space-group);
+  border-radius: var(--r-pill);
+  font: 500 var(--text-caption) / 1 var(--font-code);
+  white-space: nowrap;
+}
+.badge--success { background: var(--success-soft); color: var(--success-text); }
+
+/* 卡片：1px 边，录屏卡与代码卡带轻影 */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+}
+.card--lifted { box-shadow: var(--shadow-node); }

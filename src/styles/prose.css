@@ -214,15 +214,15 @@
 :root .astro-code span {
   color: var(--shiki-dark);
 }
-:root[data-scheme='light'] .astro-code,
-:root[data-scheme='light'] .astro-code span {
+:root[data-theme='light'] .astro-code,
+:root[data-theme='light'] .astro-code span {
   color: var(--shiki-light);
 }
 :root .astro-code span {
   font-style: var(--shiki-dark-font-style, inherit);
   font-weight: var(--shiki-dark-font-weight, inherit);
 }
-:root[data-scheme='light'] .astro-code span {
+:root[data-theme='light'] .astro-code span {
   font-style: var(--shiki-light-font-style, inherit);
   font-weight: var(--shiki-light-font-weight, inherit);
 }

@@ -1,6 +1,5 @@
 import type { Scheme } from '../lib/types';
 import { S, t } from '../i18n';
-import { transition } from './motion';
 
 const KEY = 'armadra-site.scheme';
 const mq = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: light)') : null;
@@ -19,23 +18,26 @@ function systemScheme(): Scheme {
 }
 
 export function currentScheme(): Scheme {
-  return document.documentElement.dataset.scheme === 'light' ? 'light' : 'dark';
+  return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
 }
 
 function apply(s: Scheme): void {
   const root = document.documentElement;
-  if (root.dataset.scheme === s) {
+  if (root.dataset.theme === s) {
     syncThemeUi();
     return;
   }
-  transition('scheme', () => {
-    root.dataset.scheme = s;
-    syncThemeUi();
-    document.dispatchEvent(new CustomEvent('armadra:scheme', { detail: { scheme: s } }));
-  });
+  // 一帧内换色：先压住全部过渡，强制 reflow 后在下一轮任务里放开
+  // 不用 requestAnimationFrame：页面不可见时它不会执行，会让过渡一直被压住
+  root.dataset.themeSwitching = '';
+  root.dataset.theme = s;
+  syncThemeUi();
+  document.dispatchEvent(new CustomEvent('armadra:scheme', { detail: { scheme: s } }));
+  void root.offsetWidth;
+  setTimeout(() => delete root.dataset.themeSwitching, 0);
 }
 
-/** 写 localStorage、设置 html[data-scheme]、派发 armadra:scheme；'system' 清除存储并恢复跟随系统 */
+/** 写 localStorage、设置 html[data-theme]、派发 armadra:scheme；'system' 清除存储并恢复跟随系统 */
 export function setScheme(s: Scheme | 'toggle' | 'system'): void {
   if (s === 'system') {
     try { localStorage.removeItem(KEY); } catch { /* 隐私模式忽略 */ }
