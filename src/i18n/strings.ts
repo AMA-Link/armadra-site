@@ -95,6 +95,5 @@ export const S = {
     title: { zh: '这个页面不存在', en: 'This page does not exist' },
     intro: { zh: '地址可能写错了，或者页面已经移走。', en: 'The address may be mistyped, or the page has moved.' },
     home: { zh: '回到首页', en: 'Back to home' },
-    docs: { zh: '查看文档', en: 'Browse the docs' },
   },
 } as const;
