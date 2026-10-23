@@ -9,7 +9,7 @@ function init(root: HTMLElement): void {
   if (!ind || !sel) return;
   const axis = root.dataset.axis === 'y' ? 'y' : 'x';
   const items = [...root.querySelectorAll<HTMLElement>(sel)];
-  const current = () => items.find((i) => i.getAttribute('aria-current') === 'page') ?? null;
+  const current = () => items.find((i) => i.hasAttribute('aria-current')) ?? null;
 
   const place = (el: HTMLElement | null, animate: boolean) => {
     if (!el) {
@@ -41,6 +41,8 @@ function init(root: HTMLElement): void {
     it.addEventListener('blur', rest);
   }
   root.addEventListener('pointerleave', rest);
+  // 当前项由页面脚本改变时（如本页目录跟随滚动）派发此事件
+  root.addEventListener('indicator:update', rest);
   // 字体加载、语言切换与窗口缩放会改变项的尺寸：直接重新定位
   const refresh = () => place(current(), false);
   new ResizeObserver(refresh).observe(root);

@@ -23,7 +23,7 @@ const pairs = await getDocPairs();
           const items = pairs.filter((p) => p.group === g);
           const count = fmtBi(S.docs.count, { n: items.length });
           return (
-            <SectionFrame id={`g-${g}`} title={groupLabel(g)} count={count}>
+            <SectionFrame id={`g-${g}`} title={groupLabel(g)} count={count} bare={g === GROUPS[0]}>
               <ul class="docs-index__list" role="list">
                 {items.map((p) => (
                   <li>
@@ -51,22 +51,19 @@ const pairs = await getDocPairs();
 </BaseLayout>
 
 <style>
-  .docs-index { padding-bottom: var(--sp-8); }
+  .docs-index { padding-bottom: var(--space-wide); }
   .docs-index__list { margin: 0; padding: 0; }
   .docs-index__row {
     grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
-    gap: var(--sp-5);
-    font-family: var(--font-sans);
-    font-size: var(--fs-body);
-    line-height: var(--lh-body);
+    gap: var(--space-section);
   }
-  .docs-index__title { color: var(--ink); font-weight: 500; }
-  .docs-index__desc { color: var(--ink-2); font-size: var(--fs-body-sm); line-height: var(--lh-body-sm); }
-  .docs-index__row :global(.icon) { color: var(--ink-3); }
-  .docs-index__dev { margin-top: var(--sp-5); font-size: var(--fs-body-sm); }
-  .docs-index__dev a { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); }
+  .docs-index__title { color: var(--text); font-weight: 500; }
+  .docs-index__desc { color: var(--muted-foreground); }
+  .docs-index__row :global(.icon) { color: var(--faint); }
+  .docs-index__dev { font: 400 var(--text-meta) / var(--lh-meta) var(--font-code); }
+  .docs-index__dev a { display: inline-flex; align-items: center; gap: var(--space-item); }
   @media (max-width: 640px) {
-    .docs-index__row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-1) var(--sp-3); }
+    .docs-index__row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-item) var(--space-inset); padding-block: var(--space-group); }
     .docs-index__desc { grid-row: 2; grid-column: 1; }
   }
 </style>
