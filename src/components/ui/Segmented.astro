@@ -1,6 +1,7 @@
 ---
 /**
- * 分段选择（单选）。选中项用反白表示（The Inverted Selection Rule），与标签筛选一致。
+ * 分段选择（单选）。当前项的底块是同一个元素，平移到被选中的选项上（--dur-base --ease-in-out）；
+ * 文字颜色随选中同步。方向键切换、Home / End、roving tabindex。
  * 选择变化时在根元素上派发 segmented:change（detail.value），由页面脚本决定作用。
  */
 import type { Bi } from '../../lib/types';
@@ -16,19 +17,19 @@ interface Props {
   label: Bi;
   options: Option[];
   value: string;
-  wrap?: boolean;
 }
-const { name, label, options, value, wrap = false } = Astro.props;
+const { name, label, options, value } = Astro.props;
 ---
 
 <div
-  class:list={['seg', { 'seg--wrap': wrap }]}
+  class="seg"
   role="radiogroup"
   aria-label={label.zh}
   data-aria-zh={label.zh}
   data-aria-en={label.en}
   data-segmented={name}
 >
+  <span class="seg__indicator" aria-hidden="true"></span>
   {
     options.map((o) => (
       <button
@@ -47,7 +48,21 @@ const { name, label, options, value, wrap = false } = Astro.props;
 </div>
 
 <script>
-  /** 单选组：点击或方向键切换，roving tabindex */
+  /** 把指示器放到选中项上：宽度直接设置，位置用 transform 平移 */
+  function place(group: HTMLElement, animate: boolean) {
+    const on = group.querySelector<HTMLElement>('.seg__item[aria-checked="true"]');
+    const ind = group.querySelector<HTMLElement>('.seg__indicator');
+    if (!on || !ind) return;
+    if (!animate) ind.style.transition = 'none';
+    ind.style.width = `${on.offsetWidth}px`;
+    ind.style.transform = `translateX(${on.offsetLeft}px)`;
+    if (!animate) {
+      void ind.offsetWidth;
+      ind.style.transition = '';
+    }
+    group.classList.add('is-ready');
+  }
+
   function select(group: HTMLElement, btn: HTMLButtonElement, focus = false) {
     if (btn.getAttribute('aria-checked') === 'true') return;
     for (const b of group.querySelectorAll<HTMLButtonElement>('.seg__item')) {
@@ -55,6 +70,7 @@ const { name, label, options, value, wrap = false } = Astro.props;
       b.setAttribute('aria-checked', String(on));
       b.tabIndex = on ? 0 : -1;
     }
+    place(group, true);
     if (focus) btn.focus();
     group.dispatchEvent(new CustomEvent('segmented:change', { bubbles: true, detail: { value: btn.dataset.value } }));
   }
@@ -62,6 +78,12 @@ const { name, label, options, value, wrap = false } = Astro.props;
   for (const group of document.querySelectorAll<HTMLElement>('[data-segmented]')) {
     if (group.dataset.ready) continue;
     group.dataset.ready = '1';
+    place(group, false);
+    // 字体加载、语言切换与窗口缩放都会改变选项宽度：直接重新定位，不做动画
+    const refresh = () => place(group, false);
+    new ResizeObserver(refresh).observe(group);
+    document.addEventListener('armadra:lang', refresh);
+    document.fonts?.ready.then(refresh);
     group.addEventListener('click', (e) => {
       const btn = (e.target as Element).closest<HTMLButtonElement>('.seg__item');
       if (btn) select(group, btn);
@@ -83,38 +105,50 @@ const { name, label, options, value, wrap = false } = Astro.props;
 
 <style>
   .seg {
+    position: relative;
     display: inline-flex;
     max-width: 100%;
-    border: 1px solid var(--line);
+    padding: 2px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-control);
   }
-  .seg--wrap {
-    display: flex;
-    flex-wrap: wrap;
-    border: 0;
-    gap: var(--sp-1);
+  .seg__indicator {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 0;
+    border-radius: var(--r-tight);
+    background: var(--surface-raised);
+    opacity: 0;
+    transition: transform var(--dur-base) var(--ease-in-out);
   }
+  .seg.is-ready .seg__indicator { opacity: 1; }
   .seg__item {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: var(--sp-1);
-    min-height: var(--control-h);
-    padding: 0 var(--sp-3);
-    font: 400 var(--fs-body-sm) / var(--lh-body-sm) var(--font-sans);
-    color: var(--ink-2);
-    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), scale var(--dur-1) var(--ease-out);
+    gap: var(--space-item);
+    min-height: calc(var(--control-h) - 6px);
+    padding: 0 var(--space-inset);
+    border-radius: var(--r-tight);
+    font: 500 var(--text-body) / var(--lh-body) var(--font-ui);
+    color: var(--muted-foreground);
+    transition: color var(--dur-base) var(--ease-in-out);
   }
-  .seg__item:hover { color: var(--ink); background: var(--hover-row); }
-  .seg__item[aria-checked='true'] {
-    background: var(--selected-bg);
-    color: var(--selected-ink);
+  /* 没有脚本时，选中项自己带底 */
+  .seg:not(.is-ready) .seg__item[aria-checked='true'] { background: var(--surface-raised); }
+  .seg__item[aria-checked='true'] { color: var(--text); }
+  @media (hover: hover) and (pointer: fine) {
+    .seg__item:hover { color: var(--text); }
   }
   .seg__item:focus-visible { outline-offset: -2px; }
   .seg__count {
-    font: 400 var(--fs-mono-sm) / var(--lh-mono-sm) var(--font-mono);
+    font: 400 var(--text-meta) / var(--lh-meta) var(--font-code);
     font-variant-numeric: tabular-nums;
     opacity: 0.7;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    .seg__item:active { scale: 0.97; }
+  @media (prefers-reduced-motion: reduce) {
+    .seg__indicator { transition: none; }
   }
 </style>

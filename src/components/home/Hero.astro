@@ -1,0 +1,103 @@
+---
+/**
+ * 首屏：元信息行（版本 + 平台）→ 标题 → 摘要 → 两枚按钮 → 获取方式。
+ * 四块依次错落入场（只在会话内首次进入首页时播放，见 motion.css）。
+ */
+import T from '../common/T.astro';
+import Icon from '../common/Icon.astro';
+import Segmented from '../ui/Segmented.astro';
+import CodeBlock from '../ui/CodeBlock.astro';
+import { H } from '../../i18n/home';
+import { fmtBi } from '../../i18n';
+import { RELEASE } from '../../data/release';
+import { RELEASES_URL } from '../../lib/nav';
+
+const download = fmtBi(H.get.download, { v: RELEASE.version });
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <p class="hero__meta meta" data-intro-step style="--intro-i: 0">v{RELEASE.version} · {H.hero.platforms}</p>
+  <h1 id="hero-title" class="hero__title" data-intro-step style="--intro-i: 1"><T zh={H.hero.title.zh} en={H.hero.title.en} /></h1>
+  <p class="hero__lede" data-intro-step style="--intro-i: 2"><T zh={H.hero.intro.zh} en={H.hero.intro.en} /></p>
+  <div class="hero__actions" data-intro-step style="--intro-i: 3">
+    <a class="btn-primary btn--lg" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
+    <a class="btn-ghost btn--lg" href="/docs/quickstart/"><T zh={H.hero.quickstart.zh} en={H.hero.quickstart.en} /><Icon name="arrow-right" size={14} /></a>
+  </div>
+  <div class="hero__get" data-intro-step style="--intro-i: 3" data-get>
+    <Segmented
+      name="get"
+      label={H.get.label}
+      value="download"
+      options={H.get.tabs.map((t) => ({ value: t.id, label: t.label }))}
+    />
+    <div class="hero__panel" data-get-panel="download">
+      <a class="link link-arrow hero__download" href={RELEASES_URL}>
+        <Icon name="download" size={14} />
+        <T zh={download.zh} en={download.en} />
+        <Icon name="arrow-up-right" size={12} />
+      </a>
+    </div>
+    <div class="hero__panel" data-get-panel="source" hidden>
+      <CodeBlock code={H.get.source} />
+    </div>
+    <div class="hero__panel" data-get-panel="docker" hidden>
+      <CodeBlock code={H.get.docker} />
+      <p class="hero__hint meta"><T zh={H.get.dockerHint.zh} en={H.get.dockerHint.en} /></p>
+    </div>
+  </div>
+  <p class="hero__note meta" data-intro-step style="--intro-i: 3"><T zh={H.hero.note.zh} en={H.hero.note.en} /></p>
+</section>
+
+<script>
+  // 获取方式：分段控件切换面板
+  document.querySelectorAll<HTMLElement>('[data-get]').forEach((box) => {
+    box.addEventListener('segmented:change', (e) => {
+      const value = (e as CustomEvent<{ value: string }>).detail.value;
+      box.querySelectorAll<HTMLElement>('[data-get-panel]').forEach((p) => {
+        p.hidden = p.dataset.getPanel !== value;
+      });
+    });
+  });
+</script>
+
+<style>
+  .hero { padding-block: var(--space-band) var(--space-gap); }
+  .hero__meta { margin-bottom: var(--space-section); }
+  .hero__title {
+    max-width: 18em;
+    font: 600 var(--text-hero) / var(--lh-hero) var(--font-ui);
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .hero__lede {
+    max-width: 62ch;
+    margin-top: var(--space-section);
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inset);
+    margin-top: var(--space-loose);
+  }
+  .hero__get {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-inset);
+    max-width: 640px;
+    margin-top: var(--space-loose);
+  }
+  .hero__panel { width: 100%; min-height: 56px; }
+  .hero__panel[hidden] { display: none; }
+  .hero__download { min-height: var(--control-h); color: var(--text); }
+  .hero__hint { margin-top: var(--space-group); font-size: var(--text-meta); line-height: var(--lh-meta); }
+  .hero__note { margin-top: var(--space-section); font-size: var(--text-meta); line-height: var(--lh-meta); }
+
+  @media (max-width: 640px) {
+    .hero { padding-block: var(--space-wide) var(--space-gap); }
+    .hero__actions { flex-direction: column; }
+    .hero__actions > * { width: 100%; }
+  }
+</style>

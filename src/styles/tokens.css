@@ -1,132 +1,167 @@
-/* Armadra 官网设计 token（DESIGN.md）。组件只引用变量，不写字面色值。 */
+/*
+ * Armadra 官网设计 token（DESIGN.md）。与桌面端共用同一套名字与值：中性底、文字三档、
+ * 发丝线、品牌蓝、状态色、七档圆角、三档阴影、六档时长与四条曲线。
+ * 组件只引用变量，不写字面值；字面值只允许出现在本文件。
+ */
 
 :root {
   color-scheme: dark;
-  /* 面 */
-  --bg: #141413;
-  --bg-raised: #1a1a18;
-  --bg-panel: #1e1d1b;
-  /* 字 */
-  --ink: #faf9f5;
-  --ink-2: #b0aea5;
-  --ink-3: #87867f;
-  --ink-4: #5e5d59; /* 仅装饰：字墙暗词、禁用态、点阵阴影、滚动条 */
-  /* 强调 */
-  --accent: #d97757;
-  --accent-ui: #d97757;
-  --accent-text: #d97757;
-  --accent-deep: #c15f3c;
-  /* 线 */
-  --line: rgba(250, 249, 245, 0.16);
-  --line-soft: rgba(250, 249, 245, 0.09);
-  --line-strong: rgba(250, 249, 245, 0.28);
-  /* 态 */
-  --hover-row: rgba(250, 249, 245, 0.045);
-  --selected-bg: var(--ink);
-  --selected-ink: var(--bg);
-  --selection: rgba(217, 119, 87, 0.35);
-  --focus: var(--accent-ui);
-  --scrollbar: var(--ink-4);
-  /* 代码（与 src/lib/shiki-themes.ts 同值） */
-  --code-bg: #1a1a18;
-  --code-inline-bg: rgba(250, 249, 245, 0.06);
+
+  /* ---- 表面 ---- */
+  --bg: #1c1c1c;
+  --panel: #262626;
+  --card: #2c2c2c;
+  --surface-raised: #333333;
+  --surface-overlay: #3a3a3a;
+
+  /* ---- 文字 ---- */
+  --text: rgb(255 255 255 / 85%);
+  --muted-foreground: rgb(255 255 255 / 55%);
+  --faint: rgb(255 255 255 / 38%); /* 只用于装饰：分隔点、禁用态、网格纸线 */
+
+  /* ---- 线与状态底 ---- */
+  --border: rgb(255 255 255 / 8%);
+  --border-strong: rgb(255 255 255 / 16%);
+  --hover: rgb(255 255 255 / 7%);
+  --active: rgb(255 255 255 / 12%);
+  --scrim: rgb(0 0 0 / 55%);
+
+  /* ---- 品牌与焦点：只用于悬停、焦点、当前位置与主按钮 ---- */
+  --brand: #0a84ff;
+  --brand-text: #6cb0ff;
+  --brand-solid: #0a6fd6;
+  --brand-soft: rgb(10 132 255 / 16%);
+  --focus-ring: #b8dbff;
+  --on-accent: #ffffff;
+
+  /* ---- 状态色：图形 / 文字 / 衬底 ---- */
+  --success: #32d74b;
+  --success-text: #32d74b;
+  --success-soft: rgb(50 215 75 / 16%);
+  --danger: #ff453a;
+  --danger-text: #ff9c94;
+  --danger-soft: rgb(255 69 58 / 16%);
+
+  /* ---- 代码（与 src/lib/shiki-themes.ts 同值） ---- */
+  --code-bg: var(--panel);
+  --code-inline-bg: var(--surface-raised);
   --code-plain: #b0aea5;
-  --code-comment: #87867f;
-  --code-keyword: #d97757;
+  --code-comment: #9a9992;
+  --code-keyword: #6cb0ff;
   --code-string: #c9b98a;
   --code-number: #e0a66b;
   --code-type: #9fb3a8;
   --code-function: #faf9f5;
-  --code-punct: #87867f;
-  --code-tag: #d97757;
+  --code-punct: #9a9992;
+  --code-tag: #6cb0ff;
   --code-attr: #c9b98a;
-  --code-inserted: #9fb3a8;
-  --code-deleted: #d97757;
-  --code-line-hl: rgba(250, 249, 245, 0.05);
+  --code-inserted: #32d74b;
+  --code-deleted: #6cb0ff;
+  --code-line-hl: rgb(255 255 255 / 5%);
 
+  /* ---- 阴影：边框表达结构，阴影只给浮起来的东西 ---- */
+  --shadow-node: 0 1px 2px rgb(0 0 0 / 20%), 0 4px 12px rgb(0 0 0 / 14%);
+  --shadow-overlay: 0 4px 12px rgb(0 0 0 / 28%);
+  --shadow-dialog: 0 2px 8px rgb(0 0 0 / 24%), 0 24px 64px rgb(0 0 0 / 36%);
 
-  /* 字体 */
-  /* 界面字体：全站等宽，文档长文用 --font-prose */
-  --font-sans: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
-  --font-prose: "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
-  --font-mono: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
+  /* ---- 噪点与网格纸 ---- */
+  --noise-opacity: 0.04;
+  --noise-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grid-cell: 40px;
 
-  /* 字号阶梯（§2.3） */
-  --fs-display: clamp(32px, 1.2rem + 3.6vw, 80px);
-  --fs-hero: clamp(34px, 1.3rem + 2.6vw, 60px); /* 首页首屏与收尾标题 */
-  --fs-section: clamp(26px, 1.1rem + 1.1vw, 36px); /* 首页分区标题：比首屏小一级、比条目标题大一级 */
-  --fs-step: clamp(18px, 0.9rem + 0.7vw, 26px); /* 滚动叙事的步骤标题 */
-  --fs-agent: clamp(22px, 1rem + 0.6vw, 28px); /* 支持的 Agent 列表行 */
-  --fs-h1: clamp(28px, 1.4rem + 1.2vw, 40px);
-  --fs-h2: clamp(22px, 1.2rem + 0.6vw, 28px);
-  --fs-h3: 20px;
-  --fs-body-lg: 18px;
-  --fs-body: 16px;
-  --fs-body-sm: 14px;
-  --fs-prose: 17px;
-  --fs-mono-nav: 15.75px;
-  --fs-mono: 13px;
-  --fs-mono-sm: 12px;
-  --fs-mono-xs: 11px;
-  --fs-ui: 15px; /* 面板条目、窄屏项目名等界面标签 */
-  --fs-caption: 13px; /* 首页搜索框下的说明 */
-  --fs-display-en: clamp(30px, 1.1rem + 3vw, 64px); /* 英文身份句更长，单独收窄 */
-  --fs-display-sm: clamp(30px, 8.6vw, 34px); /* ≤640 的身份标题 */
-  --lh-body-lg: 27px;
-  --lh-body: 24px;
-  --lh-body-sm: 20px;
-  --lh-mono-nav: 24px;
-  --lh-mono: 20px;
-  --lh-mono-sm: 18px;
-  --lh-mono-xs: 16px;
-  --lh-ui: 22px;
-  --lh-title-sm: 25px; /* ≤640 行标题（17px） */
-  /* 正文排版专用 */
-  --fs-prose-h2: 24px;
-  --fs-prose-h3: 20px;
-  --fs-prose-h4: 17px;
-  --fs-prose-h2-sm: 22px;
-  --fs-prose-h3-sm: 19px;
-  --fs-code: 14px;
+  /* ---- 字体：界面与正文 Geist，等宽只给元信息、代码、角标与 Kbd ---- */
+  --font-ui: "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  --font-code: "Geist Mono Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", monospace;
+
+  /* ---- 字号阶梯（桌面端六档 + 官网专有的编辑排版层） ---- */
+  --text-caption: 11px;
+  --lh-caption: 16px;
+  --text-meta: 12px;
+  --lh-meta: 16px;
+  --text-body: 13px;
+  --lh-body: 19px;
+  --text-section: 15px;
+  --lh-section: 22px;
+  --text-title: 17px;
+  --lh-title: 24px;
+  --text-display: 22px;
+  --lh-display: 28px;
+  --text-lede: 14px;
+  --lh-lede: 1.6;
+  --text-prose: 16px;
+  --lh-prose: 1.7;
+  --text-prose-h1: 28px;
+  --text-prose-h2: 22px;
+  --text-prose-h3: 17px;
+  --lh-prose-h: 1.2;
+  --text-hero: clamp(28px, 1.2rem + 2.4vw, 44px);
+  --lh-hero: 1.15;
+  --text-code: 13px;
   --lh-code: 1.65;
-  --lh-caption: 18px;
 
-  /* 间距与尺寸（§2.4） */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 24px;
-  --sp-6: 32px;
-  --sp-7: 48px;
-  --sp-8: 64px;
-  --sp-9: 96px;
-  --sp-10: 128px;
-  --row-h: 52px;
-  --control-h: 44px;
-  --search-h: 56px;
-  --nav-h: 64px;
-  --bar-h: 52px;
+  /* ---- 间距（4px 基数）与官网专有的大间距 ---- */
+  --space-item: 4px;
+  --space-group: 8px;
+  --space-inset: 12px;
+  --space-block: 16px;
+  --space-section: 24px;
+  --space-page: 16px;
+  --space-loose: 32px;
+  --space-gap: 48px;
+  --space-wide: 64px;
+  --space-foot: 80px;
+  --space-band: 96px;
+  --space-dock: 144px;
+
+  /* ---- 圆角：七档，同心规则「外圆角 = 内圆角 + 内边距」 ---- */
+  --r-tight: 4px;
+  --r-control: 6px;
+  --r-card: 10px;
+  --r-panel: 12px;
+  --r-dialog: 14px;
+  --r-float: 16px;
+  --r-pill: 999px;
+
+  /* ---- 尺寸与版心 ---- */
+  --control-h: 32px;
+  --control-touch: 44px;
+  --icon-btn: 28px;
+  --row-h: 36px;
+  --nav-row-h: 28px;
+  --nav-h: 56px;
   --sidebar-w: 232px;
-  /* 全站一列宽 1080，内容左右缩进即 --gutter；文档页三栏另用 --docs-max */
-  --content-max: 1080px;
-  --page-col: 1080px;
-  --page-inset: var(--gutter);
+  --dock-h: 56px;
+  --dock-item: 40px;
+  --dock-gap: 12px;
+  --content-max: 1088px;
   --docs-max: 1320px;
-  /* 首页纵向导轨线到视口边的距离（与 .container 的外缘对齐） */
-  --rail-x: max(calc(var(--gutter) / 2), calc((100vw - var(--content-max)) / 2));
-  --docs-main-max: 1040px;
+  --prose-max: 760px;
+  --gutter: 16px;
+
+  /* ---- 动效：与桌面端同名同值，没有回弹曲线 ---- */
+  --dur-instant: 100ms;
+  --dur-fast: 120ms;
+  --dur-base: 160ms;
+  --dur-slow: 200ms;
+  --dur-page: 280ms;
+  --dur-hero: 600ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-color: ease;
+  --press-scale: 0.97;
+  --stagger: 40ms;
+  --tip-delay: 500ms; /* Tooltip 首次出现的意图延迟 */
+  --intro-step: 100ms; /* 首屏入场的错落间隔（官网专有） */
+
+  /* ---- 层级 ---- */
+  --z-veil: 10;
+  --z-dock: 20;
+  --z-nav: 30;
+  --z-tooltip: 40;
+  --z-skip: 100;
 
   /* 断点（媒体查询无法读取变量，此处仅作记录）：≤640 手机 · 641–1024 平板 · ≥1025 桌面 */
-  --bp-sm: 640px;
-  --bp-md: 1024px;
-  --gutter: 20px;
-
-  /* 动效（§2.6） */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-1: 120ms;
-  --dur-2: 200ms;
-  --dur-3: 400ms;
 }
 
 @media (min-width: 641px) {
@@ -135,39 +170,63 @@
 @media (min-width: 1025px) {
   :root { --gutter: 64px; }
 }
-/* 减少动效偏好下不清零时长：颜色与透明度过渡保留，位移类动效在 motion.css 中单独关闭 */
+@media (max-width: 640px) {
+  :root { --nav-h: 48px; }
+}
+@media (pointer: coarse) {
+  :root { --control-h: 44px; --row-h: 44px; --nav-row-h: 44px; --icon-btn: 44px; }
+}
 
-:root[data-scheme="light"] {
+/* 浅色是同一套关系的对称覆盖层 */
+:root[data-theme="light"] {
   color-scheme: light;
-  --bg: #faf9f5;
-  --bg-raised: #f3f1ea;
-  --bg-panel: #ecebe3;
-  --ink: #141413;
-  --ink-2: #5e5d59;
-  --ink-3: #6e6d67;
-  --ink-4: #a3a199;
-  --accent: #d97757;
-  --accent-ui: #c15f3c;
-  --accent-text: #b0522f;
-  --accent-deep: #a04a2b;
-  --line: rgba(20, 20, 19, 0.16);
-  --line-soft: rgba(20, 20, 19, 0.08);
-  --line-strong: rgba(20, 20, 19, 0.28);
-  --hover-row: rgba(20, 20, 19, 0.04);
-  --selection: rgba(193, 95, 60, 0.28);
-  --code-bg: #f3f1ea;
-  --code-inline-bg: rgba(20, 20, 19, 0.06);
+
+  --bg: #f7f7f7;
+  --panel: #f5f5f5;
+  --card: #ffffff;
+  --surface-raised: #ebebeb;
+  --surface-overlay: #ffffff;
+
+  --text: rgb(32 32 32 / 90%);
+  --muted-foreground: rgb(32 32 32 / 70%);
+  --faint: rgb(32 32 32 / 50%);
+
+  --border: rgb(32 32 32 / 10%);
+  --border-strong: rgb(32 32 32 / 20%);
+  --hover: rgb(32 32 32 / 6%);
+  --active: rgb(32 32 32 / 11%);
+  --scrim: rgb(0 0 0 / 28%);
+
+  --brand: #007aff;
+  --brand-text: #0a5fc4;
+  --brand-solid: #0066cc;
+  --brand-soft: rgb(0 122 255 / 12%);
+  --focus-ring: #082340;
+
+  --success: #177a2e;
+  --success-text: #15702a;
+  --success-soft: rgb(23 122 46 / 10%);
+  --danger: #d70015;
+  --danger-text: #b8000f;
+  --danger-soft: rgb(215 0 21 / 10%);
+
   --code-plain: #5e5d59;
   --code-comment: #6e6d67;
-  --code-keyword: #b0522f;
+  --code-keyword: #0a5fc4;
   --code-string: #6b6a2e;
   --code-number: #8a5a1c;
   --code-type: #3f6b5a;
   --code-function: #141413;
   --code-punct: #6e6d67;
-  --code-tag: #b0522f;
+  --code-tag: #0a5fc4;
   --code-attr: #6b6a2e;
-  --code-inserted: #3f6b5a;
-  --code-deleted: #b0522f;
-  --code-line-hl: rgba(20, 20, 19, 0.05);
+  --code-inserted: #15702a;
+  --code-deleted: #0a5fc4;
+  --code-line-hl: rgb(32 32 32 / 5%);
+
+  --shadow-node: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 6%);
+  --shadow-overlay: 0 4px 12px rgb(0 0 0 / 8%);
+  --shadow-dialog: 0 2px 8px rgb(0 0 0 / 12%), 0 24px 64px rgb(0 0 0 / 18%);
+
+  --noise-opacity: 0.06;
 }

@@ -42,7 +42,7 @@ const group = groupLabel(pair.group);
   titleEn={`${pair.en.data.title} · Armadra`}
   description={pair.zh.data.description}
 >
-  <TopNav page="doc" variant="side" />
+  <TopNav page="doc" />
   <div class="docs container">
     <aside class="docs__side">
       <details class="docs__menu" open>
@@ -56,9 +56,10 @@ const group = groupLabel(pair.group);
         versions.map(({ lang, entry, r }) => (
           <article class="docs__article" data-l={lang} lang={lang === 'zh' ? 'zh-CN' : 'en'}>
             <header class="docs__head">
-              <p class="corner">{group[lang]}</p>
+              <p class="corner docs__group">{group[lang]}</p>
               <h1 class="docs__title">{entry.data.title}</h1>
               <p class="docs__desc">{entry.data.description}</p>
+              <hr class="hairline-x docs__rule" />
             </header>
             <div class="prose">
               <r.Content />
@@ -70,7 +71,8 @@ const group = groupLabel(pair.group);
       <nav class="docs__pager" aria-label={S.docs.nav.zh} data-aria-zh={S.docs.nav.zh} data-aria-en={S.docs.nav.en}>
         {
           prev ? (
-            <a class="docs__pager-link" href={`/docs/${prev.slug}/`} rel="prev">
+            <a class="docs__pager-link list-row" href={`/docs/${prev.slug}/`} rel="prev">
+              <Icon name="arrow-left" size={14} />
               <span class="corner"><T zh={S.docs.prev.zh} en={S.docs.prev.en} /></span>
               <span class="docs__pager-title"><T zh={prev.zh.data.title} en={prev.en.data.title} /></span>
             </a>
@@ -78,9 +80,10 @@ const group = groupLabel(pair.group);
         }
         {
           next && (
-            <a class="docs__pager-link docs__pager-link--next" href={`/docs/${next.slug}/`} rel="next">
+            <a class="docs__pager-link docs__pager-link--next list-row" href={`/docs/${next.slug}/`} rel="next">
               <span class="corner"><T zh={S.docs.next.zh} en={S.docs.next.en} /></span>
               <span class="docs__pager-title"><T zh={next.zh.data.title} en={next.en.data.title} /></span>
+              <Icon name="arrow-right" size={14} />
             </a>
           )
         }
@@ -103,12 +106,13 @@ const group = groupLabel(pair.group);
           return hs.length ? (
             <div data-l={lang}>
               <p class="corner docs__toc-title">{S.docs.toc[lang]}</p>
-              <ul class="docs__toc-list" role="list">
+              <ul class="docs__toc-list" role="list" data-indicator-root data-axis="y" data-item="a" data-toc>
                 {hs.map((h) => (
                   <li class:list={{ 'docs__toc-sub': h.depth === 3 }}>
                     <a href={`#${h.slug}`}>{h.text}</a>
                   </li>
                 ))}
+                <span class="docs__toc-indicator" data-indicator aria-hidden="true" />
               </ul>
             </div>
           ) : null;
@@ -119,6 +123,11 @@ const group = groupLabel(pair.group);
 </BaseLayout>
 
 <script>
+  import { initIndicators } from '../../scripts/indicator';
+  import { enhanceProse } from '../../scripts/docs-enhance';
+
+  enhanceProse();
+
   // 窄屏收起目录；宽屏目录常开
   const menu = document.querySelector<HTMLDetailsElement>('.docs__menu');
   const wide = matchMedia('(min-width: 1025px)');
@@ -127,6 +136,32 @@ const group = groupLabel(pair.group);
   };
   sync();
   wide.addEventListener('change', sync);
+
+  // 本页目录跟随滚动：标题越过吸顶线时重算当前项，指示器随之平移
+  const toc = [...document.querySelectorAll<HTMLElement>('[data-toc]')];
+  if (toc.length) {
+    initIndicators();
+    const line = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) + 24;
+    const headings = [...document.querySelectorAll<HTMLElement>('.docs__article .prose :is(h2, h3)[id]')];
+    const recompute = () => {
+      const visible = headings.filter((h) => h.offsetParent !== null);
+      let active: HTMLElement | null = null;
+      for (const h of visible) if (h.getBoundingClientRect().top <= line) active = h;
+      for (const list of toc) {
+        for (const a of list.querySelectorAll<HTMLAnchorElement>('a')) {
+          if (active && a.hash === `#${active.id}`) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        }
+        list.dispatchEvent(new CustomEvent('indicator:update'));
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(recompute, { rootMargin: `-${line}px 0px 0px 0px`, threshold: [0, 1] });
+      headings.forEach((h) => io.observe(h));
+    }
+    document.addEventListener('armadra:lang', () => requestAnimationFrame(recompute));
+    recompute();
+  }
 </script>
 
 <style>
@@ -134,7 +169,7 @@ const group = groupLabel(pair.group);
     max-width: var(--docs-max);
     display: grid;
     grid-template-columns: var(--sidebar-w) minmax(0, 1fr) 200px;
-    gap: var(--sp-7);
+    gap: var(--space-gap);
     align-items: start;
   }
   .docs__side,
@@ -143,66 +178,73 @@ const group = groupLabel(pair.group);
     top: var(--nav-h);
     max-height: calc(100svh - var(--nav-h));
     overflow-y: auto;
-    padding-block: var(--sp-7);
-  }
-  /* 目录行的 hover 底向两侧外扩，侧栏自己留出这段内边距，避免出现横向滚动条 */
-  .docs__side {
-    padding-inline: var(--sp-3);
-    margin-inline: calc(-1 * var(--sp-3));
-    overflow-x: hidden;
+    padding-block: var(--space-gap);
   }
   .docs__menu-toggle { display: none; }
   .docs__main {
     min-width: 0;
-    max-width: var(--docs-main-max);
-    padding-top: var(--sp-7);
+    max-width: var(--prose-max);
+    padding-top: var(--space-gap);
   }
-  .docs__head { margin-bottom: var(--sp-6); }
+  .docs__head { margin-bottom: var(--space-loose); }
   .docs__title {
-    margin-top: var(--sp-2);
-    font: 500 var(--fs-h1) / 1.2 var(--font-sans);
-    letter-spacing: -0.02em;
+    margin-top: var(--space-group);
+    font: 600 var(--text-prose-h1) / var(--lh-prose-h) var(--font-ui);
+    letter-spacing: -0.01em;
   }
   .docs__desc {
-    margin-top: var(--sp-3);
-    color: var(--ink-2);
-    font-size: var(--fs-body-lg);
-    line-height: var(--lh-body-lg);
+    margin-top: var(--space-group);
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
   }
+  .docs__rule { margin: var(--space-section) 0 0; }
 
   .docs__pager {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--sp-4);
-    margin-top: var(--sp-8);
+    gap: var(--space-group);
+    margin-top: var(--space-wide);
   }
   .docs__pager-link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-1);
-    padding: var(--sp-4);
-    border: 1px solid var(--line);
-    text-decoration: none;
-    transition: border-color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+    grid-template-columns: auto auto minmax(0, 1fr);
+    justify-content: start;
+    gap: var(--space-group);
+    border: 1px solid var(--border);
+    color: var(--muted-foreground);
   }
-  .docs__pager-link:hover { border-color: var(--line-strong); background: var(--hover-row); }
-  .docs__pager-link--next { grid-column: 2; text-align: right; }
-  .docs__pager-title { color: var(--ink); }
-  .docs__edit { margin: var(--sp-5) 0 var(--sp-7); font-size: var(--fs-body-sm); }
-  .docs__edit a { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--control-h); }
+  .docs__pager-link--next {
+    grid-column: 2;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    text-align: right;
+  }
+  .docs__pager-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; color: var(--text); }
+  .docs__edit { margin: var(--space-section) 0 0; font: 400 var(--text-meta) / var(--lh-meta) var(--font-code); }
+  .docs__edit a { display: inline-flex; align-items: center; gap: var(--space-item); }
 
-  .docs__toc-title { margin-bottom: var(--sp-3); }
-  .docs__toc-list { margin: 0; padding: 0; border-left: 1px solid var(--line-soft); }
+  .docs__toc-title { margin-bottom: var(--space-group); }
+  .docs__toc-list { position: relative; margin: 0; padding: 0; border-left: 1px solid var(--border); }
   .docs__toc-list a {
     display: block;
-    padding: var(--sp-1) var(--sp-3);
-    font-size: var(--fs-body-sm);
-    line-height: var(--lh-body-sm);
-    color: var(--ink-3);
-    text-decoration: none;
+    padding: var(--space-item) var(--space-inset);
+    font: 400 var(--text-meta) / var(--lh-meta) var(--font-code);
+    color: var(--muted-foreground);
+    transition: color var(--dur-instant) var(--ease-color);
   }
-  .docs__toc-list a:hover { color: var(--ink); }
-  .docs__toc-sub a { padding-left: var(--sp-5); }
+  .docs__toc-list a[aria-current] { color: var(--brand-text); }
+  @media (hover: hover) and (pointer: fine) {
+    .docs__toc-list a:hover { color: var(--text); }
+    .docs__toc-list a[aria-current]:hover { color: var(--brand-text); }
+  }
+  .docs__toc-sub a { padding-left: var(--space-section); }
+  .docs__toc-indicator {
+    position: absolute;
+    left: -1px;
+    top: 0;
+    width: 2px;
+    background: var(--brand);
+    opacity: 0;
+    transition: transform var(--dur-base) var(--ease-in-out), opacity var(--dur-fast) var(--ease-out);
+  }
 
   @media (max-width: 1279px) {
     .docs { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
@@ -210,22 +252,26 @@ const group = groupLabel(pair.group);
   }
   @media (max-width: 1024px) {
     .docs { grid-template-columns: minmax(0, 1fr); gap: 0; }
-    .docs__side { position: static; max-height: none; padding: var(--sp-4) 0 0; margin-inline: 0; overflow: visible; }
-    .docs__menu { border: 1px solid var(--line); }
+    .docs__side { position: static; max-height: none; padding: var(--space-block) 0 0; overflow: visible; }
+    .docs__menu { border: 1px solid var(--border); border-radius: var(--r-card); }
     .docs__menu-toggle {
       display: flex;
       align-items: center;
-      min-height: var(--control-h);
-      padding-inline: var(--sp-4);
+      min-height: var(--control-touch);
+      padding-inline: var(--space-block);
       cursor: pointer;
-      color: var(--ink-2);
+      font-weight: 500;
+      color: var(--muted-foreground);
     }
-    .docs__menu[open] .docs__menu-toggle { border-bottom: 1px solid var(--line-soft); }
-    .docs__menu :global(.docs-nav) { padding: var(--sp-4); }
-    .docs__main { padding-top: var(--sp-6); }
+    .docs__menu[open] .docs__menu-toggle { border-bottom: 1px solid var(--border); }
+    .docs__menu :global(.docs-nav) { padding: var(--space-block); }
+    .docs__main { padding-top: var(--space-section); max-width: none; }
   }
   @media (max-width: 640px) {
     .docs__pager { grid-template-columns: minmax(0, 1fr); }
     .docs__pager-link--next { grid-column: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .docs__toc-indicator { transition: opacity var(--dur-fast) linear; }
   }
 </style>

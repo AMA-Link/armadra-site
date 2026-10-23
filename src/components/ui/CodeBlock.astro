@@ -1,8 +1,7 @@
 ---
 /**
- * 可复制的代码块。code 为字符串，或 { official, cn } 两份（按 html[data-region] 只显示一份）。
- * block：顶部标题栏（标签 + 复制按钮）常驻，命令区不与按钮重叠；
- * inline：单行命令嵌在列表行里，复制按钮只显示图标。
+ * 可复制的代码卡。code 为字符串，或 { official, cn } 两份（按 html[data-region] 只显示一份）。
+ * 复制按钮在卡片右上，点击后「复制」原地替换为「已复制」（交叉淡化，宽度不变）。
  */
 import type { Bi } from '../../lib/types';
 import T from '../common/T.astro';
@@ -13,54 +12,34 @@ type Region = 'official' | 'cn';
 interface Props {
   code: string | Record<Region, string>;
   label?: Bi | string;
-  variant?: 'block' | 'inline';
 }
-const { code, label, variant = 'block' } = Astro.props;
+const { code, label } = Astro.props;
 const variants: [Region | null, string][] =
   typeof code === 'string' ? [[null, code]] : [['official', code.official], ['cn', code.cn]];
 ---
 
-<div class:list={['code', `code--${variant}`]} data-code>
-  {
-    variant === 'block' && (
-      <div class="code__head">
-        <span class="code__label">
-          {label && (typeof label === 'string' ? label : <T zh={label.zh} en={label.en} />)}
-        </span>
-        <button
-          class="code__copy"
-          type="button"
-          data-copy
-          aria-label={S.copy.aria.zh}
-          data-aria-zh={S.copy.aria.zh}
-          data-aria-en={S.copy.aria.en}
-        >
-          <Icon name="copy" size={12} />
-          <span class="code__copy-idle"><T {...S.copy.idle} /></span>
-          <span class="code__copy-done"><T {...S.copy.done} /></span>
-        </button>
-      </div>
-    )
-  }
+<div class="code" data-code>
+  {label && (
+    <span class="code__label meta">{typeof label === 'string' ? label : <T zh={label.zh} en={label.en} />}</span>
+  )}
   {
     variants.map(([region, text]) => (
       <pre class="code__pre" data-region-only={region ?? undefined}><code>{text}</code></pre>
     ))
   }
-  {
-    variant === 'inline' && (
-      <button
-        class="code__copy"
-        type="button"
-        data-copy
-        aria-label={S.copy.aria.zh}
-        data-aria-zh={S.copy.aria.zh}
-        data-aria-en={S.copy.aria.en}
-      >
-        <Icon name="copy" size={12} />
-      </button>
-    )
-  }
+  <button
+    class="code__copy"
+    type="button"
+    data-copy
+    aria-label={S.copy.aria.zh}
+    data-aria-zh={S.copy.aria.zh}
+    data-aria-en={S.copy.aria.en}
+  >
+    <span class="code__swap">
+      <span class="code__idle"><Icon name="copy" size={12} /><T {...S.copy.idle} /></span>
+      <span class="code__done"><Icon name="check" size={12} /><T {...S.copy.done} /></span>
+    </span>
+  </button>
 </div>
 
 <script>
@@ -71,30 +50,27 @@ const variants: [Region | null, string][] =
 <style>
   .code {
     position: relative;
-    min-width: 0; /* 作为网格或弹性子项时不被长命令撑宽，命令在块内横向滚动 */
-    background: var(--code-bg);
-    border: 1px solid var(--line-soft);
-  }
-  .code__head {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sp-3);
-    height: var(--sp-6);
-    padding-left: var(--sp-3);
-    border-bottom: 1px solid var(--line-soft);
+    align-items: flex-start;
+    min-width: 0; /* 作为网格或弹性子项时不被长命令撑宽，命令在块内横向滚动 */
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
   }
   .code__label {
-    font: 500 var(--fs-mono-xs) / var(--lh-mono-xs) var(--font-mono);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-3);
+    position: absolute;
+    top: var(--space-item);
+    left: var(--space-inset);
+    font-size: var(--text-meta);
+    line-height: var(--lh-meta);
   }
   .code__pre {
+    flex: 1 1 auto;
+    min-width: 0;
     margin: 0;
-    padding: var(--sp-3) var(--sp-4);
+    padding: var(--space-inset) var(--space-block);
     overflow-x: auto;
-    font: 400 var(--fs-code) / var(--lh-code) var(--font-mono);
+    font: 400 var(--text-code) / var(--lh-code) var(--font-code);
     color: var(--code-plain);
     white-space: pre;
     tab-size: 2;
@@ -102,47 +78,43 @@ const variants: [Region | null, string][] =
   .code__pre code { font: inherit; color: inherit; background: none; padding: 0; }
 
   .code__copy {
+    flex: none;
     display: inline-flex;
     align-items: center;
-    gap: var(--sp-1);
-    min-height: var(--sp-6);
-    padding: 0 var(--sp-2);
-    font: 400 var(--fs-mono-sm) / var(--lh-mono-sm) var(--font-mono);
-    color: var(--ink-3);
-    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), scale var(--dur-1) var(--ease-out);
+    min-height: var(--icon-btn);
+    margin: var(--space-item);
+    padding-inline: var(--space-group);
+    border-radius: var(--r-control);
+    font: 400 var(--text-meta) / var(--lh-meta) var(--font-code);
+    color: var(--muted-foreground);
+    transition: color var(--dur-fast) var(--ease-color), background-color var(--dur-fast) var(--ease-color),
+      scale var(--dur-instant) var(--ease-out);
   }
-  .code__copy:hover { color: var(--ink); background: var(--hover-row); }
-  .code__copy-done { display: none; }
-  .code__copy.is-copied { color: var(--ink); }
-  .code__copy.is-copied .code__copy-idle { display: none; }
-  .code__copy.is-copied .code__copy-done { display: inline; }
+  @media (hover: hover) and (pointer: fine) {
+    .code__copy:hover { color: var(--text); background: var(--hover); }
+  }
   @media (prefers-reduced-motion: no-preference) {
-    .code__copy:active { scale: 0.97; }
+    .code__copy:hover:active { scale: var(--press-scale); }
   }
 
-  /* 行内：单行命令，按钮只留图标 */
-  .code--inline {
-    display: flex;
+  /* 文字替换：两层叠放，宽度取较宽者，不跳动 */
+  .code__swap { display: inline-grid; }
+  .code__idle,
+  .code__done {
+    grid-area: 1 / 1;
+    display: inline-flex;
     align-items: center;
-    min-width: 0;
-    background: transparent;
-    border: 0;
+    gap: var(--space-item);
+    transition: opacity var(--dur-base) var(--ease-out), filter var(--dur-base) var(--ease-out);
   }
-  .code--inline .code__pre {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: 0;
-    padding-right: var(--sp-2);
-    font: 400 var(--fs-mono) / var(--lh-mono) var(--font-mono);
-    color: var(--ink-2);
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .code--inline .code__copy {
-    flex: none;
-    min-width: var(--control-h);
-    min-height: var(--control-h);
-    justify-content: center;
-    margin-block: calc((var(--lh-mono) - var(--control-h)) / 2);
+  .code__done { opacity: 0; filter: blur(2px); }
+  .code__copy.is-copied { color: var(--success-text); }
+  .code__copy.is-copied .code__idle { opacity: 0; filter: blur(2px); }
+  .code__copy.is-copied .code__done { opacity: 1; filter: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .code__idle,
+    .code__done { filter: none; transition: opacity var(--dur-fast) linear; }
+    .code__done { filter: none; }
+    .code__copy.is-copied .code__idle { filter: none; }
   }
 </style>

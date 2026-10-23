@@ -36,3 +36,14 @@ sips -Z 1920 -s formatOptions 80 /tmp/armadra-demo-poster-full.jpg --out public/
 - Codex 用临时 `CODEX_HOME`，只复制 `~/.codex/auth.json`；`auth.json` 超过 7 天没刷新时先在本机正常用一次 Codex 再录，避免在临时目录里轮换令牌。
 - 脚本跑前跑后比对 `~/.claude/settings.json` 与 `~/.codex` 配置的指纹，不一致会打印警告。
 - core 的 `XDG_*` 指向临时目录，终端里的 shell 包装脚本会还原它们，否则 mise 等工具在节点里找不到已安装的 Node。
+
+## 首页圆形插画
+
+首页条目旁的圆形插画是同一份录屏里抽出的真实截图，不另行录制、不绘制内容：
+
+```sh
+node scripts/record/circles.mjs            # 默认读 public/media/armadra-demo-tree.webm
+```
+
+`scripts/record/circles.mjs` 按固定的取帧时间与裁切框抽帧、转灰度，输出到 `public/media/circles/*.jpg`（720×720）；圆形裁切、网格纸底与浅色主题反相由 `CircleFigure.astro` 的 CSS 完成。换录屏后重跑，并检查每张的裁切框仍落在对应的界面区域上。
+

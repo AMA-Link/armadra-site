@@ -1,5 +1,8 @@
 ---
-/** 文档左侧目录：按分组列出全部文档，当前页陶土色左缘 */
+/**
+ * 文档左侧目录：按分组列出全部文档。当前页底 --brand-soft、文字 --brand-text，
+ * 左侧 2px 品牌色指示器随悬停与聚焦平移（scripts/indicator.ts），离开后回到当前页。
+ */
 import type { DocPair } from '../../lib/docs';
 import { GROUPS, groupLabel } from '../../lib/docs';
 import { S } from '../../i18n';
@@ -12,7 +15,15 @@ interface Props {
 const { pairs, current } = Astro.props;
 ---
 
-<nav class="docs-nav" aria-label={S.docs.nav.zh} data-aria-zh={S.docs.nav.zh} data-aria-en={S.docs.nav.en}>
+<nav
+  class="docs-nav"
+  aria-label={S.docs.nav.zh}
+  data-aria-zh={S.docs.nav.zh}
+  data-aria-en={S.docs.nav.en}
+  data-indicator-root
+  data-axis="y"
+  data-item=".docs-nav__link"
+>
   {
     GROUPS.map((g) => {
       const items = pairs.filter((p) => p.group === g);
@@ -34,38 +45,53 @@ const { pairs, current } = Astro.props;
       );
     })
   }
+  <span class="docs-nav__indicator" data-indicator aria-hidden="true"></span>
 </nav>
+
+<script>
+  import { initIndicators } from '../../scripts/indicator';
+  initIndicators();
+</script>
 
 <style>
   .docs-nav {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-5);
-  }
-  .docs-nav__title { margin-bottom: var(--sp-2); }
-  .docs-nav__list { margin: 0; padding: 0; }
-  .docs-nav__link {
     position: relative;
     display: flex;
-    align-items: center;
-    min-height: 36px;
-    padding-inline: var(--sp-3);
-    margin-inline: calc(-1 * var(--sp-3));
-    font-size: var(--fs-body-sm);
-    line-height: var(--lh-body-sm);
-    color: var(--ink-2);
-    text-decoration: none;
-    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+    flex-direction: column;
+    gap: var(--space-section);
   }
-  .docs-nav__link:hover { color: var(--ink); background: var(--hover-row); }
-  .docs-nav__link[aria-current='page'] { color: var(--ink); }
-  .docs-nav__link[aria-current='page']::before {
-    content: '';
+  .docs-nav__title { margin-bottom: var(--space-group); padding-inline: var(--space-inset); }
+  .docs-nav__list { margin: 0; padding: 0; }
+  .docs-nav__link {
+    display: flex;
+    align-items: center;
+    min-height: var(--nav-row-h);
+    padding-inline: var(--space-inset);
+    border-radius: var(--r-control);
+    font: 400 var(--text-body) / var(--lh-body) var(--font-ui);
+    color: var(--muted-foreground);
+    transition: color var(--dur-instant) var(--ease-color), background-color var(--dur-fast) var(--ease-color);
+  }
+  .docs-nav__link[aria-current='page'] {
+    background: var(--brand-soft);
+    color: var(--brand-text);
+    font-weight: 500;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .docs-nav__link:hover { color: var(--text); background: var(--hover); }
+    .docs-nav__link[aria-current='page']:hover { color: var(--brand-text); background: var(--brand-soft); }
+  }
+  .docs-nav__indicator {
     position: absolute;
     left: 0;
-    top: 10px;
-    bottom: 10px;
+    top: 0;
     width: 2px;
-    background: var(--accent-ui);
+    border-radius: var(--r-pill);
+    background: var(--brand);
+    opacity: 0;
+    transition: transform var(--dur-base) var(--ease-in-out), opacity var(--dur-fast) var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .docs-nav__indicator { transition: opacity var(--dur-fast) linear; }
   }
 </style>

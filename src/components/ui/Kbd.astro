@@ -1,5 +1,5 @@
 ---
-/** 快捷键提示：全站统一为等宽方括号写法 [B]，只作提示，不进入读屏 */
+/** 快捷键提示：20 高的等宽小方块，只作提示，不进入读屏；触屏没有键盘，不显示 */
 interface Props {
   k: string;
   class?: string;
@@ -7,18 +7,22 @@ interface Props {
 const { k, class: className } = Astro.props;
 ---
 
-<kbd class:list={['kbd', className]} aria-hidden="true">[{k}]</kbd>
+<kbd class:list={['kbd', className]} aria-hidden="true">{k}</kbd>
 
 <style>
   .kbd {
-    font: 400 var(--fs-mono) / var(--lh-mono) var(--font-mono);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding-inline: var(--space-item);
+    background: var(--surface-raised);
+    border-radius: var(--r-tight);
+    font: 500 var(--text-caption) / 1 var(--font-code);
     font-variant-numeric: tabular-nums;
-    color: var(--ink-3);
-    background: none;
-    border: 0;
-    padding: 0;
+    color: var(--muted-foreground);
   }
-  /* 触屏设备没有键盘快捷键，不显示提示 */
   @media (pointer: coarse) {
     .kbd { display: none; }
   }

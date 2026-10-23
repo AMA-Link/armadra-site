@@ -1,0 +1,70 @@
+---
+/**
+ * 支持的工具：一张表，数据来自 src/data/agents.ts（与 Armadra README「支持的 Agent」一致）。
+ * 工具名 500，接入方式 / 恢复会话 / 模式用等宽；行高 36；窄屏横向滚动。
+ */
+import { AGENTS } from '../../data/agents';
+import { H } from '../../i18n/home';
+import T from '../common/T.astro';
+
+const cols = H.tools.columns;
+---
+
+<div class="tools card" role="region" tabindex="0" aria-label={H.tools.title.zh} data-aria-zh={H.tools.title.zh} data-aria-en={H.tools.title.en}>
+  <table class="tools__table">
+    <thead>
+      <tr>
+        <th scope="col"><T zh={cols.tool.zh} en={cols.tool.en} /></th>
+        <th scope="col"><T zh={cols.channel.zh} en={cols.channel.en} /></th>
+        <th scope="col"><T zh={cols.resume.zh} en={cols.resume.en} /></th>
+        <th scope="col"><T zh={cols.modes.zh} en={cols.modes.en} /></th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        AGENTS.map((a) => (
+          <tr>
+            <th scope="row" class="tools__name">{a.name}</th>
+            <td><T zh={H.tools.channels[a.channel].zh} en={H.tools.channels[a.channel].en} /></td>
+            <td class="tools__code"><code>{a.resume}</code></td>
+            <td class="tools__code">
+              {a.modes ?? <T zh={H.tools.cliDefault.zh} en={H.tools.cliDefault.en} />}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .tools { overflow-x: auto; }
+  .tools:focus-visible { outline-offset: 2px; }
+  .tools__table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    text-align: left;
+    font: 400 var(--text-body) / var(--lh-body) var(--font-ui);
+  }
+  .tools__table th,
+  .tools__table td {
+    height: var(--row-h);
+    padding: 0 var(--space-block);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .tools__table thead th {
+    background: var(--surface-raised);
+    font: 500 var(--text-caption) / var(--lh-caption) var(--font-code);
+    color: var(--muted-foreground);
+  }
+  .tools__table tbody tr + tr > * { border-top: 1px solid var(--border); }
+  .tools__name { font-weight: 500; color: var(--text); }
+  .tools__table td { color: var(--muted-foreground); }
+  .tools__code,
+  .tools__code code {
+    font: 400 var(--text-meta) / var(--lh-meta) var(--font-code);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

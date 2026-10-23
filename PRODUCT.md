@@ -38,7 +38,7 @@ Astro 7 + TypeScript，纯静态输出，部署在 Cloudflare Workers 静态资�
 
 - 名字：**Armadra**；标志为犰狳（`public/brand/`，源文件在 Armadra 仓库 `assets/brand/`）。
 - 一句话：在同一张无限画布上，打破 Agent 之间的界限，让不同模型围绕同一个目标协作。
-- 风格：简约、安静、大气，与作者个人站同一套设计语言。
+- 风格：简约、安静、大气，与桌面端共用同一套设计令牌（见 DESIGN.md）。
 
 ## Evidence on Hand
 

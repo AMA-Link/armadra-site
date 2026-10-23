@@ -13,6 +13,8 @@ export const H = {
     download: { zh: '下载 Armadra', en: 'Download Armadra' },
     quickstart: { zh: '快速上手', en: 'Quickstart' },
     note: { zh: '本地优先 · 开源免费 · 支持现有 CLI 工具', en: 'Local-first · Free and open source · Works with existing CLI tools' },
+    /** 元信息行里的平台名，中英相同 */
+    platforms: 'macOS · Windows · Linux',
   },
   get: {
     label: { zh: '获取方式', en: 'Get Armadra' },
@@ -32,37 +34,66 @@ export const H = {
     en: 'Armadra recording: Claude Code leads, explains the split, then dispatches three Codex child nodes that work in parallel; once their reports arrive it runs every test and sums up.',
   },
   example: {
+    meta: { zh: '协作示例', en: 'Example' },
     title: { zh: '从一个任务，到多个 Agent 协作', en: 'Turn a task into a shared effort' },
     text: {
-      zh: '打开项目，添加负责实现和审查的 Agent，再连接它们。实现方完成修改后，审查方可以按需读取相关上下文并反馈意见。你可以在画布上查看进展，处理需要你确认的操作。',
-      en: 'Open a project, add agents for implementation and review, and connect them. Once changes are ready, the reviewing agent can read the relevant context and provide feedback. Follow progress on the canvas and respond when your input or approval is needed.',
+      zh: '打开项目，添加负责实现和审查的 Agent 并连接它们。实现方完成修改后，审查方按需读取相关上下文并反馈意见。',
+      en: 'Open a project, add agents for implementation and review, and connect them. Once changes are ready, the reviewing agent reads the relevant context and gives feedback.',
     },
+    alt: {
+      zh: 'Armadra 画布：主节点在上，三个子节点在下，由连线相连',
+      en: 'The Armadra canvas: a lead node above, three child nodes below, joined by links',
+    },
+    docs: { zh: '阅读文档', en: 'Read the docs' },
+    href: '/docs/quickstart/',
+    image: 'canvas',
   },
   features: {
     title: { zh: '核心能力', en: 'Core capabilities' },
     items: [
       {
         term: { zh: '熟悉的工具', en: 'Familiar tools' },
+        meta: { zh: 'CLI', en: 'CLI' },
+        href: '/docs/agents/',
+        image: 'cli',
+        alt: { zh: '画布节点里运行的 Claude Code', en: 'Claude Code running inside a canvas node' },
         line: { zh: '继续使用你熟悉的 AI 编程工具。每个 Agent 节点直接运行对应 CLI，沿用其账户、模型和权限设置。', en: "Keep using the coding tools you know. Each agent node runs its CLI with that tool's accounts, models, and permission settings." },
       },
       {
         term: { zh: '上下文共享', en: 'Context sharing' },
+        meta: { zh: '连线', en: 'Links' },
+        href: '/docs/links-and-context/',
+        image: 'link',
+        alt: { zh: '主节点与子节点之间的连线', en: 'The links between the lead node and a child node' },
         line: { zh: '让协作所需的信息跟上任务。通过画布连线，让 Agent 按需读取相连节点的对话摘要、相关资料和代码差异。', en: 'Keep relevant context with the task. Connect nodes so agents can read linked conversation summaries, reference material, and code diffs as needed.' },
       },
       {
         term: { zh: '消息与交接', en: 'Messages and handoffs' },
+        meta: { zh: '消息 · 交接', en: 'Messages · Handoff' },
+        href: '/docs/messages-and-handoff/',
+        image: 'message',
+        alt: { zh: '主节点收到的消息与汇总', en: 'Messages and the summary received by the lead node' },
         line: { zh: '交换进展，让另一个 Agent 接着做。通过消息传递结果与问题；交接前可预览将传递的内容，确认后再发送。', en: 'Share progress and hand off the next step. Exchange results and questions through messages. Preview a handoff before confirming what gets sent.' },
       },
       {
         term: { zh: '任务协调', en: 'Task coordination' },
+        meta: { zh: 'ama', en: 'ama' },
+        href: '/docs/coordinator-and-workflows/',
+        image: 'lead',
+        alt: { zh: '主节点与它派出的子节点', en: 'A lead node and the child nodes it dispatched' },
         line: { zh: '用 ama 组织多个 Agent。将目标拆分为子任务，分配给不同 Agent，并汇总进度与结果。需要权限批准时，仍由你决定。', en: 'Coordinate agents with ama. Break a goal into subtasks, assign them to agents, and gather progress and results. Permission requests still require your approval.' },
       },
       {
         term: { zh: '开发工具', en: 'Development tools' },
+        meta: { zh: '编辑器 · Git · 浏览器', en: 'Editor · Git · Browser' },
+        href: '/docs/canvas-and-nodes/',
+        image: 'diff',
+        alt: { zh: '节点里的代码差异与测试结果', en: 'A code diff and test results inside a node' },
         line: { zh: '把代码、资料与结果放在一起。在同一工作空间使用编辑器、Git、GitHub、文件与浏览器节点，查看修改和运行结果。', en: 'Bring code, references, and results together. Use the editor, Git, GitHub, files, and browser nodes within the same workspace to inspect changes and results.' },
       },
     ],
     docs: { zh: '阅读文档', en: 'Read the docs' },
+    all: { zh: '全部文档', en: 'All docs' },
   },
   tools: {
     title: { zh: '连接你已经在用的工具', en: 'Connect the tools you already use' },
@@ -70,12 +101,28 @@ export const H = {
       zh: '支持 Claude Code、Codex、OpenCode、Pi、Oh My Pi 和 GitHub Copilot，并提供内置协调者 ama。也可以添加自定义 CLI。',
       en: 'Work with Claude Code, Codex, OpenCode, Pi, Oh My Pi, and GitHub Copilot, alongside the built-in ama coordinator. You can also add custom CLIs.',
     },
+    columns: {
+      tool: { zh: '工具', en: 'Tool' },
+      channel: { zh: '状态通道', en: 'Status channel' },
+      resume: { zh: '恢复会话', en: 'Resume' },
+      modes: { zh: '非默认权限模式', en: 'Extra permission modes' },
+    },
+    /** 与 Armadra 文档「Agent 与 CLI」中的状态通道一致 */
+    channels: {
+      hook: { zh: '命令 Hook', en: 'Command hook' },
+      plugin: { zh: '插件', en: 'Plugin' },
+      ext: { zh: '进程内扩展', en: 'In-process extension' },
+      host: { zh: '宿主适配器', en: 'Host adapter' },
+    },
+    cliDefault: { zh: 'CLI 默认', en: 'CLI default' },
+    docs: { zh: '阅读文档', en: 'Read the docs' },
     note: {
       zh: '使用外部 CLI 前，请在运行 Armadra 的电脑或服务器上完成安装和登录。',
       en: 'Install and sign in to external CLI tools on the computer or server running Armadra before using them.',
     },
   },
   deploy: {
+    meta: { zh: '桌面 · 服务器', en: 'Desktop · Server' },
     title: { zh: '本地使用，也能自托管部署', en: 'Run locally or host it yourself' },
     items: [
       {
@@ -87,7 +134,13 @@ export const H = {
         en: 'Agents run on the computer or server hosting the workspace. Model requests and related data handling follow the settings and policies of the CLI tools and model services you use.',
       },
     ],
+    alt: {
+      zh: '画布右下角：一个子节点与小地图',
+      en: 'The lower right of the canvas: a child node and the minimap',
+    },
     more: { zh: '了解更多', en: 'Learn more' },
+    href: '/docs/server-and-devices/',
+    image: 'corner',
   },
   faq: {
     title: { zh: '常见问题', en: 'FAQ' },

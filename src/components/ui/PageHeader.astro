@@ -1,8 +1,7 @@
 ---
 /**
- * 页面标题区：所有页面统一为「标题 + 一句简介 + 可选操作」。
- * 标题用 Headline 级（--fs-h1），始终比分区标题（--fs-h2）大一级。
- * 可选 media 插槽放在标题左侧（如关于页头像），窄屏时移到标题上方。
+ * 页面标题区：「标题 + 一句简介 + 可选操作」。标题用 --text-hero，简介用 --text-lede。
+ * 用于文档索引、404 与更新日志；可选 meta 插槽放在标题上方（等宽元信息），操作放默认插槽。
  */
 import type { Bi } from '../../lib/types';
 import T from '../common/T.astro';
@@ -13,56 +12,42 @@ interface Props {
 }
 const { title, intro } = Astro.props;
 const hasActions = Astro.slots.has('default');
-const hasMedia = Astro.slots.has('media');
+const hasMeta = Astro.slots.has('meta');
 ---
 
-<header class:list={['phead', { 'phead--media': hasMedia }]}>
-  {hasMedia && <div class="phead__media"><slot name="media" /></div>}
-  <div class="phead__body">
-    <h1 class="phead__title"><T zh={title.zh} en={title.en} /></h1>
-    {intro && <p class="phead__intro"><T zh={intro.zh} en={intro.en} /></p>}
-    <slot name="meta" />
-    {hasActions && <div class="phead__actions"><slot /></div>}
-  </div>
+<header class="phead">
+  {hasMeta && <p class="phead__meta meta"><slot name="meta" /></p>}
+  <h1 class="phead__title"><T zh={title.zh} en={title.en} /></h1>
+  {intro && <p class="phead__intro"><T zh={intro.zh} en={intro.en} /></p>}
+  {hasActions && <div class="phead__actions"><slot /></div>}
 </header>
 
 <style>
   .phead {
-    padding-top: var(--sp-7);
-    margin-bottom: var(--sp-6);
+    padding-block: var(--space-band) var(--space-loose);
   }
-  .phead--media {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-    gap: var(--sp-6);
-  }
+  .phead__meta { margin-bottom: var(--space-section); }
   .phead__title {
     margin: 0;
-    font: 500 var(--fs-h1) / 1.2 var(--font-sans);
+    font: 600 var(--text-hero) / var(--lh-hero) var(--font-ui);
     letter-spacing: -0.02em;
-    color: var(--ink);
-    text-wrap: balance;
+    color: var(--text);
   }
   .phead__intro {
-    max-width: 65ch;
-    margin: var(--sp-3) 0 0;
-    font: 400 var(--fs-body) / var(--lh-body) var(--font-sans);
-    color: var(--ink-2);
-    text-wrap: pretty;
+    max-width: 62ch;
+    margin: var(--space-block) 0 0;
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
   }
   .phead__actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sp-3);
-    margin-top: var(--sp-5);
+    gap: var(--space-inset);
+    margin-top: var(--space-loose);
   }
   @media (max-width: 640px) {
-    .phead--media { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
-    .phead {
-      padding-top: var(--sp-6);
-      margin-bottom: var(--sp-5);
-    }
+    .phead { padding-block: var(--space-wide) var(--space-section); }
+    .phead__actions { flex-direction: column; align-items: stretch; }
   }
 </style>

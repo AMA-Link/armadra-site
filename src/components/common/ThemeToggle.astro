@@ -1,72 +1,39 @@
 ---
 import { S } from '../../i18n';
-import T from './T.astro';
 import Icon from './Icon.astro';
 
 interface Props {
-  variant?: 'icon' | 'row';
   class?: string;
 }
-const { variant = 'icon', class: className } = Astro.props;
+const { class: className } = Astro.props;
 // SSR 默认深色 + 中文；客户端由 theme.ts 按实际主题与语言同步 aria-label
 ---
 
-<button
-  type="button"
-  class:list={['theme-toggle', `theme-toggle--${variant}`, className]}
-  data-theme-toggle
-  aria-label={S.theme.toLight.zh}
->
-  {
-    variant === 'icon' ? (
-      <>
-        <span class="tt-when-dark"><Icon name="sun" size={18} /></span>
-        <span class="tt-when-light"><Icon name="moon" size={18} /></span>
-      </>
-    ) : (
-      <>
-        <span class="tt-row__key"><T zh={S.theme.row.zh} en={S.theme.row.en} /></span>
-        <span class="tt-row__val">
-          <span class="tt-when-dark"><T zh={S.theme.dark.zh} en={S.theme.dark.en} /></span>
-          <span class="tt-when-light"><T zh={S.theme.light.zh} en={S.theme.light.en} /></span>
-        </span>
-      </>
-    )
-  }
+<button type="button" class:list={['theme-toggle', className]} data-theme-toggle aria-label={S.theme.toLight.zh}>
+  <span class="tt-when-dark"><Icon name="sun" size={16} /></span>
+  <span class="tt-when-light"><Icon name="moon" size={16} /></span>
 </button>
 
 <style>
-  /* 只显示与当前主题对应的图标；选择器需高于下方 .theme-toggle--icon > span */
-  :global(html[data-scheme='dark']) .theme-toggle .tt-when-light,
-  :global(html[data-scheme='light']) .theme-toggle .tt-when-dark { display: none; }
+  /* 只显示与当前主题对应的图标 */
+  :global(html[data-theme='dark']) .theme-toggle .tt-when-light,
+  :global(html[data-theme='light']) .theme-toggle .tt-when-dark { display: none; }
 
-  .theme-toggle--icon {
+  .theme-toggle {
     display: inline-grid;
     place-items: center;
-    width: var(--control-h);
-    height: var(--control-h);
-    color: var(--ink-2);
-    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), scale var(--dur-1) var(--ease-out);
+    width: var(--icon-btn);
+    height: var(--icon-btn);
+    border-radius: var(--r-control);
+    color: var(--muted-foreground);
+    transition: color var(--dur-instant) var(--ease-color), background-color var(--dur-fast) var(--ease-color),
+      scale var(--dur-instant) var(--ease-out);
   }
-  .theme-toggle--icon:hover { color: var(--ink); background: var(--hover-row); }
-  .theme-toggle--icon > span { display: grid; place-items: center; }
-
-  .theme-toggle--row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: calc(100% + 2 * var(--row-bleed, var(--sp-5)));
-    margin-inline: calc(-1 * var(--row-bleed, var(--sp-5)));
-    padding-inline: var(--row-bleed, var(--sp-5));
-    height: 36px;
-    font-family: var(--font-mono);
-    font-size: var(--fs-mono-nav);
-    line-height: var(--lh-mono-nav);
-    color: var(--ink-2);
-    text-align: left;
-    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  .theme-toggle > span { display: grid; place-items: center; }
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover { color: var(--text); background: var(--hover); }
   }
-  .theme-toggle--row:hover { color: var(--ink); background: var(--hover-row); }
-  .theme-toggle--row:focus-visible { outline-offset: -2px; }
-  .tt-row__val { color: var(--ink-3); }
+  @media (prefers-reduced-motion: no-preference) {
+    .theme-toggle:hover:active { scale: var(--press-scale); }
+  }
 </style>

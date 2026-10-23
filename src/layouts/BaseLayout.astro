@@ -8,6 +8,7 @@ import '../styles/motion.css';
 import type { PageId } from '../lib/types';
 import { S } from '../i18n';
 import T from '../components/common/T.astro';
+import Dock from '../components/common/Dock.astro';
 
 interface Props {
   page: PageId;
@@ -38,7 +39,7 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
 <html
   lang="zh-CN"
   data-lang="zh"
-  data-scheme="dark"
+  data-theme="dark"
   data-page={page}
   data-title-zh={title}
   data-title-en={titleEn ?? title}
@@ -50,7 +51,15 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
           var d = document.documentElement;
           var s = localStorage.getItem('armadra-site.scheme');
           if (s !== 'dark' && s !== 'light') s = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-          d.dataset.scheme = s;
+          d.dataset.theme = s;
+          if (d.dataset.page === 'home' && !sessionStorage.getItem('armadra-site.intro')) {
+            d.dataset.intro = 'play';
+            sessionStorage.setItem('armadra-site.intro', '1');
+          }
+          if (!sessionStorage.getItem('armadra-site.dock')) {
+            d.dataset.dockIn = 'play';
+            sessionStorage.setItem('armadra-site.dock', '1');
+          }
           var l = localStorage.getItem('armadra-site.lang');
           if (l !== 'zh' && l !== 'en') l = /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
           d.dataset.lang = l; d.lang = l === 'zh' ? 'zh-CN' : 'en';
@@ -65,7 +74,7 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#141413" />
+    <meta name="theme-color" content="#1c1c1c" />
     <meta name="color-scheme" content="dark light" />
     <meta name="generator" content={Astro.generator} />
     <meta property="og:site_name" content="Armadra" />
@@ -78,8 +87,10 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
     <slot name="head" />
   </head>
   <body class:list={[`shell-${shell}`, `page-${page}`, bodyClass]}>
+    <div class="noise" aria-hidden="true"></div>
     <a class="skip-link" href="#main"><T zh={S.skip.zh} en={S.skip.en} /></a>
     <slot />
+    <Dock page={page} />
     <script>
       import { initTheme, setScheme } from '../scripts/theme';
       import { applyLang, setLang } from '../scripts/lang';

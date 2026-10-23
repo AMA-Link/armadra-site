@@ -1,6 +1,8 @@
 ---
 /**
- * 全站顶栏：所有页面共用，文档外壳下吸顶。导航项来自 lib/nav.ts，与快捷键同源。
+ * 全站顶栏：56 高吸顶，背景 85% + 模糊。左：标志与名称；中：首页 / 文档 / 更新日志（当前项品牌文字 +
+ * 2px 平移指示器）；右：中 / EN、主题、GitHub、下载。≤640 只留标志、中 / EN 与主题，其余进底部 Dock。
+ * 导航项来自 lib/nav.ts，与快捷键、Dock 同源。
  */
 import type { PageId } from '../../lib/types';
 import { NAV, navCurrent, REPO_URL, RELEASES_URL } from '../../lib/nav';
@@ -12,37 +14,41 @@ import { S } from '../../i18n';
 
 interface Props {
   page: PageId;
-  variant?: 'top' | 'side';
 }
 
-const { page, variant = 'top' } = Astro.props;
+const { page } = Astro.props;
 const current = navCurrent(page);
 ---
 
-<header
-  class:list={['topnav', `topnav--${variant}`, { 'topnav--column': page === 'home' }]}
->
+<header class="topnav">
   <div class="container topnav__inner">
     <a class="topnav__brand" href="/" aria-label="Armadra">
-      <img class="topnav__logo" src="/brand/armadra-96.png" width="28" height="28" alt="" />
+      <img class="topnav__logo" src="/brand/armadra-96.png" width="24" height="24" alt="" />
       <span class="topnav__mark">Armadra</span>
     </a>
 
-    <nav class="topnav__nav" aria-label={S.nav.aria.zh} data-aria-zh={S.nav.aria.zh} data-aria-en={S.nav.aria.en}>
+    <nav
+      class="topnav__nav"
+      aria-label={S.nav.aria.zh}
+      data-aria-zh={S.nav.aria.zh}
+      data-aria-en={S.nav.aria.en}
+      data-indicator-root
+      data-axis="x"
+      data-item=".topnav__link"
+    >
       {
         NAV.map((item) => (
           <a
-            class:list={['topnav__link', `topnav__link--${item.id}`]}
+            class="topnav__link"
             href={item.href}
             aria-current={current === item.id ? 'page' : undefined}
             aria-keyshortcuts={item.key}
           >
-            <span class="topnav__label">
-              <T zh={item.label.zh} en={item.label.en} />
-            </span>
+            <T zh={item.label.zh} en={item.label.en} />
           </a>
         ))
       }
+      <span class="topnav__indicator" data-indicator aria-hidden="true"></span>
     </nav>
 
     <div class="topnav__tools">
@@ -58,20 +64,25 @@ const current = navCurrent(page);
   </div>
 </header>
 
+<script>
+  import { initIndicators } from '../../scripts/indicator';
+  initIndicators();
+</script>
+
 <style>
   .topnav {
-    position: relative;
-    z-index: 10;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line-soft);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
   }
-
-  /* 首页：顶栏也在带左右边框的一列里，与下方分区对齐 */
-  .topnav--column .topnav__inner { border-inline: 1px solid var(--line); }
 
   .topnav__inner {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     height: var(--nav-h);
   }
@@ -79,143 +90,70 @@ const current = navCurrent(page);
   .topnav__brand {
     display: inline-flex;
     align-items: center;
-    gap: var(--sp-3);
-    min-height: 44px;
-    color: var(--ink);
-    text-decoration: none;
+    gap: var(--space-group);
+    justify-self: start;
+    color: var(--text);
   }
-
-  .topnav__logo {
-    display: block;
-    flex: none;
-    width: 28px;
-    height: 28px;
-  }
-  .topnav__mark {
-    font: 500 var(--fs-body-lg) / 1 var(--font-sans);
-    letter-spacing: -0.01em;
-  }
-  .topnav__download {
-    min-height: 36px;
-    margin-left: var(--sp-2);
-  }
+  .topnav__logo { flex: none; width: 24px; height: 24px; }
+  .topnav__mark { font: 500 var(--text-body) / 1 var(--font-ui); }
 
   .topnav__nav {
+    position: relative;
     display: flex;
-    justify-content: flex-end;
-    margin-inline-end: var(--sp-5);
-    align-items: center;
-    gap: var(--sp-6);
+    align-items: stretch;
+    align-self: stretch;
+    gap: var(--space-section);
   }
-
   .topnav__link {
     display: inline-flex;
     align-items: center;
-    gap: var(--sp-2);
-    min-height: 44px;
-    font: 400 var(--fs-body) / var(--lh-body) var(--font-sans);
-    color: var(--ink-2);
-    text-decoration: none;
-    transition: color var(--dur-1) var(--ease-out);
+    padding-inline: var(--space-item);
+    font: 500 var(--text-body) / var(--lh-body) var(--font-ui);
+    color: var(--muted-foreground);
+    transition: color var(--dur-base) var(--ease-in-out);
   }
-
-  .topnav__link:hover,
-  .topnav__link[aria-current='page'] {
-    color: var(--ink);
+  .topnav__link[aria-current='page'] { color: var(--brand-text); }
+  @media (hover: hover) and (pointer: fine) {
+    .topnav__link:hover { color: var(--text); }
+    .topnav__link[aria-current='page']:hover { color: var(--brand-text); }
   }
-
-  /* 当前位置：陶土色 2px 细线，与侧栏左缘、目录标记同一规则 */
-  .topnav__link {
-    position: relative;
-  }
-  .topnav__link[aria-current='page']::after {
-    content: '';
+  .topnav__indicator {
     position: absolute;
     left: 0;
-    right: 0;
     bottom: 0;
     height: 2px;
-    background: var(--accent-ui);
+    background: var(--brand);
+    opacity: 0;
+    transition: transform var(--dur-base) var(--ease-in-out), opacity var(--dur-fast) var(--ease-out);
   }
 
   .topnav__tools {
     display: flex;
     align-items: center;
-    gap: var(--sp-1);
+    justify-self: end;
+    gap: var(--space-item);
   }
-
   .topnav__icon {
     display: inline-grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
-    color: var(--ink-2);
-    transition:
-      color var(--dur-1) var(--ease-out),
-      background-color var(--dur-1) var(--ease-out);
+    width: var(--icon-btn);
+    height: var(--icon-btn);
+    border-radius: var(--r-control);
+    color: var(--muted-foreground);
+    transition: color var(--dur-instant) var(--ease-color), background-color var(--dur-fast) var(--ease-color);
   }
-
-  .topnav__icon:hover {
-    color: var(--ink);
-    background: var(--hover-row);
+  @media (hover: hover) and (pointer: fine) {
+    .topnav__icon:hover { color: var(--text); background: var(--hover); }
   }
-
-  /* 文档外壳：吸顶 */
-  .topnav--side {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-  }
-
-  @media (max-width: 1024px) {
-    .topnav__nav {
-      gap: var(--sp-5);
-    }
-  }
+  .topnav__download { margin-left: var(--space-group); }
 
   @media (max-width: 640px) {
-    .topnav__inner {
-      height: var(--bar-h);
-      gap: var(--sp-4);
-    }
-
-    .topnav__brand {
-      gap: var(--sp-2);
-    }
-
-
-    .topnav__nav {
-      justify-content: flex-start;
-      gap: 0;
-    }
-
-    .topnav__link {
-      justify-content: center;
-      min-width: 44px;
-      padding-inline: var(--sp-2);
-      font-size: var(--fs-body-sm);
-      line-height: var(--lh-body-sm);
-    }
-
-    .topnav__tools {
-      gap: 0;
-    }
-
-    /* 窄屏由品牌标志承担回到主页 */
-    .topnav__link--home {
-      display: none;
-    }
+    .topnav__nav,
+    .topnav__icon,
+    .topnav__download { display: none; }
+    .topnav__inner { grid-template-columns: 1fr auto; }
   }
-
-  /* 窄屏放不下时：先收起下载按钮（首屏已有），再只留标志 */
-  @media (max-width: 640px) {
-    .topnav__download {
-      display: none;
-    }
-  }
-  @media (max-width: 420px) {
-    .topnav__mark {
-      display: none;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .topnav__indicator { transition: opacity var(--dur-fast) linear; }
   }
 </style>

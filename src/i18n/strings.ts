@@ -7,6 +7,7 @@ export const S = {
     download: { zh: '下载', en: 'Download' },
     github: { zh: 'GitHub', en: 'GitHub' },
     aria: { zh: '主导航', en: 'Main navigation' },
+    dockAria: { zh: '快速导航', en: 'Quick navigation' },
   },
   skip: { zh: '跳到主内容', en: 'Skip to content' },
   copy: {
@@ -44,7 +45,7 @@ export const S = {
     source: { zh: '官网源码', en: 'Website source' },
     issues: { zh: '反馈问题', en: 'Report an issue' },
     releases: { zh: '版本发布', en: 'Releases' },
-    built: { zh: '构建于 {date}', en: 'Built {date}' },
+    built: { zh: 'v{version} · 构建于 {date}', en: 'v{version} · Built {date}' },
   },
 
 
@@ -94,6 +95,5 @@ export const S = {
     title: { zh: '这个页面不存在', en: 'This page does not exist' },
     intro: { zh: '地址可能写错了，或者页面已经移走。', en: 'The address may be mistyped, or the page has moved.' },
     home: { zh: '回到首页', en: 'Back to home' },
-    docs: { zh: '查看文档', en: 'Browse the docs' },
   },
 } as const;

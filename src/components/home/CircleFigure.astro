@@ -1,0 +1,63 @@
+---
+/**
+ * 圆形网格纸插画：正圆、1px 描边，底是 40px 网格纸，内容是录屏里裁出的真实截图（灰度）。
+ * 深色主题用「变亮」混合让网格透出暗部；浅色主题把截图反相并用「变暗」混合。
+ * 素材由 scripts/record/circles.mjs 生成，放在 public/media/circles/。
+ */
+import type { Bi } from '../../lib/types';
+
+interface Props {
+  image: string;
+  alt: Bi;
+  /** 滚动揭示（首页只播一次） */
+  reveal?: boolean;
+}
+const { image, alt, reveal = true } = Astro.props;
+---
+
+<figure class="circle" data-reveal={reveal ? '' : undefined}>
+  <img
+    src={`/media/circles/${image}.jpg`}
+    width="720"
+    height="720"
+    loading="lazy"
+    decoding="async"
+    alt={alt.zh}
+    data-alt-zh={alt.zh}
+    data-alt-en={alt.en}
+  />
+</figure>
+
+<style>
+  .circle {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1;
+    margin-inline: auto;
+    overflow: hidden;
+    isolation: isolate;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-pill);
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: var(--grid-cell) var(--grid-cell);
+    background-position: center;
+  }
+  .circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: lighten;
+    filter: contrast(1.3) brightness(1.15);
+  }
+  :global(:root[data-theme='light']) .circle img {
+    mix-blend-mode: darken;
+    filter: invert(1) contrast(1.3) brightness(1.05);
+  }
+  @media (max-width: 640px) {
+    .circle { max-width: 300px; }
+  }
+</style>

@@ -6,6 +6,7 @@ const ATTRS = [
   ['ph', 'placeholder'],
   ['aria', 'aria-label'],
   ['title', 'title'],
+  ['alt', 'alt'],
 ] as const;
 
 export function currentLang(): Lang {

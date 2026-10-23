@@ -7,13 +7,14 @@ export interface NavItem {
   /** 单键快捷键，大写显示；scripts/shortcuts.ts 共用 */
   key: string;
   label: Bi;
+  icon: 'home' | 'book' | 'list';
 }
 
 /** 全站导航的唯一来源：顶栏、文档侧栏、快捷键都从这里取，顺序即显示顺序 */
 export const NAV: readonly NavItem[] = [
-  { id: 'home', href: '/', key: 'H', label: S.nav.home },
-  { id: 'docs', href: '/docs/', key: 'C', label: S.nav.docs },
-  { id: 'changelog', href: '/changelog/', key: 'L', label: S.nav.changelog },
+  { id: 'home', href: '/', key: 'H', label: S.nav.home, icon: 'home' },
+  { id: 'docs', href: '/docs/', key: 'C', label: S.nav.docs, icon: 'book' },
+  { id: 'changelog', href: '/changelog/', key: 'L', label: S.nav.changelog, icon: 'list' },
 ];
 
 export const REPO_URL = 'https://github.com/AMA-Link/Armadra';

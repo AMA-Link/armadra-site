@@ -1,0 +1,84 @@
+---
+/**
+ * 首页条目：两栏交替，左文右图，中间一条竖发丝线；flip 为左图右文。
+ * 文字栈：等宽元信息 → 标题 → 摘要 → 「阅读文档」链接；默认插槽放额外正文，figure 插槽放插画。
+ * 窄屏单列：文字在上，插画在下。
+ */
+import type { Bi } from '../../lib/types';
+import T from '../common/T.astro';
+import Icon from '../common/Icon.astro';
+
+interface Props {
+  meta: Bi;
+  title: Bi;
+  /** 摘要；需要多段时留空，用默认插槽 */
+  text?: Bi;
+  link?: { href: string; label: Bi };
+  flip?: boolean;
+  /** 标题级别：页面里的第一个条目用 h2，分区下的条目用 h3 */
+  level?: 'h2' | 'h3';
+  id?: string;
+}
+const { meta, title, text, link, flip = false, level = 'h3', id } = Astro.props;
+const Heading = level;
+---
+
+<article class:list={['entry', { 'entry--flip': flip }]} id={id}>
+  <div class="entry__main">
+    <p class="entry__meta meta"><T zh={meta.zh} en={meta.en} /></p>
+    <Heading class="entry__title"><T zh={title.zh} en={title.en} /></Heading>
+    {text && <p class="entry__text"><T zh={text.zh} en={text.en} /></p>}
+    <slot />
+    {
+      link && (
+        <a class="entry__link link link-arrow" href={link.href}>
+          <T zh={link.label.zh} en={link.label.en} />
+          <Icon name="arrow-right" size={14} />
+        </a>
+      )
+    }
+  </div>
+  <div class="entry__rule hairline-y" aria-hidden="true"></div>
+  <div class="entry__figure"><slot name="figure" /></div>
+</article>
+
+<style>
+  .entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+    align-items: center;
+    padding-block: var(--space-gap);
+  }
+  .entry__main { order: 1; padding-inline-end: var(--space-wide); }
+  .entry__figure { order: 3; padding-inline-start: var(--space-wide); }
+  .entry--flip .entry__main { order: 3; padding-inline: var(--space-wide) 0; }
+  .entry--flip .entry__figure { order: 1; padding-inline: 0 var(--space-wide); }
+  .entry__rule { order: 2; align-self: stretch; }
+
+  .entry__meta { margin-bottom: var(--space-section); }
+  .entry__title {
+    font: 600 var(--text-display) / var(--lh-display) var(--font-ui);
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .entry__text,
+  .entry :global(.entry__para) {
+    max-width: 52ch;
+    margin-top: var(--space-block);
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
+  }
+  .entry__link {
+    margin-top: var(--space-section);
+    font: 500 var(--text-body) / var(--lh-body) var(--font-ui);
+  }
+
+  @media (max-width: 860px) {
+    .entry { grid-template-columns: minmax(0, 1fr); gap: var(--space-section); padding-block: var(--space-section); }
+    .entry__rule { display: none; }
+    .entry__main,
+    .entry--flip .entry__main { order: 1; padding-inline: 0; }
+    .entry__figure,
+    .entry--flip .entry__figure { order: 2; padding-inline: 0; }
+  }
+</style>
