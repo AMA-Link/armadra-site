@@ -1,0 +1,109 @@
+---
+/**
+ * 常见问题：原生 details 列表，行高 36。展开 / 折叠只动 opacity 与高度（测量高度，--dur-slow）；
+ * 减少动效时只淡入淡出。
+ */
+import type { Bi } from '../../lib/types';
+import T from '../common/T.astro';
+
+interface Props {
+  items: readonly { q: Bi; a: Bi }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="faq" data-faq>
+  {
+    items.map((f) => (
+      <details class="faq__item">
+        <summary class="faq__q">
+          <span class="faq__icon" aria-hidden="true"></span>
+          <T zh={f.q.zh} en={f.q.en} />
+        </summary>
+        <div class="faq__a"><p class="faq__text"><T zh={f.a.zh} en={f.a.en} /></p></div>
+      </details>
+    ))
+  }
+</div>
+
+<script>
+  const root = getComputedStyle(document.documentElement);
+  const token = (name: string) => root.getPropertyValue(name).trim();
+  const ms = (name: string) => parseFloat(token(name));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const running = new WeakMap<HTMLElement, Animation>();
+
+  function toggle(details: HTMLDetailsElement) {
+    const body = details.querySelector<HTMLElement>('.faq__a');
+    if (!body) return;
+    running.get(body)?.cancel();
+    const opening = !details.open;
+    const fade = reduce.matches;
+    if (opening) details.open = true;
+    const full = body.scrollHeight;
+    const from = opening ? { opacity: 0, height: '0px' } : { opacity: 1, height: `${full}px` };
+    const to = opening ? { opacity: 1, height: `${full}px` } : { opacity: 0, height: '0px' };
+    const frames = fade ? [{ opacity: from.opacity }, { opacity: to.opacity }] : [from, to];
+    const anim = body.animate(frames, {
+      duration: fade ? ms('--dur-fast') : opening ? ms('--dur-slow') : ms('--dur-fast'),
+      easing: fade ? 'linear' : token('--ease-out'),
+    });
+    running.set(body, anim);
+    anim.onfinish = () => {
+      if (!opening) details.open = false;
+      running.delete(body);
+    };
+    anim.oncancel = () => running.delete(body);
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-faq]').forEach((box) => {
+    box.querySelectorAll<HTMLDetailsElement>('details').forEach((d) => {
+      d.querySelector('summary')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggle(d);
+      });
+    });
+  });
+</script>
+
+<style>
+  .faq { border-top: 1px solid var(--border); }
+  .faq__item { border-bottom: 1px solid var(--border); }
+  .faq__q {
+    display: flex;
+    align-items: center;
+    gap: var(--space-block);
+    min-height: var(--row-h);
+    padding-block: var(--space-group);
+    cursor: pointer;
+    list-style: none;
+    font: 500 var(--text-body) / var(--lh-body) var(--font-ui);
+    color: var(--text);
+    transition: color var(--dur-instant) var(--ease-color);
+  }
+  .faq__q::-webkit-details-marker { display: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .faq__q:hover { color: var(--brand-text); }
+  }
+  .faq__icon {
+    position: relative;
+    flex: none;
+    width: var(--space-inset);
+    height: var(--space-inset);
+    background:
+      linear-gradient(var(--faint), var(--faint)) center / 100% 1px no-repeat,
+      linear-gradient(var(--faint), var(--faint)) center / 1px 100% no-repeat;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+  .faq__item[open] .faq__icon { transform: rotate(45deg); }
+  .faq__a { overflow: hidden; }
+  .faq__text {
+    max-width: 70ch;
+    padding: 0 0 var(--space-block) calc(var(--space-inset) + var(--space-block));
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq__icon { transition: none; }
+  }
+</style>

@@ -1,11 +1,17 @@
 ---
 /**
- * 首页：一列带左右边框的版面，分区之间一条横线。顺序：首屏、软件画面、协作示例、
+ * 首页：单列 1088，分区之间是两端渐隐的发丝线。顺序：首屏、软件画面、协作示例、
  * 核心能力、支持的工具、部署与数据、常见问题、开始使用与联系。设计见 DESIGN.md「首页」。
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopNav from '../components/home/TopNav.astro';
+import Hero from '../components/home/Hero.astro';
+import Entry from '../components/home/Entry.astro';
+import CircleFigure from '../components/home/CircleFigure.astro';
+import ToolsTable from '../components/home/ToolsTable.astro';
+import Faq from '../components/home/Faq.astro';
 import Footer from '../components/common/Footer.astro';
+import SectionFrame from '../components/common/SectionFrame.astro';
 import T from '../components/common/T.astro';
 import Icon from '../components/common/Icon.astro';
 import { H } from '../i18n/home';
@@ -13,7 +19,6 @@ import { S, fmtBi } from '../i18n';
 import { RELEASE } from '../data/release';
 import { RELEASES_URL } from '../lib/nav';
 
-const download = fmtBi(H.get.download, { v: RELEASE.version });
 const version = fmtBi(H.start.text, { v: RELEASE.version });
 /** 录屏资源（public/media/），换片时改这里 */
 const DEMO = { webm: '/media/armadra-demo-tree.webm', poster: '/media/armadra-demo-tree.jpg', width: 1920, height: 1200 };
@@ -21,164 +26,111 @@ const DEMO = { webm: '/media/armadra-demo-tree.webm', poster: '/media/armadra-de
 
 <BaseLayout page="home" title={H.docTitle.zh} titleEn={H.docTitle.en}>
   <TopNav page="home" />
-  <main id="main" class="page">
-    <section class="sec sec--hero" aria-labelledby="hero-title">
-      <h1 id="hero-title" class="hero__title"><T zh={H.hero.title.zh} en={H.hero.title.en} /></h1>
-      <p class="hero__intro"><T zh={H.hero.intro.zh} en={H.hero.intro.en} /></p>
-      <div class="actions">
-        <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
-        <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.hero.quickstart.zh} en={H.hero.quickstart.en} /><Icon name="arrow-right" size={14} /></a>
-      </div>
-      <p class="hero__note"><T zh={H.hero.note.zh} en={H.hero.note.en} /></p>
-
-      <div class="get" data-tabs>
-        <div class="get__tabs" role="tablist" aria-label={H.get.label.zh} data-aria-zh={H.get.label.zh} data-aria-en={H.get.label.en}>
-          {
-            H.get.tabs.map((tab, i) => (
-              <button
-                type="button"
-                role="tab"
-                class="get__tab"
-                id={`get-tab-${tab.id}`}
-                aria-controls={`get-${tab.id}`}
-                aria-selected={i === 0 ? 'true' : 'false'}
-                tabindex={i === 0 ? 0 : -1}
-              >
-                <T zh={tab.label.zh} en={tab.label.en} />
-              </button>
-            ))
-          }
-        </div>
-        <div class="get__panel" role="tabpanel" id="get-download" aria-labelledby="get-tab-download">
-          <a class="get__link" href={RELEASES_URL}>
-            <Icon name="download" size={14} />
-            <T zh={download.zh} en={download.en} />
-            <Icon name="arrow-up-right" size={12} />
-          </a>
-        </div>
-        <div class="get__panel" role="tabpanel" id="get-source" aria-labelledby="get-tab-source" hidden data-code>
-          <pre class="code__pre get__cmd"><code>{H.get.source}</code></pre>
-          <button type="button" class="get__copy" data-copy aria-label={S.copy.aria.zh} data-aria-zh={S.copy.aria.zh} data-aria-en={S.copy.aria.en}><Icon name="copy" size={14} /></button>
-        </div>
-        <div class="get__panel" role="tabpanel" id="get-docker" aria-labelledby="get-tab-docker" hidden data-code>
-          <pre class="code__pre get__cmd"><code>{H.get.docker}</code></pre>
-          <button type="button" class="get__copy" data-copy aria-label={S.copy.aria.zh} data-aria-zh={S.copy.aria.zh} data-aria-en={S.copy.aria.en}><Icon name="copy" size={14} /></button>
-          <p class="get__hint"><T zh={H.get.dockerHint.zh} en={H.get.dockerHint.en} /></p>
-        </div>
-      </div>
-    </section>
+  <main id="main" class="container home">
+    <Hero />
 
     <!-- 真实软件录屏：隔离环境里真跑 Claude Code 与 Codex，录制方法见 docs/guides/recording.md -->
-    <section class="sec sec--demo">
-      <video
-        class="demo"
-        data-demo
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        width={DEMO.width}
-        height={DEMO.height}
-        poster={DEMO.poster}
-        aria-label={H.demo.zh}
-        data-aria-zh={H.demo.zh}
-        data-aria-en={H.demo.en}
+    <SectionFrame id="demo" labelledby="demo-label">
+      <h2 id="demo-label" class="sr-only">Armadra</h2>
+      <div class="demo card card--lifted" data-reveal>
+        <video
+          class="demo__video"
+          data-demo
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          width={DEMO.width}
+          height={DEMO.height}
+          poster={DEMO.poster}
+          aria-label={H.demo.zh}
+          data-aria-zh={H.demo.zh}
+          data-aria-en={H.demo.en}
+        >
+          <source src={DEMO.webm} type="video/webm" />
+        </video>
+      </div>
+    </SectionFrame>
+
+    <SectionFrame id="example" labelledby="example-title">
+      <Entry
+        id="example-title"
+        level="h2"
+        meta={H.example.meta}
+        title={H.example.title}
+        text={H.example.text}
+        link={{ href: H.example.href, label: H.example.docs }}
       >
-        <source src={DEMO.webm} type="video/webm" />
-      </video>
-    </section>
+        <CircleFigure slot="figure" image={H.example.image} alt={H.example.alt} />
+      </Entry>
+    </SectionFrame>
 
-    <section class="sec" aria-labelledby="example-title">
-      <h2 id="example-title" class="sec__title"><T zh={H.example.title.zh} en={H.example.title.en} /></h2>
-      <p class="sec__text"><T zh={H.example.text.zh} en={H.example.text.en} /></p>
-    </section>
+    <SectionFrame id="features" title={H.features.title} more={{ href: '/docs/', label: H.features.all }}>
+      {
+        H.features.items.map((it, i) => (
+          <>
+            {i > 0 && <hr class="hairline-x" />}
+            <Entry
+              flip={i % 2 === 0}
+              meta={it.meta}
+              title={it.term}
+              text={it.line}
+              link={{ href: it.href, label: H.features.docs }}
+            >
+              <CircleFigure slot="figure" image={it.image} alt={it.alt} />
+            </Entry>
+          </>
+        ))
+      }
+    </SectionFrame>
 
-    <section class="sec" aria-labelledby="features-title">
-      <h2 id="features-title" class="sec__title"><T zh={H.features.title.zh} en={H.features.title.en} /></h2>
-      <ul class="stars" role="list">
-        {
-          H.features.items.map((it) => (
-            <li>
-              <span class="stars__mark" aria-hidden="true">[*]</span>
-              <span>
-                <strong><T zh={it.term.zh} en={it.term.en} /></strong>
-                <span class="stars__line"><T zh={it.line.zh} en={it.line.en} /></span>
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-      <a class="btn-ghost sec__action" href="/docs/"><T zh={H.features.docs.zh} en={H.features.docs.en} /><Icon name="arrow-right" size={14} /></a>
-    </section>
+    <SectionFrame id="tools" title={H.tools.title} more={{ href: '/docs/agents/', label: H.tools.docs }}>
+      <p class="home__lede"><T zh={H.tools.text.zh} en={H.tools.text.en} /></p>
+      <ToolsTable />
+      <p class="home__note meta"><T zh={H.tools.note.zh} en={H.tools.note.en} /></p>
+    </SectionFrame>
 
-    <section class="sec" aria-labelledby="tools-title">
-      <h2 id="tools-title" class="sec__title"><T zh={H.tools.title.zh} en={H.tools.title.en} /></h2>
-      <p class="sec__text"><T zh={H.tools.text.zh} en={H.tools.text.en} /></p>
-      <p class="sec__text sec__text--muted"><T zh={H.tools.note.zh} en={H.tools.note.en} /></p>
-    </section>
+    <SectionFrame id="deploy" labelledby="deploy-title">
+      <Entry
+        id="deploy-title"
+        flip
+        meta={H.deploy.meta}
+        title={H.deploy.title}
+        link={{ href: H.deploy.href, label: H.deploy.more }}
+      >
+        {H.deploy.items.map((it) => <p class="entry__para"><T zh={it.zh} en={it.en} /></p>)}
+        <CircleFigure slot="figure" image={H.deploy.image} alt={H.deploy.alt} />
+      </Entry>
+    </SectionFrame>
 
-    <section class="sec" aria-labelledby="deploy-title">
-      <h2 id="deploy-title" class="sec__title"><T zh={H.deploy.title.zh} en={H.deploy.title.en} /></h2>
-      <ul class="stars" role="list">
-        {
-          H.deploy.items.map((it, i) => (
-            <li>
-              <span class="stars__mark" aria-hidden="true">[*]</span>
-              <span class="stars__line">
-                <T zh={it.zh} en={it.en} />
-                {i === H.deploy.items.length - 1 && (
-                  <a class="sec__inline" href="/docs/faq/"><T zh={H.deploy.more.zh} en={H.deploy.more.en} /></a>
-                )}
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
+    <SectionFrame id="faq" title={H.faq.title}>
+      <Faq items={H.faq.items} />
+    </SectionFrame>
 
-    <section class="sec" aria-labelledby="faq-title">
-      <h2 id="faq-title" class="sec__title"><T zh={H.faq.title.zh} en={H.faq.title.en} /></h2>
-      <div class="faq">
-        {
-          H.faq.items.map((f) => (
-            <details class="faq__item">
-              <summary class="faq__q">
-                <span class="faq__icon" aria-hidden="true" />
-                <T zh={f.q.zh} en={f.q.en} />
-              </summary>
-              <p class="faq__a"><T zh={f.a.zh} en={f.a.en} /></p>
-            </details>
-          ))
-        }
+    <SectionFrame id="start" labelledby="start-title">
+      <div class="start">
+        <h2 id="start-title" class="start__title"><T zh={H.start.title.zh} en={H.start.title.en} /></h2>
+        <p class="home__lede"><T zh={version.zh} en={version.en} /></p>
+        <div class="start__actions">
+          <a class="btn-primary btn--lg" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
+          <a class="btn-ghost btn--lg" href="/docs/quickstart/"><T zh={H.hero.quickstart.zh} en={H.hero.quickstart.en} /><Icon name="arrow-right" size={14} /></a>
+        </div>
       </div>
-    </section>
+    </SectionFrame>
 
-    <section class="sec" aria-labelledby="start-title">
-      <h2 id="start-title" class="sec__title"><T zh={H.start.title.zh} en={H.start.title.en} /></h2>
-      <p class="sec__text"><T zh={version.zh} en={version.en} /></p>
-      <div class="actions">
-        <a class="btn-primary" href={RELEASES_URL}><Icon name="download" size={14} /><T zh={H.hero.download.zh} en={H.hero.download.en} /></a>
-        <a class="btn-ghost" href="/docs/quickstart/"><T zh={H.hero.quickstart.zh} en={H.hero.quickstart.en} /><Icon name="arrow-right" size={14} /></a>
-      </div>
-    </section>
-
-    <section class="sec" aria-labelledby="contact-title">
-      <h2 id="contact-title" class="sec__title"><T zh={S.contact.title.zh} en={S.contact.title.en} /></h2>
-      <ul class="stars" role="list">
+    <SectionFrame id="contact" title={S.contact.title}>
+      <ul class="contact" role="list">
         {
           S.contact.items.map((c) => (
-            <li>
-              <span class="stars__mark" aria-hidden="true">[*]</span>
-              <span>
-                <strong><T zh={c.label.zh} en={c.label.en} /></strong>
-                <a class="sec__inline" href={`mailto:${c.email}`}>{c.email}</a>
-              </span>
+            <li class="contact__item meta">
+              <T zh={c.label.zh} en={c.label.en} />
+              <a class="link-quiet" href={`mailto:${c.email}`}>{c.email}</a>
             </li>
           ))
         }
       </ul>
-    </section>
+    </SectionFrame>
   </main>
   <Footer />
 </BaseLayout>
@@ -199,163 +151,35 @@ const DEMO = { webm: '/media/armadra-demo-tree.webm', poster: '/media/armadra-de
     apply();
     reduce.addEventListener('change', apply);
   });
-
-  // 获取方式的标签页：方向键切换，选中项可 Tab 进入
-  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((box) => {
-    const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const select = (i: number, focus = false) => {
-      tabs.forEach((t, j) => {
-        const on = j === i;
-        t.setAttribute('aria-selected', String(on));
-        t.tabIndex = on ? 0 : -1;
-        const panel = document.getElementById(t.getAttribute('aria-controls')!);
-        if (panel) panel.hidden = !on;
-      });
-      if (focus) tabs[i].focus();
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => select(i));
-      t.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') select((i + 1) % tabs.length, true);
-        else if (e.key === 'ArrowLeft') select((i - 1 + tabs.length) % tabs.length, true);
-        else return;
-        e.preventDefault();
-      });
-    });
-  });
 </script>
 
 <style>
-  /* 一列带左右边框的版面，分区之间一条横线 */
-  .page {
-    max-width: var(--page-col);
-    margin-inline: auto;
-    border-inline: 1px solid var(--line);
+  .home { padding-bottom: 0; }
+  .home__lede {
+    max-width: 62ch;
+    margin-bottom: var(--space-section);
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
   }
-  .sec {
-    padding: var(--sp-8) var(--page-inset);
-    border-bottom: 1px solid var(--line);
-  }
-  .sec__title { font: 600 var(--fs-body) / 1.5 var(--font-sans); color: var(--ink); }
-  .sec__text { max-width: 70ch; margin-top: var(--sp-3); color: var(--ink-2); line-height: 1.7; }
-  .sec__text--muted { color: var(--ink-3); }
-  .sec__action { margin-top: var(--sp-6); }
-  .sec__inline { margin-inline-start: var(--sp-2); color: var(--ink); text-decoration-line: underline; text-decoration-color: var(--line-strong); }
-  .sec__inline:hover { text-decoration-color: currentColor; }
+  .home__note { margin-top: var(--space-block); font-size: var(--text-meta); line-height: var(--lh-meta); }
 
-  /* 首屏 */
-  .sec--hero { padding-block: var(--sp-9) var(--sp-8); }
-  .hero__title {
-    font: 600 var(--fs-h1) / 1.25 var(--font-sans);
-    letter-spacing: -0.01em;
-    text-wrap: balance;
-  }
-  .hero__intro { max-width: 70ch; margin-top: var(--sp-4); color: var(--ink-2); line-height: 1.7; }
-  .hero__note { margin-top: var(--sp-4); color: var(--ink-3); font-size: var(--fs-body-sm); }
-  .actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6); }
+  /* 录屏：整列宽的卡片，不加说明 */
+  .demo { overflow: hidden; }
+  .demo__video { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; background: var(--panel); }
 
-  .get {
-    position: relative;
-    margin-top: var(--sp-6);
-    border: 1px solid var(--line);
-    background: var(--bg-raised);
+  .start { max-width: 62ch; }
+  .start__title {
+    margin-bottom: var(--space-block);
+    font: 600 var(--text-hero) / var(--lh-hero) var(--font-ui);
+    letter-spacing: -0.02em;
   }
-  .get__tabs { display: flex; gap: var(--sp-5); padding-inline: var(--sp-4); border-bottom: 1px solid var(--line); }
-  .get__tab {
-    position: relative;
-    min-height: var(--control-h);
-    color: var(--ink-3);
-    transition: color var(--dur-1) var(--ease-out);
-  }
-  .get__tab:hover { color: var(--ink-2); }
-  .get__tab[aria-selected='true'] { color: var(--ink); }
-  .get__tab[aria-selected='true']::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 2px;
-    background: var(--ink);
-  }
-  .get__panel { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); min-height: 72px; padding: var(--sp-4); }
-  .get__panel[hidden] { display: none; }
-  .get__cmd {
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    overflow-x: auto;
-    color: var(--ink-2);
-    font: 400 var(--fs-body-sm) / 1.8 var(--font-mono);
-    white-space: pre;
-  }
-  .get__copy {
-    display: inline-grid;
-    place-items: center;
-    width: var(--control-h);
-    height: var(--control-h);
-    align-self: flex-start;
-    color: var(--ink-3);
-    transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
-  }
-  .get__copy:hover { color: var(--ink); background: var(--hover-row); }
-  .get__hint { flex-basis: 100%; color: var(--ink-3); font-size: var(--fs-body-sm); }
-  .get__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sp-2);
-    min-height: var(--control-h);
-    color: var(--ink);
-    text-decoration-line: underline;
-    text-decoration-color: var(--line-strong);
-    text-underline-offset: 0.3em;
-  }
-  .get__link:hover { text-decoration-color: currentColor; }
+  .start__actions { display: flex; flex-wrap: wrap; gap: var(--space-inset); }
 
-  /* 录屏：整列宽，与上下分区共用框线，不加说明 */
-  .sec--demo { padding: 0; }
-  .demo { display: block; width: 100%; height: auto; background: var(--bg-raised); }
-
-  /* [*] 条目 */
-  .stars { display: flex; flex-direction: column; gap: var(--sp-4); margin: var(--sp-5) 0 0; padding: 0; }
-  .stars li,
-  .stars--one { display: grid; grid-template-columns: 4ch minmax(0, 1fr); gap: var(--sp-2); line-height: 1.7; }
-  .stars__mark { color: var(--ink-3); }
-  .stars strong { font-weight: 600; color: var(--ink); margin-inline-end: var(--sp-3); }
-  .stars__line,
-  .stars--one { color: var(--ink-2); }
-
-  /* 常见问题 */
-  .faq { margin-top: var(--sp-4); }
-  .faq__q {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-4);
-    min-height: var(--control-h);
-    cursor: pointer;
-    list-style: none;
-    color: var(--ink);
-  }
-  .faq__q::-webkit-details-marker { display: none; }
-  .faq__icon {
-    position: relative;
-    flex: none;
-    width: var(--sp-3);
-    height: var(--sp-3);
-    background:
-      linear-gradient(var(--ink-3), var(--ink-3)) center / 100% 1px no-repeat,
-      linear-gradient(var(--ink-3), var(--ink-3)) center / 1px 100% no-repeat;
-    transition: transform var(--dur-2) var(--ease-out);
-  }
-  .faq__item[open] .faq__icon { transform: rotate(45deg); }
-  .faq__a { max-width: 70ch; padding: 0 0 var(--sp-4) calc(var(--sp-3) + var(--sp-4)); color: var(--ink-2); line-height: 1.7; }
+  .contact { display: flex; flex-wrap: wrap; gap: var(--space-group) var(--space-section); margin: 0; padding: 0; }
+  .contact__item { display: inline-flex; flex-wrap: wrap; gap: var(--space-group); }
 
   @media (max-width: 640px) {
-    .sec { padding-block: var(--sp-7); }
-    .sec--hero { padding-block: var(--sp-8) var(--sp-7); }
-    .get__tabs { gap: var(--sp-4); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .faq__icon { transition: none; }
+    .start__actions { flex-direction: column; }
+    .start__actions > * { width: 100%; }
   }
 </style>
