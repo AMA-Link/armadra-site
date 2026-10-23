@@ -8,6 +8,7 @@ import '../styles/motion.css';
 import type { PageId } from '../lib/types';
 import { S } from '../i18n';
 import T from '../components/common/T.astro';
+import Dock from '../components/common/Dock.astro';
 
 interface Props {
   page: PageId;
@@ -55,6 +56,10 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
             d.dataset.intro = 'play';
             sessionStorage.setItem('armadra-site.intro', '1');
           }
+          if (!sessionStorage.getItem('armadra-site.dock')) {
+            d.dataset.dockIn = 'play';
+            sessionStorage.setItem('armadra-site.dock', '1');
+          }
           var l = localStorage.getItem('armadra-site.lang');
           if (l !== 'zh' && l !== 'en') l = /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
           d.dataset.lang = l; d.lang = l === 'zh' ? 'zh-CN' : 'en';
@@ -85,6 +90,7 @@ const ogImage = new URL('/brand/armadra-512.png', Astro.site ?? Astro.url).href;
     <div class="noise" aria-hidden="true"></div>
     <a class="skip-link" href="#main"><T zh={S.skip.zh} en={S.skip.en} /></a>
     <slot />
+    <Dock page={page} />
     <script>
       import { initTheme, setScheme } from '../scripts/theme';
       import { applyLang, setLang } from '../scripts/lang';

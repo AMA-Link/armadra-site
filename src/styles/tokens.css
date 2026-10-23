@@ -151,6 +151,7 @@
   --ease-color: ease;
   --press-scale: 0.97;
   --stagger: 40ms;
+  --tip-delay: 500ms; /* Tooltip 首次出现的意图延迟 */
   --intro-step: 100ms; /* 首屏入场的错落间隔（官网专有） */
 
   /* ---- 层级 ---- */

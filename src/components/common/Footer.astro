@@ -1,12 +1,13 @@
 ---
 import { S, fmtBi } from '../../i18n';
 import { NAV, REPO_URL, RELEASES_URL, SITE_REPO_URL } from '../../lib/nav';
+import { RELEASE } from '../../data/release';
 import T from './T.astro';
 
 // 构建时注入：年份与日期（东八区）
 const built = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 const rights = fmtBi(S.footer.rights, { year: built.slice(0, 4) });
-const builtText = fmtBi(S.footer.built, { date: built });
+const builtText = fmtBi(S.footer.built, { date: built, version: RELEASE.version });
 const links = [
   ...NAV.filter((n) => n.id !== 'home').map((n) => ({ href: n.href, label: n.label })),
   { href: RELEASES_URL, label: S.footer.releases },
@@ -18,66 +19,56 @@ const links = [
 
 <footer class="site-footer">
   <div class="site-footer__inner">
+    <hr class="hairline-x site-footer__rule" />
     <div class="site-footer__id">
-      <p class="site-footer__rights"><T zh={rights.zh} en={rights.en} /></p>
-      <ul class="site-footer__mail" role="list">
-        {S.contact.items.map((c) => (
-          <li><T zh={c.label.zh} en={c.label.en} /> <a href={`mailto:${c.email}`}>{c.email}</a></li>
-        ))}
-      </ul>
+      <p class="site-footer__rights meta"><T zh={rights.zh} en={rights.en} /></p>
     </div>
     <ul class="site-footer__links" role="list">
-      {links.map((l) => <li><a href={l.href}><T zh={l.label.zh} en={l.label.en} /></a></li>)}
+      {links.map((l) => <li><a class="link-quiet" href={l.href}><T zh={l.label.zh} en={l.label.en} /></a></li>)}
     </ul>
-    <p class="site-footer__built corner"><T zh={builtText.zh} en={builtText.en} /></p>
+    <p class="site-footer__built"><T zh={builtText.zh} en={builtText.en} /></p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--line);
-    padding-top: var(--sp-6);
-    padding-bottom: max(var(--sp-6), env(safe-area-inset-bottom));
-    font-size: var(--fs-body-sm);
-    line-height: var(--lh-body-sm);
+    margin-top: var(--space-foot);
+    padding-bottom: calc(var(--space-dock) + env(safe-area-inset-bottom));
   }
-  /* 独立放置时自带容器宽度；放进 main 或 .container 内时沿用父级宽度 */
+  /* 独立放置时自带版心；放进 main 或 .container 内时沿用父级宽度 */
   .site-footer__inner {
     max-width: var(--content-max);
-    margin-inline: auto;
+    margin: 0 auto;
     padding-inline: var(--gutter);
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--sp-5);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: var(--space-section);
   }
   :global(main) .site-footer__inner,
   :global(.container) .site-footer__inner { max-width: none; padding-inline: 0; }
-  .site-footer__id { color: var(--ink-3); }
-  .site-footer__mail { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-5); margin: var(--sp-2) 0 0; padding: 0; }
-  .site-footer__mail a { color: var(--ink-2); text-decoration: none; }
-  .site-footer__mail a:hover { color: var(--ink); text-decoration: underline; }
+  .site-footer__rule { grid-column: 1 / -1; margin: 0; }
   .site-footer__links {
     display: flex;
     flex-wrap: wrap;
-    column-gap: var(--sp-5);
+    justify-content: center;
+    gap: var(--space-group) var(--space-section);
+    max-width: 420px;
     margin: 0;
     padding: 0;
-    list-style: none;
+    font: 400 var(--text-body) / var(--lh-body) var(--font-ui);
   }
-  .site-footer__links a {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--control-h);
-    margin-block: calc((var(--lh-body-sm) - var(--control-h)) / 2);
-    color: var(--ink-2);
-    text-decoration: none;
+  .site-footer__built {
+    justify-self: end;
+    font: 400 var(--text-meta) / var(--lh-meta) var(--font-code);
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
+    white-space: nowrap;
   }
-  .site-footer__links a:hover { color: var(--ink); }
-  .site-footer__built { white-space: nowrap; }
 
-  @media (max-width: 640px) {
-    .site-footer__inner { flex-direction: column; gap: var(--sp-3); }
-    .site-footer__built { white-space: normal; }
+  @media (max-width: 860px) {
+    .site-footer__inner { grid-template-columns: minmax(0, 1fr); }
+    .site-footer__links { justify-content: flex-start; max-width: none; }
+    .site-footer__built { justify-self: start; white-space: normal; }
   }
 </style>
