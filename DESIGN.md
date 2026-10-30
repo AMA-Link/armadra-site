@@ -54,8 +54,8 @@
 
 新页面先选外壳，再用组件组合，不新写一次性的标题、分区、行或按钮样式。
 
-- `components/home/TopNav`：56 高吸顶，`--bg` 85% + 模糊；标志 + 首页 / 文档 / 更新日志（当前项品牌文字 + 2px 平移指示器）+ 中 / EN、主题、GitHub、下载。≤640 只留标志、中 / EN 与主题。
-- `components/common/Dock`：底部居中悬浮胶囊，4 个 40px 圆形图标钮（首页 / 文档 / 更新日志 / GitHub）；当前页钮下方 4px 品牌圆点；悬停邻近放大（`transform: scale()`，无回弹，`(hover: none)` 关闭）；底部模糊幕不拦指针；滚到页脚时降到 60% 不透明。
+- `components/home/TopNav`：56 高吸顶，`--bg` 85% + 模糊；标志 + 首页 / 文档 / 云服务 / 更新日志（当前项品牌文字 + 2px 平移指示器）+ 中 / EN、主题、GitHub、下载。≤640 只留标志、中 / EN 与主题。
+- `components/common/Dock`：底部居中悬浮胶囊，5 个 40px 圆形图标钮（首页 / 文档 / 云服务 / 更新日志 / GitHub）；当前页钮下方 4px 品牌圆点；悬停邻近放大（`transform: scale()`，无回弹，`(hover: none)` 关闭）；底部模糊幕不拦指针；滚到页脚时降到 60% 不透明。
 - `components/common/Footer`：顶部发丝线，三列（版权 / 链接 / 构建信息），≤640 一列。
 - `components/home/{Hero,Entry,CircleFigure,ToolsTable,Faq}`：首页分区；`Entry` 两栏交替（左文右图、中线竖发丝线）。
 - `components/ui/PageHeader`（页面标题区）、`CodeBlock`、`Kbd`、`Segmented`；按钮 `.btn-primary`（品牌蓝实底）与 `.btn-ghost`（1px 描边），行 `.list-row`，卡片 `.card`，发丝线 `.hairline-x / .hairline-y`。
@@ -86,6 +86,6 @@
 
 - **Do** 只通过 `tokens.css` 取色、取字号、取间距、取圆角与阴影；触屏控件命中区 ≥ 44px，焦点环 2px `--focus-ring` 外偏 2px。
 - **Do** 每条事实都能在 Armadra 主仓库找到出处；计划中的能力明确标注。
-- **Do** 键盘可达：导航快捷键 `H / C / L`，在 Tooltip 里以 `Kbd` 显示；`Tab` 顺序是顶部导航、内容、Dock。
+- **Do** 键盘可达：导航快捷键 `H / C / A / L`，在 Tooltip 里以 `Kbd` 显示；`Tab` 顺序是顶部导航、内容、Dock。
 - **Don't** 把品牌蓝铺成色块，不用 700 以上字重，不用渐变大色块或营销式插画，不引入外部字体与脚本。
 - **Don't** 把等宽字用于标题、正文或导航主文字。

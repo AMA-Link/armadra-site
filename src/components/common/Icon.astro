@@ -3,7 +3,7 @@
  * 站内图标：统一 24 网格、1.5 描边、无填充。
  * 除 github 外均为本项目自绘几何形；github 轮廓改写自 Lucide（ISC 许可）。
  */
-type Name = 'search' | 'slash' | 'arrow-up-right' | 'arrow-left' | 'arrow-right' | 'sun' | 'moon' | 'github' | 'hash' | 'copy' | 'download' | 'check' | 'play' | 'pause' | 'replay' | 'fit' | 'plus' | 'minus' | 'home' | 'book' | 'list';
+type Name = 'search' | 'slash' | 'arrow-up-right' | 'arrow-left' | 'arrow-right' | 'sun' | 'moon' | 'github' | 'hash' | 'copy' | 'download' | 'check' | 'play' | 'pause' | 'replay' | 'fit' | 'plus' | 'minus' | 'home' | 'book' | 'list' | 'cloud' | 'mail';
 
 interface Props {
   name: Name;
@@ -41,6 +41,8 @@ const PATHS: Record<Name, string[]> = {
   ],
   home: ['M3.5 11 12 4l8.5 7', 'M5.5 9.5V20h13V9.5', 'M10 20v-6h4v6'],
   book: ['M5 4h14v16H5z', 'M9 4v16', 'M12.5 8.5H16'],
+  cloud: ['M7.5 18.5h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.6 9.03 4.75 4.75 0 0 0 7.5 18.5z'],
+  mail: ['M3.5 5.5h17v13h-17z', 'M3.5 6l8.5 7 8.5-7'],
   list: ['M9 6.5h11', 'M9 12h11', 'M9 17.5h11', 'M4 6.5h1.5', 'M4 12h1.5', 'M4 17.5h1.5'],
   hash: ['M4.5 9h15', 'M4.5 15h15', 'M10 4l-2 16', 'M16 4l-2 16'],
 };

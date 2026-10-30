@@ -14,6 +14,7 @@
     "check:design": "node scripts/check-design.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "sync:release": "node scripts/sync-release.mjs",
+    "changelog:draft": "node scripts/changelog-draft.mjs",
     "check:links": "node scripts/check-links.mjs",
     "deploy": "pnpm build && wrangler deploy",
     "deploy:dry": "pnpm build && wrangler deploy --dry-run"

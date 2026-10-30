@@ -16,6 +16,7 @@
 | `pnpm build` | 构建到 `dist/`，并生成带 CSP 哈希的 `dist/_headers` |
 | `pnpm check:links` | 构建后检查站内死链与锚点 |
 | `pnpm sync:release` | 从 GitHub 更新 `src/data/release.json`（最新版本与安装包） |
+| `pnpm changelog:draft <版本> [--source <路径或 URL>] [--write]` | 从 Armadra `CHANGELOG.md` 取该版本一节，打印 `src/data/changelog.ts` 的条目草稿（去掉 PR、迁移与契约编号，跳过工程类条目）；`--write` 才插到数据文件最前面。英文与标题留 `TODO`，人工改写后再提交 |
 | `pnpm deploy:dry` | 构建并让 wrangler 预检，不发布 |
 | `pnpm preview` | 预览构建产物 |
 
@@ -29,14 +30,14 @@
 
 | 路径 | 内容 |
 | --- | --- |
-| `src/pages/` | 首页、`/docs/`、`/changelog/`、404 |
+| `src/pages/` | 首页、`/docs/`、`/cloud/`、`/changelog/`、404 |
 | `src/components/` | `common/`（分区、页脚、Dock、开关）与 `ui/`（页面标题、代码卡、分段控件、Kbd）通用组件，`home/`（顶栏与首页分区）、`docs/` 文档目录 |
 | `src/scripts/` | 主题、语言、快捷键、复制、滚动揭示、当前项指示器、Dock、文档正文增强 |
 | `src/styles/` | `tokens.css`（与桌面端同名同值的令牌，唯一允许字面值的地方）、`base / utilities / motion / prose` |
 | `src/content/docs/{zh,en}/` | 文档正文，两种语言同名文件一一对应 |
 | `src/i18n/` | 界面文案（`strings.ts`）、首页文案（`home.ts`） |
 | `src/data/` | 支持的 Agent 表、最新发布快照、更新日志 |
-| `scripts/` | 设计约束、站内链接、响应头生成、发布快照同步 |
+| `scripts/` | 设计约束、站内链接、响应头生成、发布快照同步、更新日志草稿 |
 
 ## 设计约束
 

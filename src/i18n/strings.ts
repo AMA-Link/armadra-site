@@ -3,6 +3,7 @@ export const S = {
   nav: {
     home: { zh: '首页', en: 'Home' },
     docs: { zh: '文档', en: 'Docs' },
+    cloud: { zh: '云服务', en: 'Cloud' },
     changelog: { zh: '更新日志', en: 'Changelog' },
     download: { zh: '下载', en: 'Download' },
     github: { zh: 'GitHub', en: 'GitHub' },
@@ -69,6 +70,94 @@ export const S = {
     edit: { zh: '在 GitHub 上编辑本页', en: 'Edit this page on GitHub' },
     devDocs: { zh: '开发者文档在 Armadra 仓库的 docs/ 目录', en: 'Developer docs live in the docs/ folder of the Armadra repository' },
     count: { zh: '{n} 篇', en: '{n} pages' },
+  },
+
+  /** 云服务页：事实出自 Armadra 的 docs/design/cloud-console.md 与 docs/guides/；不写价格与上线日期 */
+  cloud: {
+    docTitle: { zh: '云服务 · Armadra', en: 'Cloud · Armadra' },
+    description: {
+      zh: 'Armadra 云：不开入站端口，在浏览器里打开自己的主机，与团队按权限共享。',
+      en: 'Armadra Cloud: open your hosts in the browser without inbound ports, and share them with your team by permission.',
+    },
+    meta: { zh: '邀请制内测', en: 'Invite-only beta' },
+    title: { zh: 'Armadra 云', en: 'Armadra Cloud' },
+    intro: {
+      zh: '主机经中继出站连接，不开入站端口。在浏览器里打开自己的电脑或服务器，按权限分给团队。',
+      en: 'Hosts connect out through a relay, with no inbound ports. Open your computer or server in the browser and share it with your team by permission.',
+    },
+    apply: { zh: '申请内测', en: 'Apply for the beta' },
+    docs: { zh: '团队与控制台', en: 'Teams and console' },
+    /** 申请邮件：收件地址与 S.contact 第一项相同 */
+    mail: {
+      to: 'contact@armadra.com',
+      subject: { zh: '申请 Armadra 云内测', en: 'Armadra Cloud beta request' },
+    },
+    features: {
+      title: { zh: '能做什么', en: 'What it does' },
+      items: [
+        {
+          term: { zh: '个人空间与团队', en: 'Personal space and teams' },
+          line: {
+            zh: '每个账号有一个个人空间，也可以创建或加入团队。主机、授予、链接与审计都归属一个空间。',
+            en: 'Every account has a personal space and can create or join teams. Hosts, grants, links and the audit log each belong to one space.',
+          },
+        },
+        {
+          term: { zh: '主机授予', en: 'Host grants' },
+          line: {
+            zh: '把主机授予团队全员或某位成员，权限分只读、可编辑、可执行、可接管，可以设到期。',
+            en: 'Grant a host to the whole team or one member as View only, Can edit, Can run or Full control, with an optional expiry.',
+          },
+        },
+        {
+          term: { zh: '分享链接', en: 'Share links' },
+          line: {
+            zh: '为主机生成链接，限定权限、有效期与次数。对方在浏览器里打开即进入画布，撤销后立即停用。',
+            en: 'Create a link to a host with a role, an expiry and a use limit. Whoever opens it lands on the canvas in the browser; revoking it cuts access at once.',
+          },
+        },
+        {
+          term: { zh: '控制台', en: 'Console' },
+          line: {
+            zh: '在浏览器里管理成员与邀请、主机、授予、链接与设备信任，查看审计。',
+            en: 'Manage members and invitations, hosts, grants, links and device trust in the browser, and review the audit log.',
+          },
+        },
+      ],
+    },
+    security: {
+      title: { zh: '连接与信任', en: 'Connections and trust' },
+      items: [
+        {
+          term: { zh: '端到端加密', en: 'End-to-end encryption' },
+          line: {
+            zh: '经中继的连接端到端加密。中继只按令牌放行与计量，看不到内容。',
+            en: 'Connections through the relay are end-to-end encrypted. The relay only admits and meters by token and cannot see content.',
+          },
+        },
+        {
+          term: { zh: '设备信任', en: 'Device trust' },
+          line: {
+            zh: '新设备第一次进入主机，要由已受信的设备核对校验码后放行。',
+            en: 'A new device reaching a host for the first time waits until a trusted device approves it by checking a code.',
+          },
+        },
+        {
+          term: { zh: '画布留在本地', en: 'Your canvas stays put' },
+          line: {
+            zh: '终端、Git 与 Agent 仍在你的电脑或服务器上执行，云端只管谁能以什么权限到达哪台主机。',
+            en: 'Terminals, Git and agents still run on your computer or server. The cloud only decides who reaches which host, with what role.',
+          },
+        },
+      ],
+    },
+    beta: {
+      title: { zh: '申请内测', en: 'Join the beta' },
+      text: {
+        zh: '内测采用邀请制。来信写明团队人数与用途。',
+        en: 'The beta is invite-only. Write to us with your team size and use case.',
+      },
+    },
   },
 
   changelog: {
