@@ -1,0 +1,105 @@
+---
+/**
+ * 云服务页：标题区（内测标记 + 申请 + 团队与控制台文档）→ 能做什么 → 连接与信任 → 申请内测。
+ * 纯静态：申请走 mailto，主题随语言切换；不写价格与上线日期。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopNav from '../../components/home/TopNav.astro';
+import Footer from '../../components/common/Footer.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import SectionFrame from '../../components/common/SectionFrame.astro';
+import T from '../../components/common/T.astro';
+import Icon from '../../components/common/Icon.astro';
+import { S } from '../../i18n';
+
+const C = S.cloud;
+const DOC = '/docs/teams-and-console/';
+const LANGS = ['zh', 'en'] as const;
+const mailto = (l: (typeof LANGS)[number]) => `mailto:${C.mail.to}?subject=${encodeURIComponent(C.mail.subject[l])}`;
+const groups = [
+  { id: 'features', ...C.features },
+  { id: 'trust', ...C.security },
+];
+---
+
+<BaseLayout page="cloud" title={C.docTitle.zh} titleEn={C.docTitle.en} description={C.description.zh}>
+  <TopNav page="cloud" />
+  <main id="main" class="container cloud">
+    <PageHeader title={C.title} intro={C.intro}>
+      <T slot="meta" zh={C.meta.zh} en={C.meta.en} />
+      {
+        LANGS.map((l) => (
+          <a class="btn-primary btn--lg" data-l={l} href={mailto(l)}>
+            <Icon name="mail" size={14} />
+            {C.apply[l]}
+          </a>
+        ))
+      }
+      <a class="btn-ghost btn--lg" href={DOC}>
+        <T zh={C.docs.zh} en={C.docs.en} />
+        <Icon name="arrow-right" size={14} />
+      </a>
+    </PageHeader>
+
+    {
+      groups.map((g, i) => (
+        <SectionFrame id={g.id} title={g.title} bare={i === 0}>
+          <dl class="cloud__list">
+            {g.items.map((it) => (
+              <div class="cloud__row list-row">
+                <dt class="cloud__term"><T zh={it.term.zh} en={it.term.en} /></dt>
+                <dd class="cloud__line"><T zh={it.line.zh} en={it.line.en} /></dd>
+              </div>
+            ))}
+          </dl>
+        </SectionFrame>
+      ))
+    }
+
+    <SectionFrame id="beta" labelledby="beta-title">
+      <div class="cloud__beta">
+        <h2 id="beta-title" class="cloud__beta-title"><T zh={C.beta.title.zh} en={C.beta.title.en} /></h2>
+        <p class="cloud__lede"><T zh={C.beta.text.zh} en={C.beta.text.en} /></p>
+        <p class="meta">
+          {
+            LANGS.map((l) => (
+              <a class="link-quiet" data-l={l} href={mailto(l)}>{C.mail.to}</a>
+            ))
+          }
+        </p>
+      </div>
+    </SectionFrame>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .cloud { padding-bottom: var(--space-wide); }
+  .cloud__list { margin: 0; }
+  .cloud__row {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: var(--space-section);
+    align-items: baseline;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .cloud__row:hover { background: transparent; }
+  }
+  .cloud__term { color: var(--text); font-weight: 500; }
+  .cloud__line { margin: 0; color: var(--muted-foreground); }
+
+  .cloud__beta { max-width: 62ch; }
+  .cloud__beta-title {
+    margin-bottom: var(--space-block);
+    font: 600 var(--text-display) / var(--lh-display) var(--font-ui);
+    letter-spacing: -0.01em;
+  }
+  .cloud__lede {
+    margin-bottom: var(--space-section);
+    font: 400 var(--text-lede) / var(--lh-lede) var(--font-ui);
+    color: var(--muted-foreground);
+  }
+
+  @media (max-width: 640px) {
+    .cloud__row { grid-template-columns: minmax(0, 1fr); gap: var(--space-item); padding-block: var(--space-group); }
+  }
+</style>
