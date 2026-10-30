@@ -24,6 +24,7 @@
 - 界面文案只放 `src/i18n/strings.ts`；文档正文放 `src/content/docs/{zh,en}/`，两种语言同名文件一一对应。
 - 导航项只在 `src/lib/nav.ts` 定义。
 - 首页录屏：资源在 `public/media/`，引用在 `src/pages/index.astro` 的 `DEMO`；录制与合成脚本在 `scripts/record/`。软件界面有明显变化时重录；首页圆形插画由 `scripts/record/circles.mjs` 从录屏抽帧生成，放在 `public/media/circles/`，不绘制营销插图。
+- 版本号与下载链接只在 `src/data/release.json`（`pnpm sync:release` 更新）：组件读 `data/release.ts`，文档正文写 `{{version}}` / `{{tag}}` 占位，构建时由 `lib/release-plugin.ts` 替换；不手写版本号。
 - 更新日志放 `src/data/changelog.ts`，取自 Armadra `CHANGELOG.md` 中用户可感知的改动，中英同步，不写契约号、迁移号与 PR 号。
 - 引入第三方源码前先确认许可证，并登记到 `THIRD_PARTY_NOTICES.md`。
 

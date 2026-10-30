@@ -15,7 +15,7 @@
 | `pnpm check:contrast` | 只跑对比度检查：深浅两套 token 的文字对表面比值 |
 | `pnpm build` | 构建到 `dist/`，并生成带 CSP 哈希的 `dist/_headers` |
 | `pnpm check:links` | 构建后检查站内死链与锚点 |
-| `pnpm sync:release` | 从 GitHub 更新 `src/data/release.json`（最新版本与安装包） |
+| `pnpm sync:release` | 从 GitHub 更新 `src/data/release.json`（最新版本与安装包）；首页与安装页的版本号、下载链接都由它渲染，Armadra 每次发版后跑一次，见[部署指南](deployment.md#armadra-发版后) |
 | `pnpm changelog:draft <版本> [--source <路径或 URL>] [--write]` | 从 Armadra `CHANGELOG.md` 取该版本一节，打印 `src/data/changelog.ts` 的条目草稿（去掉 PR、迁移与契约编号，跳过工程类条目）；`--write` 才插到数据文件最前面。英文与标题留 `TODO`，人工改写后再提交 |
 | `pnpm deploy:dry` | 构建并让 wrangler 预检，不发布 |
 | `pnpm preview` | 预览构建产物 |

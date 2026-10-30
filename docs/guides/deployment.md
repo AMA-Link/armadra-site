@@ -48,6 +48,14 @@ pnpm deploy:dry
 4. `www` 跳转到根域：在 Cloudflare 控制台「规则 → 重定向规则」加一条 `www.armadra.com/*` → `https://armadra.com/${1}`（301，保留查询串）。
 5. 绑定后可以把 `workers_dev` 改为 `false`，只保留正式域名。
 
+## Armadra 发版后
+
+Armadra 每发一个版本（GitHub Releases 上非草稿的 Latest），在站点仓库：
+
+1. `pnpm sync:release`：从 GitHub 取最新发布写入 `src/data/release.json`。首页版本标签、页脚与安装页的版本号、下载链接都从这个文件渲染，不手写。
+2. `pnpm changelog:draft <版本> --write`，按 [开发指南](development.md) 改写英文与标题。
+3. `pnpm check && pnpm build`，确认 `dist/index.html` 与 `dist/docs/install/index.html` 是同一个版本号，然后开 PR；合并即发布。
+
 ## 回滚
 
 Cloudflare 控制台 Workers → `armadra-site` → 部署，选上一个版本「回滚」；或本地：
