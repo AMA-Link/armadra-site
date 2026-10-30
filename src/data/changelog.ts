@@ -13,6 +13,20 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.11.0',
+    date: '2026-10-30',
+    title: { zh: '界面统一与终端深浅色', en: 'Unified interface and light / dark terminals' },
+    items: [
+      { zh: '整套界面换上统一的设计系统：新字体 Inter 与 Geist Mono、分级的面与投影、统一的圆角与动效', en: 'The whole interface moves to one design system: Inter and Geist Mono, layered surfaces and shadows, consistent corner radii and motion' },
+      { zh: '设置改为工作台：左侧导航、面包屑与设置搜索，弹窗四周留出边距', en: 'Settings become a workspace with side navigation, breadcrumbs and settings search, in a dialog that leaves room around it' },
+      { zh: 'Agent 状态更精简：节点、通知与分派抽屉只显示状态，有子 Agent 时带一棵缩略树', en: 'Leaner agent status: nodes, notifications and the dispatch drawer show only the status, with a small tree when there are sub-agents' },
+      { zh: '终端跟随深浅色主题，也可以选择始终深色', en: 'Terminals follow the light or dark theme, or stay dark if you prefer' },
+      { zh: '多台设备同看一个终端时不再互相干扰：不再出现多余的应答字符，新设备加入也不会让已打开的终端整屏重绘', en: 'Several devices on one terminal no longer get in each other’s way: no stray reply characters, and a device joining no longer redraws terminals that are already open' },
+      { zh: 'Armadra 云（邀请制内测）：网页控制台可管理个人空间、团队、主机授予、设备信任与链接，并能直接打开主机；新设备可在控制台背书', en: 'Armadra Cloud (invite-only beta): the web console manages personal spaces, teams, host grants, device trust and links, and opens a host directly; new devices can be endorsed from the console' },
+      { zh: '手机与平板：按钮与输入框改为触控尺寸，设备背书会推送提醒', en: 'Phone and tablet: buttons and inputs use touch sizes, and device endorsements arrive as push notifications' },
+    ],
+  },
+  {
     version: '0.10.0',
     date: '2026-10-23',
     title: { zh: '窗口色板与半透明', en: 'Window palettes and translucency' },
