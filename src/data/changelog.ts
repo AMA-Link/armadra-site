@@ -13,6 +13,20 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.12.0',
+    date: '2026-11-02',
+    title: { zh: '手机补齐、黄金比例画布与协调者账本', en: 'Phone polish, golden-ratio canvas and the coordinator ledger' },
+    items: [
+      { zh: '画布节点按黄金比例取尺寸并对齐点阵，新建节点后相机自动居中并缩放', en: 'Canvas nodes use golden-ratio sizes aligned to the dot grid, and the camera centres and zooms on a new node' },
+      { zh: 'ACP 会话补齐：新建后立即选择模式与模型，支持 Agent 登录与登出，可列出并接管 Agent 自己的会话，审批按钮显示 Agent 给的选项名', en: 'ACP sessions filled out: pick the mode and model right after creating one, sign in to and out of an agent, list and take over the agent’s own sessions, and approval buttons show the agent’s own option names' },
+      { zh: '协调者的工作项账本：成员结构化汇报与交回，协调者读账本，节点头与分派抽屉显示阶段；进展看门狗提示久无上报、久无结论或等待过久，只提示不处置', en: 'A work-item ledger for the coordinator: members report and hand back in a structured way, the coordinator reads the ledger, and node headers and the dispatch drawer show the stage; a progress watchdog flags stalled, unanswered or long-waiting work without acting on it' },
+      { zh: '远程访问以 Armadra 云（邀请制内测）为缺省：未登录走设备码登录，控制台支持第三方登录（GitHub / Google，按服务端配置启用）', en: 'Remote access defaults to Armadra Cloud (invite-only beta): sign in with a device code, and the console supports third-party sign-in (GitHub / Google, enabled by server configuration)' },
+      { zh: '工作空间可以归档，归档后可撤销，也可在设置里恢复或删除', en: 'Workspaces can be archived, with undo, and restored or deleted from Settings' },
+      { zh: '手机与平板：挂载云主机走端到端通道，横屏仍用手机布局', en: 'Phone and tablet: cloud hosts mount over the end-to-end channel, and landscape keeps the phone layout' },
+      { zh: '修复：Windows 上同时关闭多个终端会让其它终端一起断开；macOS 发布包每关一个终端泄漏一个 pty 设备，累计后开不出新终端；浏览器节点默认拒绝站点权限请求', en: 'Fixed: closing several terminals at once on Windows no longer drops the others; the macOS build no longer leaks a pty device per closed terminal, which could end in no new terminals opening; browser nodes deny site permission requests by default' },
+    ],
+  },
+  {
     version: '0.11.0',
     date: '2026-10-30',
     title: { zh: '界面统一与终端深浅色', en: 'Unified interface and light / dark terminals' },
