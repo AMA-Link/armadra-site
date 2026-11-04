@@ -41,7 +41,7 @@ xattr -dr com.apple.quarantine /Applications/Armadra.app
 
 **Homebrew**：`brew install --cask armadra` 只负责下载并放进「应用程序」，不会去掉隔离标记，装完仍要按上面任一种方式确认一次。
 
-**更新**：ad-hoc 签名的包不被系统的更新机制接受，应用内更新可以检查并下载，但不会自动替换应用。请下载新版安装包（或 `brew upgrade --cask armadra`）覆盖旧版，再确认一次。数据目录不受影响。
+**更新**：应用内更新照常可用，应用需放在「应用程序」里运行（在挂载的 dmg 里运行时只提供新安装包的下载）。Homebrew 安装的也可以在应用内更新，或执行 `brew upgrade --cask armadra`。数据目录不受影响。
 
 ## Android 与 iOS
 
@@ -49,7 +49,7 @@ xattr -dr com.apple.quarantine /Applications/Armadra.app
 
 ## 更新
 
-从 0.6.0 起可以在应用内更新。0.5.x 及更早版本没有这个入口，需要手动装一次 0.6.0。
+从 0.6.0 起可以在应用内更新。macOS 与 Windows 安装版、Linux AppImage 都能原地更新；Windows 便携版和 Linux 的 deb / rpm 不能，更新页会给出新安装包的下载。0.5.x 及更早版本没有这个入口，需要手动装一次 0.6.0。
 
 ## 端到端加密
 

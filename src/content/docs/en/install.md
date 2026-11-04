@@ -41,7 +41,7 @@ xattr -dr com.apple.quarantine /Applications/Armadra.app
 
 **Homebrew**: `brew install --cask armadra` only downloads the app into Applications and does not clear the quarantine flag, so confirm it once with either method above.
 
-**Updating**: macOS does not accept an ad-hoc signed package as an update, so the in-app updater can check and download but does not replace the app. Download the new installer (or run `brew upgrade --cask armadra`) over the old one, then confirm once more. Your data directory is untouched.
+**Updating**: in-app updates keep working. Run the app from Applications (running it from a mounted disk image only offers a download of the new installer). Homebrew installs can update in-app too, or run `brew upgrade --cask armadra`. Your data directory is untouched.
 
 ## Android and iOS
 
@@ -49,7 +49,7 @@ Download the APK and install it manually; allow installing apps from unknown sou
 
 ## Updating
 
-From 0.6.0 you can update inside the app. 0.5.x and earlier have no such entry, so install 0.6.0 manually once.
+From 0.6.0 you can update inside the app. This works for the macOS and Windows installed builds and the Linux AppImage; the Windows portable build and Linux deb / rpm cannot update in place, and the update page links to the new installer instead. 0.5.x and earlier have no such entry, so install 0.6.0 manually once.
 
 ## End-to-end encryption
 
