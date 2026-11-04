@@ -13,6 +13,20 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.13.0',
+    date: '2026-11-04',
+    title: { zh: '设置整理、ACP 会话改版与全局搜索', en: 'Tidier settings, a redesigned ACP view and search everywhere' },
+    items: [
+      { zh: '设置整理：账号、设备与登录会话合并到「账号与设备」一页；每家 Agent 一个启用开关，关掉后不出现在新建菜单，也不会被其他 Agent 派发', en: 'Tidier settings: account, devices and sign-in sessions share one Account & devices page; each agent has an enable switch, and a disabled agent leaves the create menus and cannot be dispatched by other agents' },
+      { zh: '快捷键页改为紧凑分组列表，新增画布全选；弹窗开着时画布快捷键不再生效', en: 'The shortcuts page is a compact grouped list, with a new canvas select-all; canvas shortcuts pause while a dialog is open' },
+      { zh: 'ACP 会话视图改版：两行输入区，模型与思考强度合成一个控件，计划条在输入框上方，审批直接在工具行里答；Armadra 自己的画布工具不再每次都要审批', en: 'A redesigned ACP session view: a two-row composer, one control for model and thinking level, the plan bar above the input and approvals answered inline on the tool row; Armadra’s own canvas tools no longer ask for approval every time' },
+      { zh: '侧栏搜索与 ⌘K 共用一份索引：别的工作空间、画布、节点、白板文字、文件与设置都搜得到，支持拼音首字母与模糊匹配', en: 'Sidebar search and ⌘K share one index: other workspaces, canvases, nodes, whiteboard text, files and settings are all searchable, with pinyin initials and fuzzy matching' },
+      { zh: '画布：多选拖动整组跟着走，一键整理按视口横竖排成方正网格，双击空白不再留下空文字', en: 'Canvas: multi-selection drags as a group, tidy lays nodes out in a grid that follows the viewport shape, and double-clicking empty space no longer leaves empty text behind' },
+      { zh: '手机与平板：横屏铺满整屏，竖屏 Dock 一行横向滚动、工具一个不少，打开画布时字号可读，长按与双击新建', en: 'Phone and tablet: landscape uses the full screen, the portrait Dock is one scrolling row with every tool, canvases open at a readable zoom, and long-press or double-tap creates' },
+      { zh: '修复：桌面版不再不断累积登录会话，旧的闲置会话会自动清理；接管会话只列出当前工作空间内的会话', en: 'Fixed: the desktop app no longer piles up sign-in sessions, and idle old ones are cleaned up automatically; taking over a session only lists sessions inside the current workspace' },
+    ],
+  },
+  {
     version: '0.12.0',
     date: '2026-11-02',
     title: { zh: '手机补齐、黄金比例画布与协调者账本', en: 'Phone polish, golden-ratio canvas and the coordinator ledger' },
