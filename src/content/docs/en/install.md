@@ -19,7 +19,29 @@ Current version: [{{tag}}](https://github.com/AMA-Link/Armadra/releases/tag/{{ta
 | Linux aarch64 | [`Armadra_{{version}}_linux-aarch64.AppImage`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/Armadra_{{version}}_linux-aarch64.AppImage) / [`Armadra_{{version}}_linux-aarch64.deb`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/Armadra_{{version}}_linux-aarch64.deb) / [`Armadra_{{version}}_linux-aarch64.rpm`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/Armadra_{{version}}_linux-aarch64.rpm) | |
 | Android | [`armadra-mobile_{{version}}_android.apk`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/armadra-mobile_{{version}}_android.apk) | Manual install, see below |
 
-> Packages are **not yet signed or notarized**, so the OS warns on first launch. On macOS choose "Open Anyway" in System Settings → Privacy & Security; on Windows choose "Run anyway" in the SmartScreen prompt. Signed releases are on the [roadmap](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md).
+> Packages are **not yet signed or notarized** (macOS builds are ad-hoc signed), so the OS warns on first launch. On Windows choose "Run anyway" in the SmartScreen prompt; for macOS see the next section. Signing and notarization are deferred until a public launch; see the [roadmap](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md).
+
+## First launch on macOS
+
+Official macOS packages are ad-hoc signed and not notarized by Apple, so macOS blocks the first launch. Confirm it once and the app behaves like any other.
+
+**macOS 15 and later**
+
+1. Drag `Armadra.app` into Applications and open it once; macOS says it cannot verify the app and blocks it.
+2. Open System Settings → Privacy & Security, scroll to Security, and click "Open Anyway" next to the Armadra notice.
+3. Authenticate with your password or Touch ID, then click Open.
+
+From macOS 15 the old right-click → Open bypass no longer works.
+
+**Terminal**: if you prefer not to click through Settings, run this once and then open the app normally.
+
+```sh
+xattr -dr com.apple.quarantine /Applications/Armadra.app
+```
+
+**Homebrew**: `brew install --cask armadra` only downloads the app into Applications and does not clear the quarantine flag, so confirm it once with either method above.
+
+**Updating**: macOS does not accept an ad-hoc signed package as an update, so the in-app updater can check and download but does not replace the app. Download the new installer (or run `brew upgrade --cask armadra`) over the old one, then confirm once more. Your data directory is untouched.
 
 ## Android and iOS
 

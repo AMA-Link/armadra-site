@@ -19,7 +19,29 @@ order: 2
 | Linux aarch64 | [`Armadra_{{version}}_linux-aarch64.AppImage`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/Armadra_{{version}}_linux-aarch64.AppImage) / [`Armadra_{{version}}_linux-aarch64.deb`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/Armadra_{{version}}_linux-aarch64.deb) / [`Armadra_{{version}}_linux-aarch64.rpm`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/Armadra_{{version}}_linux-aarch64.rpm) | |
 | Android | [`armadra-mobile_{{version}}_android.apk`](https://github.com/AMA-Link/Armadra/releases/download/{{tag}}/armadra-mobile_{{version}}_android.apk) | 手动安装，见下 |
 
-> 当前安装包**尚未签名与公证**，首次打开时系统会提示风险。macOS 上可以在「系统设置 → 隐私与安全性」里选择「仍要打开」；Windows 上在 SmartScreen 提示里选择「仍要运行」。签名发布在[路线图](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md)上。
+> 当前安装包**尚未签名与公证**（macOS 为 ad-hoc 签名），首次打开时系统会提示风险。Windows 上在 SmartScreen 提示里选择「仍要运行」；macOS 的打开方法见下一节。正式签名与公证推迟到公开发布，见[路线图](https://github.com/AMA-Link/Armadra/blob/main/docs/design/product-roadmap.md)。
+
+## macOS 首次打开
+
+官方 macOS 安装包是 ad-hoc 签名、未经 Apple 公证，系统会在第一次打开时拦下它。确认一次之后，和普通应用一样使用。
+
+**macOS 15 及更新**
+
+1. 把 `Armadra.app` 拖进「应用程序」，双击打开一次，系统提示无法验证并拦下。
+2. 打开「系统设置 → 隐私与安全性」，滚到「安全性」，在 Armadra 的提示旁点「仍要打开」。
+3. 输入登录密码或使用触控 ID 确认，再点「打开」。
+
+macOS 15 起，旧的「右键 → 打开」绕过方式不再有效。
+
+**用终端**：不想点设置时，执行下面一行，之后可直接双击打开。
+
+```sh
+xattr -dr com.apple.quarantine /Applications/Armadra.app
+```
+
+**Homebrew**：`brew install --cask armadra` 只负责下载并放进「应用程序」，不会去掉隔离标记，装完仍要按上面任一种方式确认一次。
+
+**更新**：ad-hoc 签名的包不被系统的更新机制接受，应用内更新可以检查并下载，但不会自动替换应用。请下载新版安装包（或 `brew upgrade --cask armadra`）覆盖旧版，再确认一次。数据目录不受影响。
 
 ## Android 与 iOS
 
