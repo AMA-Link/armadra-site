@@ -13,6 +13,18 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.14.0',
+    date: '2026-11-05',
+    title: { zh: '一张二维码连接手机，Pi 接入 ACP', en: 'One QR code to connect a phone, and Pi over ACP' },
+    items: [
+      { zh: '连接手机只剩一张二维码：设置里点「连接手机」才生成，局域网与互联网两条路装在同一张码里，手机自动选能连上的那条；手机相机扫到也能直接在浏览器打开', en: 'Connecting a phone takes one QR code: it is generated when you open Connect a phone in Settings, carries both the LAN and the internet route, and the phone picks whichever works; the phone camera can also open it straight in the browser' },
+      { zh: '手机与电脑要一起升到 0.14.0 才能扫码连接，已经连上的设备不受影响', en: 'Phone and computer both need 0.14.0 to connect by QR code; devices that are already connected are unaffected' },
+      { zh: 'ama 新增 Pi 的 ACP 桥：ama --mode acp --bridge pi 把本机的 Pi 作为 ACP Agent 使用，不需要 ama 自己的 key', en: 'ama adds a Pi ACP bridge: ama --mode acp --bridge pi exposes your local Pi as an ACP agent, without an ama key' },
+      { zh: '修复：ACP 会话里接管与交还输入的顺序偶尔颠倒，导致消息投递超时', en: 'Fixed: taking over and handing back input in an ACP session could land out of order and time out message delivery' },
+      { zh: '文档：新增 macOS 首次打开说明', en: 'Docs: new macOS first-launch notes' },
+    ],
+  },
+  {
     version: '0.13.0',
     date: '2026-11-04',
     title: { zh: '设置整理、ACP 会话改版与全局搜索', en: 'Tidier settings, a redesigned ACP view and search everywhere' },
