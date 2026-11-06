@@ -13,6 +13,17 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.15.1',
+    date: '2026-11-06',
+    title: { zh: 'macOS 安装包签名修复，协调者主动接单，手机体验修正', en: 'Properly signed macOS packages, active pickup for the coordinator, and phone fixes' },
+    items: [
+      { zh: 'macOS：安装包现在整体签名，系统校验能通过；0.14.0、0.15.0 的 macOS 安装包签名不完整，建议升级', en: 'macOS: packages are now signed as a whole and pass the system’s signature check; the 0.14.0 and 0.15.0 macOS packages were incompletely signed, so upgrading is recommended' },
+      { zh: '协调者可以主动接单：在分派抽屉里给它配要盯的仓库、允许名单与规则文件，新的 issue 与 PR 先进候选；缺省只观察、只记判定，确认规则后才切到自动接单', en: 'The coordinator can pick up work on its own: point it at repositories with an allow list and a rules file in the dispatch drawer, and new issues and pull requests become candidates; it only observes and records decisions by default, and picks up automatically only after you confirm the rules' },
+      { zh: '手机与平板：打开时恢复上次的工作空间；设置铺满整屏，新增界面方向（跟随系统 / 竖屏 / 横屏）；浮层、面板与表格按统一比例缩小，与电脑一致', en: 'Phone and tablet: the last workspace opens again on launch; settings fill the screen and gain an orientation option (system, portrait, landscape); overlays, panels and tables are scaled down to match the desktop' },
+      { zh: '互联网中转在电脑繁忙时不再误断；依赖的安全更新', en: 'The internet relay no longer drops while the computer is busy; dependency security updates' },
+    ],
+  },
+  {
     version: '0.15.0',
     date: '2026-11-06',
     title: { zh: 'Pi 走 ama 的桥，协调者会回话，工作项能绑定 PR', en: 'Pi through the ama bridge, a coordinator that reports back, and work items bound to pull requests' },
