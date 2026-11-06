@@ -13,6 +13,22 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.15.0',
+    date: '2026-11-06',
+    title: { zh: 'Pi 走 ama 的桥，协调者会回话，工作项能绑定 PR', en: 'Pi through the ama bridge, a coordinator that reports back, and work items bound to pull requests' },
+    items: [
+      { zh: 'Pi 的 ACP 改走随包 ama 的桥，不再需要另装适配器；Pi 的模式与思考强度可以直接选，Pi 超出已验证的版本时提示一次', en: 'Pi over ACP now runs through the bundled ama bridge, with no separate adapter to install; Pi modes and thinking level are selectable, and a Pi outside the verified versions is flagged once' },
+      { zh: '协调者只在有成果等你验收、有事要你决定或回答你的追问时发话，手机会收到推送；分派抽屉标出未读的回复', en: 'The coordinator speaks up only when a result is ready for review, a decision is needed or your follow-up is answered, with a push to your phone; the dispatch drawer marks unread replies' },
+      { zh: '电脑重启后，中断的工作项在成员续接时收到一次恢复提示，不会自动重跑', en: 'After a restart, interrupted work items get one recovery prompt when the member resumes; nothing is re-run automatically' },
+      { zh: '工作项可以绑定 PR（GitHub、Gitea / Forgejo、GitLab）：评论、评审与检查结论转给负责的成员，自己开的 PR 合并或关闭后工作项结束', en: 'Work items can be bound to pull requests (GitHub, Gitea / Forgejo, GitLab): comments, reviews and check results go to the responsible member, and an item finishes when its own pull requests are merged or closed' },
+      { zh: '安全：hook 密钥存进系统凭据库；Windows 上各条本机通道改走私有命名管道，也终于能用 hook 与需要口令的 SSH 主机。升级当次，Windows 上正在运行的终端会话会丢失一次', en: 'Security: the hook secret now lives in the system credential store; on Windows every local channel uses a private named pipe, which also brings hooks and password-protected SSH hosts to Windows. Running Windows terminal sessions are lost once at this upgrade' },
+      { zh: 'macOS：开发与隔离运行的实例不再读写真实应用的钥匙串，也不再弹出「找不到钥匙串」窗口', en: 'macOS: development and isolated instances no longer read or write the real app’s Keychain items, and never raise the "Keychain Not Found" dialog' },
+      { zh: '云端控制台：账号页可以绑定、解绑第三方登录，只用第三方登录的账号也能再验证与改邮箱', en: 'Cloud console: link and unlink third-party sign-in on the account page; accounts that only use third-party sign-in can re-verify and change their email' },
+      { zh: '侧栏「这台电脑」列出全部工作空间，在手机上建的也能在电脑上看到；手机上用手指拉伸节点会正确保存，并继续收到别处的改动', en: 'The This computer sidebar lists every workspace, including ones created on the phone; finger-resizing a node on the phone now saves and keeps receiving changes from elsewhere' },
+      { zh: '上下文用量统一用 K / M 单位，例如 12.3K / 200K；ama 的驱动表收录 omp', en: 'Context usage is shown in K / M units, such as 12.3K / 200K; ama adds omp to its driver catalog' },
+    ],
+  },
+  {
     version: '0.14.0',
     date: '2026-11-05',
     title: { zh: '一张二维码连接手机，Pi 接入 ACP', en: 'One QR code to connect a phone, and Pi over ACP' },
