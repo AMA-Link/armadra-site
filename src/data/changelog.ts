@@ -13,6 +13,17 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.16.0',
+    date: '2026-11-09',
+    title: { zh: '交接 v2，画布协作免逐次确认，协调者读账本更省', en: 'Handoff v2, canvas collaboration without per-call approval, and a leaner coordinator' },
+    items: [
+      { zh: '交接：批准后立即唤醒接手的 Agent，并给它一份任务简报（要做的事、约束、完成标准）；接手方能按页读到交出方的原始对话；可以交给新开的 Agent，并选模型、权限与形态', en: 'Handoff: the receiving agent is woken as soon as you approve and gets a task brief (goal, constraints, acceptance criteria); it can page through the original conversation of the handing-off agent; and you can hand off to a newly opened agent with its model, permissions and surface chosen up front' },
+      { zh: '终端里的 Claude、OpenCode、Copilot、omp 与 ama 调用画布协作时不再逐次要你确认；开着 Claude 沙箱也能用', en: 'Claude, OpenCode, Copilot, omp and ama in the terminal no longer ask you to confirm each canvas collaboration call, and it works with the Claude sandbox turned on' },
+      { zh: '协调者（ama）改用资源方式读工作账本与事件，工具表更短，长时间运行更省上下文', en: 'The coordinator (ama) reads the work ledger and events as resources, with a shorter tool list that saves context in long runs' },
+      { zh: '会话还没开好时输入的第一句话不再丢失；经互联网中转打开画布时能接回之前的终端会话', en: 'The first message typed before a session is ready is no longer lost, and reopening a canvas over the internet relay reattaches earlier terminal sessions' },
+    ],
+  },
+  {
     version: '0.15.1',
     date: '2026-11-06',
     title: { zh: 'macOS 安装包签名修复，协调者主动接单，手机体验修正', en: 'Properly signed macOS packages, active pickup for the coordinator, and phone fixes' },
