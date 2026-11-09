@@ -1,6 +1,6 @@
 ---
 title: 简介
-description: Armadra 是什么、解决什么问题、适合哪些工作。
+description: Armadra 是什么、解决什么问题、适合哪些工作，以及这套文档怎么读。
 group: start
 order: 1
 ---
@@ -22,10 +22,13 @@ Armadra 用画布把这些关系变成看得见、能操作的工作空间：
 - **工作可以接续**：相连的 Agent 按范围读取摘要、转录与相关资料，交换消息并进行阶段性交接。
 - **模型可以分工**：为节点选择不同模型，让经济模型承担边界明确的工作，让更强的模型处理复杂判断。当前分工由你或任务指令安排，自动难度路由尚未实现。
 - **过程可以查看**：Agent、便签、编辑器、Git 差异、文件、浏览器和白板共同构成工作面。
+- **人始终在回路里**：Agent 需要审批或回答时，请求出现在节点头部，也汇总在侧栏的通知里，由你来答；Armadra 不会替你批准。
 
 ## 节点里运行的是完整的 Agent 产品
 
 Armadra 不重写 Agent。每个 Agent 节点启动的就是你已经在用的 CLI，复用它的多轮执行、工具调用和会话机制；Armadra 只负责节点身份、连线、消息与可读上下文。
+
+内置支持 Claude Code、Codex、OpenCode、Pi、Oh My Pi 与 GitHub Copilot，另有随 Armadra 一起打包的协调者 `ama`，以及你自己配置的自定义 CLI。同一个 Agent 可以在「终端视图」（真实的终端）和「会话视图」（对话式界面，消息、工具调用与差异按卡片展示）之间切换，前提是该 Agent 提供了对应入口。
 
 ## 适合哪些工作
 
@@ -36,8 +39,15 @@ Armadra 不重写 Agent。每个 Agent 节点启动的就是你已经在用的 C
 ## 运行方式
 
 - **桌面应用**：macOS、Windows、Linux 安装包，工作空间记录保存在本机 SQLite 与工作区的 `.armadra/`，无需单独部署服务器。
-- **自托管部署与远程访问**：把 Armadra 部署到自己的服务器或 NAS（服务器壳，没有窗口、常开），电脑与手机浏览器经 HTTPS 访问同一份页面，支持成员账号与按工作空间共享，见[自托管部署与远程访问](/docs/server-and-devices/)。
+- **自托管部署与远程访问**：把 Armadra 部署到自己的服务器或 NAS（服务器壳，没有窗口、常开），电脑与手机浏览器经 HTTPS 访问同一份页面，支持成员账号与按工作空间共享，见[服务器与设备](/docs/server-and-devices/)。
+- **手机**：手机浏览器与手机 App 连接到你自己的 Armadra，查看画布、答复审批，见[手机 App](/docs/mobile/)。
 
 Agent 在承载工作空间的电脑或服务器上运行，模型请求和相关数据处理遵循所使用 CLI 与模型服务的设置及政策。
+
+## 怎么读这套文档
+
+- **开始**：[安装](/docs/install/)，然后用[快速上手](/docs/quickstart/)跑通第一次协作；[界面导览](/docs/interface-tour/)说明窗口里每个区域是什么。
+- **概念**：[画布与节点](/docs/canvas-and-nodes/)、[连线与上下文](/docs/links-and-context/)、[消息与交接](/docs/messages-and-handoff/)是 Armadra 的三块基础。
+- **指南**与**参考**：按任务查，例如 [Agent](/docs/agents/)、[权限与审批](/docs/approvals/)、[键盘快捷键](/docs/keyboard-shortcuts/)、[常见问题](/docs/faq/)。
 
 准备好了就去[安装](/docs/install/)。
