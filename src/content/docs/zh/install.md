@@ -45,15 +45,15 @@ xattr -dr com.apple.quarantine /Applications/Armadra.app
 
 ## Android 与 iOS
 
-下载 APK 后手动安装，需要在系统设置里允许该来源安装未知来源应用。iOS 版尚未上架，暂时没有下载方式。
+下载 APK 后手动安装，需要在系统设置里允许该来源安装未知来源应用。iOS 版尚未上架，暂时没有下载方式。装好之后怎么连到你自己的 Armadra，见[手机 App](/docs/mobile/)。
 
 ## 更新
 
-从 0.6.0 起可以在应用内更新。macOS 与 Windows 安装版、Linux AppImage 都能原地更新；Windows 便携版和 Linux 的 deb / rpm 不能，更新页会给出新安装包的下载。0.5.x 及更早版本没有这个入口，需要手动装一次 0.6.0。
+可以在应用内更新。macOS 与 Windows 安装版、Linux AppImage 都能原地更新；Windows 便携版和 Linux 的 deb / rpm 不能，更新页会给出新安装包的下载。更新入口与设置见[设置与更新](/docs/settings-and-updates/)。
 
 ## 端到端加密
 
-从 0.6.0 起，经中转的连接是端到端加密的，中转只转发密文。中转版本需要 ≥ 0.4.0。默认中转是 `https://relay.armadra.com`。
+经中转的连接是端到端加密的，中转只转发密文。默认中转是 `https://relay.armadra.com`。
 
 ## 准备 Agent CLI
 
@@ -62,7 +62,9 @@ Armadra 启动的是你本机已经安装并登录的 CLI，它不替你安装�
 - Claude Code、Codex、OpenCode、Pi、Oh My Pi 或 GitHub Copilot；
 - 协调者 `ama` 随 Armadra 一起打包，不需要另装。
 
-建议安装 **tmux**：终端会话因此能跨应用重启存活；缺少 tmux 时自动退回直连 PTY。
+没有找到的 CLI 会在画布的新建菜单里标为「未安装」，不影响其他 CLI。
+
+建议安装 **tmux**：终端会话因此能跨应用重启存活；缺少 tmux 时自动退回直连 PTY，窗口上会出现「终端已降级为直连」的提示。
 
 ## 从源码运行
 

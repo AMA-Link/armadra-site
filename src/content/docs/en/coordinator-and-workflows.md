@@ -1,36 +1,55 @@
 ---
-title: Coordinator and workflows
-description: Use ama to split tasks and organize a team, and save a settled collaboration as a rerunnable template.
+title: Coordinator
+description: Split work with ama, follow it in the dispatch drawer, and let it pick up issues by rule.
 group: guides
-order: 2
+order: 3
 ---
 
-## The ama coordinator
+When one goal has to be divided among several agents, hand it to the coordinator `ama`. This page covers how to use it, how to follow it in the dispatch drawer, and how to let it pick up issues by rule.
 
-`ama` is the coordinator agent that ships with Armadra. Give it a goal and it turns subtasks into agent nodes on the canvas, assigns them, waits and gathers the results. The "N members" badge in the ama node header opens the dispatch drawer with each member's task status and summary; failed tasks can be retried.
+## The coordinator ama
 
-When a member hits a permission request, ama only reports it as blocked; it never answers for you.
+`ama` is Armadra's own coordinator agent; there is nothing to install. Give it a goal and it turns subtasks into agent nodes on the canvas, dispatches them, waits and collects the results.
+
+1. Create an ama node on the canvas ("New Armadra Agent" in the "AI assistants" group of the new menu; that is ama). ama needs a model API key; this version has no settings page for entering it yet, see [Agents and CLIs](/docs/agents/).
+2. State the goal in that node, for example "finish the tests for the login module, then have another agent review them".
+3. ama creates member nodes, links them and assigns tasks as needed, then writes a summary to a sticky.
+
+The coordinator itself only reads code and does not edit; to actually change files it can only hand work to members on the canvas. The node's "Agent settings" has a "Coordinator" switch, shown only for CLIs that can act as one; it is greyed out while the node is running.
+
+When a member hits a permission request, ama only reports it as blocked and does not answer for you; see [Permission requests and approvals](/docs/approvals/).
+
+## The dispatch drawer
+
+"N members" in the ama node header opens the "Dispatch" drawer on the right.
+
+- "Members" page: each member task's status (Running, Needs you, Done, Turn failed, Stopped, Idle) and stage (Queued, Needs answer, Ready for review, Blocked, Delivery failed, Failed). Choose "Open" to jump to the member node; a task with a failed delivery or that failed can be sent again with "Retry".
+- Once the summary is written to a sticky, the drawer shows a "Summary → sticky" line; open it to read. A task's pull request appears as "Open PR #…".
+- "New reply" marks fresh replies, and "Disconnected, reconnecting" shows when the connection drops.
 
 ## Team shapes
 
-Agent-initiated orchestration supports several shapes:
+Orchestration is started by an agent on the canvas: tell ama or another agent how to divide the work and it creates member nodes and links them. The common shapes:
 
-- **Parallel**: members work on different parts at the same time;
-- **Pipeline**: the next starts when the previous finishes (`open-agent --after`);
-- **Fan-in**: several members' results go to one node to merge.
+- **Parallel**: several members work on different parts at once;
+- **Pipeline**: the next member starts when the previous one finishes;
+- **Collect**: the results of several members go to one node to merge.
 
-Each member can work on its own Git worktree so they don't step on each other.
+Each member can have its own Git worktree so they do not step on each other.
 
-## Workflows
+## Letting ama pick up issues by rule
 
-When a way of collaborating settles, save it as a workflow template:
+Besides taking your instructions, ama can watch a repository for unclaimed issues or pull requests and take them on by rules you wrote. First connect the account for that repository's platform under Settings → Code hosting.
 
-1. The coordinator proposes a draft;
-2. You confirm it as a template on the Workflows page of the work panel;
-3. Run it later with parameters, or on a schedule from automation.
+1. On the drawer's "Sources" page choose "Add", fill in "Repository" (like `github.com/owner/name`), pick Issue or PR, and choose the "Coordinator" in charge.
+2. A new source starts in "Observe" mode: it only collects "Candidates" and lets ama give a verdict; no work is started.
+3. On the "Candidates" page go through them one by one. "Verdict" is ama's opinion (Accept, Skip); you "Review" it with "Agree" or "Disagree" to judge how reliable it is. "Stats" totals "Decided · Agreed · Disagreed".
+4. When you have seen enough, fill in the "Allow list" (logins that may raise requests, comma separated), choose "Confirm" beside "Rules" to confirm the rules in the repository, then switch "Mode" to "Auto". Rule states are Confirmed, Changed, Unconfirmed and Missing.
+5. In auto mode ama only takes candidates raised by people on the list while the rules are unchanged; once members are started the candidate is marked "Dispatched".
 
-Each run creates a frame and the role nodes on the canvas and pauses at gates for your confirmation; runs can be reviewed and compared.
+If the rules file is edited, its state turns to "Changed" and automatic pickup stops until you "Confirm" again. "Auto needs an allow list and confirmed rules", or the setting does not take effect. A remote workspace cannot read the rules file and can only use "Observe". ama's verdict is only an opinion; Armadra checks the list, the rules and rate limits again before anything starts. Titles and text from outside are always treated as material, never as instructions.
 
-## When to use a workflow
+## Next
 
-Open-ended tasks change course as you learn, so explore them on the canvas first; turn steps that are clear and repeated into a workflow. The two approaches combine well.
+- Handling agent requests: [Permission requests and approvals](/docs/approvals/).
+- How links decide what can be read: [Links and context sharing](/docs/links-and-context/).
