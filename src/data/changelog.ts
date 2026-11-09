@@ -13,6 +13,17 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.17.0',
+    date: '2026-11-10',
+    title: { zh: '升级到 Electron 45，ama 的模型密钥有了自己的入口', en: 'Electron 45, and a home for ama’s model keys' },
+    items: [
+      { zh: '桌面升级到 Electron 45（Chromium 156）；macOS 最低系统要求升到 13.3，macOS 12 请停留在 0.16.0', en: 'The desktop app moves to Electron 45 (Chromium 156); the minimum macOS version rises to 13.3, so stay on 0.16.0 on macOS 12' },
+      { zh: '选择文件夹时从上次所在的目录打开，不再总是跳到「下载」', en: 'The folder picker opens in the last directory you used instead of always jumping to Downloads' },
+      { zh: 'ama 的模型密钥可以在「设置 → Agent CLI → Armadra Agent」里直接填写', en: 'ama’s model keys can be entered directly under Settings → Agent CLI → Armadra Agent' },
+      { zh: '防休眠设置不再列出已下线的「有自动化运行时」；说明文档与实际界面对齐；依赖与工具链升级', en: 'The keep-awake setting no longer lists the retired “while automations run” option; the docs match the actual interface; dependency and toolchain upgrades' },
+    ],
+  },
+  {
     version: '0.16.0',
     date: '2026-11-09',
     title: { zh: '交接 v2，画布协作免逐次确认，协调者读账本更省', en: 'Handoff v2, canvas collaboration without per-call approval, and a leaner coordinator' },
