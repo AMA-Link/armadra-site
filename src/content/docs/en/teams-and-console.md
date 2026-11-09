@@ -1,15 +1,21 @@
 ---
 title: Teams and console
-description: Sign up for Armadra Cloud, create a team, register hosts, grant and share by role, and open hosts in the browser.
+description: Sign in to Armadra Cloud, create a team, register hosts, grant and share by role, review the audit log and usage, and open hosts in the browser.
 group: guides
-order: 4
+order: 9
 ---
 
-Armadra Cloud is in an invite-only beta; apply on the [Cloud](/cloud/) page. The console is the management interface in the browser: accounts, teams, hosts, grants, links and device trust all live there. Terminals, Git and agents still run on your computer or server.
+Armadra Cloud is in an invite-only beta; apply on the [Cloud](/cloud/) page. The console is the management interface in the browser: accounts, teams, hosts, grants, links, device trust, the audit log and usage all live there. Terminals, Git and agents still run on your computer or server.
 
-## Sign up
+## Signing in and your account
 
-Choose "Sign up" in the console, enter your name, email and password, then follow the link in the verification email. You can register hosts and share only after your email is verified.
+Choose a method on the console's sign-in page. Which methods exist depends on what that cloud service has turned on: the official app.armadra.com currently offers only "Continue with GitHub", with no password sign-in; other deployments may also offer "Continue with Google", or sign-in and "Sign up" with email and password.
+
+1. Choose "Continue with GitHub" and authorize on GitHub. The first sign-in creates your account automatically, using the verified primary email on your GitHub account; without a verified primary email you cannot sign in.
+2. If that email already has an account you see "This email already has an account. Sign in the way you did before"; sign in the way you did, then link the new method under "Account".
+3. An account created with email and password needs you to follow the link in the verification email. You can register hosts and share only after your email is verified.
+
+On the "Account" page you can change your name and email, "Link" or "Unlink" GitHub and Google under "Sign-in methods" (an unlinked method can no longer be used to sign in), see your signed-in "Devices" and "Sign out" or "Sign out all others", and read the "Security log". Operations that need you to prove who you are again, such as authorizing a device, ask you to "Verify and authorize".
 
 ## Personal space and teams
 
@@ -58,7 +64,7 @@ The "Access" tab of a host lists each person's effective role; expand a row to s
 
 The first time a device reaches a host through Armadra Cloud, a trusted device has to approve it. The new device shows a 6-digit code and waits; the host owner, a team admin or one of your own trusted devices chooses "Trust" in the console's "Device trust" or in the desktop banner and enters that code. The code is checked only inside the end-to-end channel; the cloud never sees it.
 
-Who can approve is set by "New device approvers" in team settings; with "Members can approve from their trusted devices" on, members can approve their own devices too.
+Who can approve is set by "New device approvers" under Settings → Access in the team ("Host owner" or "Host owner and admins"); with "Members can approve from their trusted devices" on, members can approve with a device they already trust.
 
 ## Share links
 
@@ -69,6 +75,18 @@ You can create links on a server too:
 ```sh
 armadra-server invite --cloud-link --issuer <console address> --host --role viewer
 ```
+
+## Team settings
+
+In the team's "Settings", "General" has "Name" and "Address"; "Access" has "Members can register hosts", "Default host access", "Allow guests", "Allow links without sign-in" and the "New device approvers" above. Here you can also "Transfer ownership", "Leave team" or "Delete team"; a deleted team can be restored with "Restore team" within 30 days.
+
+## Audit log
+
+The "Audit log" lists what happened in the team over time: hosts registered, access granted and revoked, invitations, links, device trust, hosts connected and so on. Filter by "Time range" (last 24 hours, 7, 30 or 90 days), "Member", "Host" and "Type", and expand a row for details. Owners and admins can view it.
+
+## Usage and plan
+
+"Usage and plan" shows the space's current "Plan", plus the number of hosts, members, guests and concurrent connections and "Traffic this month". You are warned as you near or reach a limit, and once the host limit is reached no new host can be registered until you revoke one.
 
 ## Open a host in the browser
 
