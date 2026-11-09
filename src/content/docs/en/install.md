@@ -45,15 +45,15 @@ xattr -dr com.apple.quarantine /Applications/Armadra.app
 
 ## Android and iOS
 
-Download the APK and install it manually; allow installing apps from unknown sources for that source in system settings. The iOS app is not published yet, so there is no download.
+Download the APK and install it manually; allow installing apps from unknown sources for that source in system settings. The iOS app is not published yet, so there is no download. Once installed, see [Mobile app](/docs/mobile/) for connecting to your own Armadra.
 
 ## Updating
 
-From 0.6.0 you can update inside the app. This works for the macOS and Windows installed builds and the Linux AppImage; the Windows portable build and Linux deb / rpm cannot update in place, and the update page links to the new installer instead. 0.5.x and earlier have no such entry, so install 0.6.0 manually once.
+You can update inside the app. This works for the macOS and Windows installed builds and the Linux AppImage; the Windows portable build and Linux deb / rpm cannot update in place, and the update page links to the new installer instead. For the update entry and its settings, see [Settings and updates](/docs/settings-and-updates/).
 
 ## End-to-end encryption
 
-From 0.6.0, connections through a relay are end-to-end encrypted, so the relay only forwards ciphertext. The relay must be version 0.4.0 or later. The default relay is `https://relay.armadra.com`.
+Connections through a relay are end-to-end encrypted, so the relay only forwards ciphertext. The default relay is `https://relay.armadra.com`.
 
 ## Prepare an agent CLI
 
@@ -62,7 +62,9 @@ Armadra launches CLIs that are already installed and signed in on your machine; 
 - Claude Code, Codex, OpenCode, Pi, Oh My Pi or GitHub Copilot;
 - The `ama` coordinator ships with Armadra and needs no separate install.
 
-Installing **tmux** is recommended: terminal sessions then survive app restarts. Without tmux Armadra falls back to a direct PTY.
+CLIs that can't be found are marked "Not installed" in the canvas's New menu and don't affect the others.
+
+Installing **tmux** is recommended: terminal sessions then survive app restarts. Without tmux Armadra falls back to a direct PTY and shows a "Terminals fell back to direct mode" notice.
 
 ## Run from source
 
