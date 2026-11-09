@@ -37,7 +37,7 @@ In the team's "Members", choose "Invite members". Enter one or more emails (sepa
 
 A host is a computer or server running Armadra. Once registered, it connects out through the relay with no inbound ports.
 
-**Desktop**: open Settings → Remote access, choose "Add Armadra Cloud" → "Get device code" → "Open in browser". On the console's "Authorize a device" page, check the code and the device name, then choose "Authorize". Back on the desktop, pick your personal space or a team under "Register to" and choose "Register this computer".
+**Desktop**: open Settings → Remote access, choose "Add Armadra Cloud" → "Sign in"; the dialog then shows a device code, so choose "Open in browser". On the console's "Authorize a device" page, check the code and the device name, then choose "Authorize". Back on the desktop, pick your personal space or a team under "Register to" and choose "Register this computer".
 
 **Server**: on the server, run
 

@@ -33,8 +33,8 @@ Status comes from the CLI reporting on itself: Claude Code, Codex and Copilot th
 
 ## Resuming sessions
 
-- After a session closes, the sidebar's "Agents" list shows your sessions; choose "Reopen" on one under "History" to pick the original session back up.
-- Choose an entry such as "Attach a Claude Code session…" in the new menu to bring an existing CLI session onto the canvas.
+- Press `⌘K` to open the command palette (or use the search at the top of the sidebar) and choose an entry under "Conversations"; a new node opens on the canvas and picks that session back up with the CLI's resume flag.
+- To bring a session from the CLI's own history onto the canvas, open "Settings → Agent CLI", go to that CLI's page, choose "Choose…" on the "Attach a session" row, then search and pick one in the "Attach a Claude Code session…" dialog (only for CLIs that report they can list sessions; a workspace must be open).
 - Resuming uses each CLI's own flags (see the table), so only sessions that CLI recognises can be picked up. Copilot cannot resume an existing session in the session view.
 
 ## Permission modes
