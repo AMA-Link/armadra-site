@@ -34,7 +34,7 @@ Related settings are under "Power & resources" in "Settings → Local service":
 
 | Setting | What it does |
 | --- | --- |
-| Keep-awake policy | Never / while an agent session is active / while automation runs / manual |
+| Keep-awake policy | Never / while an agent session is active / manual |
 | Stay awake while working | Holds off idle system sleep while agents work |
 | Sampling interval | How often resource data refreshes |
 | Memory reminder threshold | 1, 2, 4, 8 or 16 GB; a session above it changes colour and reminds you once, with no automatic action |

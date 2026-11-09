@@ -5,7 +5,7 @@ group: guides
 order: 9
 ---
 
-Armadra Cloud is in an invite-only beta; apply on the [Cloud](/cloud/) page. The console is the management interface in the browser: accounts, teams, hosts, grants, links, device trust, the audit log and usage all live there. Terminals, Git and agents still run on your computer or server.
+Armadra Cloud is open for sign-up: sign in with your GitHub account at [app.armadra.com](https://app.armadra.com) to start. Only the Free plan is available for now; see [Cloud](/cloud/). The console is the management interface in the browser: accounts, teams, hosts, grants, links, device trust, the audit log and usage all live there. Terminals, Git and agents still run on your computer or server.
 
 ## Signing in and your account
 

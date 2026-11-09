@@ -78,7 +78,7 @@ Armadra 不替你安装或登录 CLI。启动前先在终端里把要用的 CLI 
 
 ## 内置的 ama
 
-`ama` 是协调 Agent：给它一个目标，它把子任务落成画布上的 Agent 节点并收齐结果，详见[协调者](/docs/coordinator-and-workflows/)。它需要模型的 API Key，密钥保存在本机的密钥后端；当前版本设置里还没有填写它的页面（「凭据与密钥」暂未开放）。
+`ama` 是协调 Agent：给它一个目标，它把子任务落成画布上的 Agent 节点并收齐结果，详见[协调者](/docs/coordinator-and-workflows/)。它需要模型的 API Key，密钥保存在本机的密钥后端；在「设置 → Agent CLI → Armadra Agent」页的「Armadra Agent 的模型密钥」一组里选供应商、填 API Key、保存。
 
 ## 下一步
 

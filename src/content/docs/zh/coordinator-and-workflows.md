@@ -11,7 +11,7 @@ order: 3
 
 `ama` 是 Armadra 自带的协调 Agent，不需要另装。给它一个目标，它把子任务落成画布上的 Agent 节点、分派下去、等待并收齐结果。
 
-1. 在画布上新建一个 ama 节点（新建菜单「AI 助手」分组里的「新建 Armadra Agent」，它就是 ama）。ama 要用到模型的 API Key；当前版本设置里还没有填写它的页面，见[Agent 与 CLI](/docs/agents/)。
+1. 在画布上新建一个 ama 节点（新建菜单「AI 助手」分组里的「新建 Armadra Agent」，它就是 ama）。ama 要用到模型的 API Key；在「设置 → Agent CLI → Armadra Agent」页的「Armadra Agent 的模型密钥」一组里选供应商、填 API Key、保存，见[Agent 与 CLI](/docs/agents/)。
 2. 在这个节点里说出目标，例如「把登录模块的测试补全，再让另一个 Agent 审查」。
 3. ama 按需新建成员节点、连线、分派任务，并把汇总写进一张便签。
 
