@@ -1,7 +1,7 @@
 ---
 /**
- * 云服务页：标题区（内测标记 + 申请 + 团队与控制台文档）→ 能做什么 → 连接与信任 → 申请内测。
- * 纯静态：申请走 mailto，主题随语言切换；不写价格与上线日期。
+ * 云服务页：标题区（开放注册标记 + 登录入口 + 团队与控制台文档）→ 能做什么 → 连接与信任 → 开始使用。
+ * 纯静态：登录入口是指向 app.armadra.com 的外链；不写价格与上线日期。
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopNav from '../../components/home/TopNav.astro';
@@ -14,8 +14,6 @@ import { S } from '../../i18n';
 
 const C = S.cloud;
 const DOC = '/docs/teams-and-console/';
-const LANGS = ['zh', 'en'] as const;
-const mailto = (l: (typeof LANGS)[number]) => `mailto:${C.mail.to}?subject=${encodeURIComponent(C.mail.subject[l])}`;
 const groups = [
   { id: 'features', ...C.features },
   { id: 'trust', ...C.security },
@@ -27,14 +25,10 @@ const groups = [
   <main id="main" class="container cloud">
     <PageHeader title={C.title} intro={C.intro}>
       <T slot="meta" zh={C.meta.zh} en={C.meta.en} />
-      {
-        LANGS.map((l) => (
-          <a class="btn-primary btn--lg" data-l={l} href={mailto(l)}>
-            <Icon name="mail" size={14} />
-            {C.apply[l]}
-          </a>
-        ))
-      }
+      <a class="btn-primary btn--lg" href={C.consoleUrl}>
+        <T zh={C.start.zh} en={C.start.en} />
+        <Icon name="arrow-up-right" size={14} />
+      </a>
       <a class="btn-ghost btn--lg" href={DOC}>
         <T zh={C.docs.zh} en={C.docs.en} />
         <Icon name="arrow-right" size={14} />
@@ -56,16 +50,15 @@ const groups = [
       ))
     }
 
-    <SectionFrame id="beta" labelledby="beta-title">
+    <SectionFrame id="start" labelledby="start-title">
       <div class="cloud__beta">
-        <h2 id="beta-title" class="cloud__beta-title"><T zh={C.beta.title.zh} en={C.beta.title.en} /></h2>
-        <p class="cloud__lede"><T zh={C.beta.text.zh} en={C.beta.text.en} /></p>
-        <p class="meta">
-          {
-            LANGS.map((l) => (
-              <a class="link-quiet" data-l={l} href={mailto(l)}>{C.mail.to}</a>
-            ))
-          }
+        <h2 id="start-title" class="cloud__beta-title"><T zh={C.begin.title.zh} en={C.begin.title.en} /></h2>
+        <p class="cloud__lede"><T zh={C.begin.text.zh} en={C.begin.text.en} /></p>
+        <p>
+          <a class="btn-primary btn--lg" href={C.consoleUrl}>
+            <T zh={C.start.zh} en={C.start.en} />
+            <Icon name="arrow-up-right" size={14} />
+          </a>
         </p>
       </div>
     </SectionFrame>

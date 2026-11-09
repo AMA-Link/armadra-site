@@ -79,19 +79,16 @@ export const S = {
       zh: 'Armadra 云：不开入站端口，在浏览器里打开自己的主机，与团队按权限共享。',
       en: 'Armadra Cloud: open your hosts in the browser without inbound ports, and share them with your team by permission.',
     },
-    meta: { zh: '邀请制内测', en: 'Invite-only beta' },
+    meta: { zh: '开放注册', en: 'Open sign-up' },
     title: { zh: 'Armadra 云', en: 'Armadra Cloud' },
     intro: {
       zh: '主机经中继出站连接，不开入站端口。在浏览器里打开自己的电脑或服务器，按权限分给团队。',
       en: 'Hosts connect out through a relay, with no inbound ports. Open your computer or server in the browser and share it with your team by permission.',
     },
-    apply: { zh: '申请内测', en: 'Apply for the beta' },
+    start: { zh: '登录 / 开始使用', en: 'Sign in / Get started' },
+    /** 控制台入口：app.armadra.com 开放注册，GitHub 登录 */
+    consoleUrl: 'https://app.armadra.com',
     docs: { zh: '团队与控制台', en: 'Teams and console' },
-    /** 申请邮件：收件地址与 S.contact 第一项相同 */
-    mail: {
-      to: 'contact@armadra.com',
-      subject: { zh: '申请 Armadra 云内测', en: 'Armadra Cloud beta request' },
-    },
     features: {
       title: { zh: '能做什么', en: 'What it does' },
       items: [
@@ -151,11 +148,11 @@ export const S = {
         },
       ],
     },
-    beta: {
-      title: { zh: '申请内测', en: 'Join the beta' },
+    begin: {
+      title: { zh: '开始使用', en: 'Get started' },
       text: {
-        zh: '内测采用邀请制。来信写明团队人数与用途。',
-        en: 'The beta is invite-only. Write to us with your team size and use case.',
+        zh: '开放注册，用 GitHub 账号登录即可。目前只有免费计划。',
+        en: 'Sign-up is open; sign in with your GitHub account. Only the Free plan is available for now.',
       },
     },
   },
