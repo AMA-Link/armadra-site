@@ -78,7 +78,7 @@ An idle agent can exit its CLI and end the process, then resume the same session
 
 ## The built-in ama
 
-`ama` is the coordinator agent: give it a goal and it turns subtasks into agent nodes on the canvas and collects the results; see [Coordinator](/docs/coordinator-and-workflows/). It needs a model API key, kept in the machine's key backend; this version has no settings page for entering it yet ("Credentials & keys" is not open).
+`ama` is the coordinator agent: give it a goal and it turns subtasks into agent nodes on the canvas and collects the results; see [Coordinator](/docs/coordinator-and-workflows/). It needs a model API key, kept in the machine's key backend; enter it in "Settings → Agent CLI → Armadra Agent": under "Armadra Agent model keys", choose the "Provider", enter the "API key" and "Save".
 
 ## Next
 

@@ -11,7 +11,7 @@ When one goal has to be divided among several agents, hand it to the coordinator
 
 `ama` is Armadra's own coordinator agent; there is nothing to install. Give it a goal and it turns subtasks into agent nodes on the canvas, dispatches them, waits and collects the results.
 
-1. Create an ama node on the canvas ("New Armadra Agent" in the "AI assistants" group of the new menu; that is ama). ama needs a model API key; this version has no settings page for entering it yet, see [Agents and CLIs](/docs/agents/).
+1. Create an ama node on the canvas ("New Armadra Agent" in the "AI assistants" group of the new menu; that is ama). ama needs a model API key; in "Settings → Agent CLI → Armadra Agent", under "Armadra Agent model keys", choose the "Provider", enter the "API key" and "Save"; see [Agents and CLIs](/docs/agents/).
 2. State the goal in that node, for example "finish the tests for the login module, then have another agent review them".
 3. ama creates member nodes, links them and assigns tasks as needed, then writes a summary to a sticky.
 
