@@ -60,5 +60,5 @@ When an agent needs to run a command or write a file and its permission mode ask
 
 - To learn what each area of the window is: [Interface tour](/docs/interface-tour/).
 - To pass a stretch of work from one agent to another: [Messages and handoff](/docs/messages-and-handoff/).
-- To have one agent organize a team: [Coordinator and workflows](/docs/coordinator-and-workflows/).
+- To have one agent organize a team: [Coordinator](/docs/coordinator-and-workflows/).
 - To continue on a phone or another computer: [Server and devices](/docs/server-and-devices/) and [Mobile app](/docs/mobile/).

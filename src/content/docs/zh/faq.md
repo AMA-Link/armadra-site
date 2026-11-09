@@ -59,7 +59,7 @@ Armadra 遇到未知或损坏的数据库会拒绝启动，不会自动清空或
 
 ## 和 Workflow 工具有什么不同？
 
-Workflow 擅长把步骤明确的任务编排成可重复流程；Armadra 的节点运行的是完整的 Agent 产品，适合路径会随发现变化的开放任务。两者可以结合：先在画布上探索，再把稳定的协作存成[工作流](/docs/coordinator-and-workflows/)。
+Workflow 擅长把步骤明确的任务编排成可重复流程；Armadra 的节点运行的是完整的 Agent 产品，适合路径会随发现变化的开放任务。需要分工时，可以让协调者 `ama` 在画布上组织多个 Agent，见[协调者](/docs/coordinator-and-workflows/)。
 
 ## 在哪里反馈问题？
 

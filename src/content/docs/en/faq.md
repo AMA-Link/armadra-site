@@ -59,7 +59,7 @@ Start with [Troubleshooting](/docs/troubleshooting/), which lists fixes by sympt
 
 ## How is it different from workflow tools?
 
-Workflow tools excel at turning well-defined steps into repeatable pipelines. Armadra's nodes run complete agent products, which suits open-ended tasks whose path changes as you learn. They combine: explore on the canvas first, then save the settled collaboration as a [workflow](/docs/coordinator-and-workflows/).
+Workflow tools excel at turning well-defined steps into repeatable pipelines. Armadra's nodes run complete agent products, which suits open-ended tasks whose path changes as you learn. To divide work, let the coordinator `ama` organize several agents on the canvas; see [Coordinator](/docs/coordinator-and-workflows/).
 
 ## Where do I report problems?
 

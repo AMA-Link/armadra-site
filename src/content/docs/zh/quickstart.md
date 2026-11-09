@@ -40,7 +40,7 @@ order: 3
    - **共享上下文**（默认）：双方平级，可以互相读取、互发消息；
    - **派发**：一方向另一方派任务，适合协调者与成员。
 
-没有连线的节点彼此看不到。关系之后可以改：右键点连线，选「使用共享上下文」「使用派发」或「反向派发」。详见[连线与上下文](/docs/links-and-context/)。
+没有连线的节点彼此看不到。关系之后可以改：右键点连线，选「设为共享上下文」「设为派发」或「反向派发」。详见[连线与上下文](/docs/links-and-context/)。
 
 ## 4. 让它们协作
 
@@ -60,5 +60,5 @@ Agent 需要执行命令或写文件、而当前权限模式要求确认时，�
 
 - 想了解窗口里每个区域：[界面导览](/docs/interface-tour/)。
 - 想让两个 Agent 之间交接一段工作：[消息与交接](/docs/messages-and-handoff/)。
-- 想让一个 Agent 统筹多人分工：[协调者与工作流](/docs/coordinator-and-workflows/)。
+- 想让一个 Agent 统筹多人分工：[协调者](/docs/coordinator-and-workflows/)。
 - 想在手机或另一台电脑上继续：[服务器与设备](/docs/server-and-devices/)与[手机 App](/docs/mobile/)。

@@ -90,4 +90,4 @@ The panel is read-only for now: creating, commenting and merging happen on the h
 
 If the panel says it cannot be used, the usual causes are: open a workspace first; for "This device has no GitHub permission for this workspace" ask whoever shared it; for "The Host cannot produce a usable GitHub credential", use the button to go to "Settings → Code hosting" and set one up; when rate-limited, wait for the quota to recover; on "The remote already changed; reload and retry", reload and try again.
 
-Next: members in [Coordinator and workflows](/docs/coordinator-and-workflows/) can each use their own worktree; shortcuts are in [Keyboard shortcuts](/docs/keyboard-shortcuts/).
+Next: members in [Coordinator](/docs/coordinator-and-workflows/) can each use their own worktree; shortcuts are in [Keyboard shortcuts](/docs/keyboard-shortcuts/).

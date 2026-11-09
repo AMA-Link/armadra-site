@@ -54,7 +54,7 @@ Updates live in the "Updates" area of "Settings → About".
 1. The top of the page shows "App version" and "Host version". "Release channel" can be "Stable" or "Beta".
 2. Click "Check for updates". The result is "This is the newest release" or "A newer release is available".
 3. When there is one, click "Download"; you can first "Read the release notes", or "Skip this version".
-4. When the download finishes the page shows "Downloaded; restart to apply"; click "Restart and update". Terminal sessions are kept across the restart, and automation is paused until it finishes.
+4. When the download finishes the page shows "Downloaded; restart to apply"; click "Restart and update". Terminal sessions are kept across the restart.
 5. To save effort turn on "Check automatically" and "Download automatically"; you are notified when a download completes.
 6. "Release history" lower on the page lists published versions, which you can open on GitHub.
 

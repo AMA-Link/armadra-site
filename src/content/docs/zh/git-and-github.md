@@ -90,4 +90,4 @@ Gitea、GitLab 等其他平台在同一页的「其他平台」里按主机或�
 
 如果面板提示无法使用，常见原因和处理是：先打开工作空间；「这台设备没有该工作空间的 GitHub 权限」时请联系共享者；「Host 现在拿不到可用的 GitHub 凭据」时，点按钮前往「设置 → 代码托管」配置凭据；被限流时等配额恢复；提示「远端已经变了」时刷新后重试。
 
-接下来：[协调者与工作流](/docs/coordinator-and-workflows/)里的成员可以各自使用一个 worktree；快捷键见[键盘快捷键](/docs/keyboard-shortcuts/)。
+接下来：[协调者](/docs/coordinator-and-workflows/)里的成员可以各自使用一个 worktree；快捷键见[键盘快捷键](/docs/keyboard-shortcuts/)。

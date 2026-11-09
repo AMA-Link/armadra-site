@@ -1,11 +1,11 @@
 ---
 title: Usage and models
-description: How to pick a model for a node, see machine and session load in the Resources panel, and where usage and cost statistics stand today.
+description: How to pick a model for a node and see machine and session load in the Resources panel.
 group: guides
 order: 6
 ---
 
-This page answers three questions: which model a node uses, how much of the machine the sessions take up, and where model usage and cost statistics can be seen.
+This page answers two questions: which model a node uses, and how much of the machine the sessions take up.
 
 ## Pick a model for a node
 
@@ -41,10 +41,4 @@ Related settings are under "Power & resources" in "Settings → Local service":
 
 ## Usage and cost statistics
 
-Armadra's main repository already implements observation of quota windows and reset times (Claude, Codex, Copilot) and local cost statistics built from each CLI's history, along with a "Settings → Usage & quotas" page. These entry points are temporarily switched off in the current version, so they do not appear in the interface and have no shortcuts. When they return is announced in the [changelog](/changelog/); this page does not describe the interface ahead of time.
-
-Until then you can:
-
-- check your account's usage and quota with each CLI's own commands or website;
-- watch local load in the "Resources" panel;
-- when your team uses Armadra Cloud, see team usage and plan in the console; see [Teams and console](/docs/teams-and-console/).
+Model usage and quota statistics are not open yet, and the interface has no entry for them. To see an account's usage and quota, use each CLI's own commands or website; when your team uses Armadra Cloud, team usage and plan are in the console; see [Teams and console](/docs/teams-and-console/).

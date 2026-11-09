@@ -39,7 +39,7 @@ The connection in use is marked "Current", team hosts are grouped by team; choos
 
 ## What you can do on the phone
 
-- **Bottom navigation**: "Canvas", "Files", "Git", "Automation", "Settings". Only one panel is open at a time, and "Canvas" means all of them closed. Until a workspace is open everything except "Settings" is greyed out, because the phone is paired from there.
+- **Bottom navigation**: "Canvas", "Files", "Git", "Settings". Only one panel is open at a time, and "Canvas" means all of them closed. Until a workspace is open everything except "Settings" is greyed out, because the phone is paired from there.
 - **Single-node focus page**: terminal, editor and browser nodes open full screen ("Open full screen"), with "Back to canvas" and "Switch node" at the top. It is the same node as on the canvas, with its header buttons, approvals and status.
 - **Terminal key bar**: Esc, Tab, the arrows and "Paste" stay above the soft keyboard; "Ctrl" expands `^C`, `^D`, `^Z`, `^L`, `^R`, `^A`, `^E`, `^U`, `^K`, and one tap sends one. Keys from the system keyboard do not go through the bar.
 - **Git**: three levels of navigation, section list, section detail and single-file diff, each with "Back".
@@ -53,7 +53,7 @@ Every key you type carries a sequence number, and after a reconnect only input t
 
 After you sign in the phone asks once, "Get approval and completion alerts"; choose "Turn on". Tapping a notification opens that node.
 
-- On the phone you can switch these kinds on or off individually: "Approval requests", "Waiting for an answer", "Stalled agents", "Agent errors", "Failed deliveries", "Scheduled tasks", "Resource thresholds", "Mentions in comments", "Workflow gates", "Results to review" and "Decisions needed". Registered devices are listed under "Push devices" in Settings → Notifications on the computer.
+- On the phone you can switch these kinds on or off individually: "Approval requests", "Waiting for an answer", "Stalled agents", "Agent errors", "Failed deliveries", "Resource thresholds", "Mentions in comments", "Results to review" and "Decisions needed". Registered devices are listed under "Push devices" in Settings → Notifications on the computer.
 - A phone browser uses web push and needs no third-party account.
 - Native push needs the operator to supply push credentials (or a push relay). The official installer currently has no push relay configured, so turning it on may fail; on Android with a UnifiedPush distributor installed it can receive through that. When push is not available you can still open the app and see what is pending under "Notifications" in the sidebar.
 - Push content is end-to-end encrypted and carries no terminal text or file contents.

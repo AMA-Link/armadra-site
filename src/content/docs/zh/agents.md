@@ -74,13 +74,13 @@ Armadra 不替你安装或登录 CLI。启动前先在终端里把要用的 CLI 
 
 ## 节能休眠
 
-空闲的 Agent 可以先退出 CLI 再结束进程，聚焦它、收到投递或计划到点时用 resume 接回原会话。休眠中的节点显示「已休眠」。
+空闲的 Agent 可以先退出 CLI 再结束进程，聚焦它或收到投递时用 resume 接回原会话。休眠中的节点显示「已休眠」。
 
 ## 内置的 ama
 
-`ama` 是协调 Agent：给它一个目标，它把子任务落成画布上的 Agent 节点并收齐结果，详见[协调者与工作流](/docs/coordinator-and-workflows/)。第一次使用要在「设置 → 凭据与密钥」的「Armadra Agent 的模型密钥」里选供应商并填 API Key。
+`ama` 是协调 Agent：给它一个目标，它把子任务落成画布上的 Agent 节点并收齐结果，详见[协调者](/docs/coordinator-and-workflows/)。它需要模型的 API Key，密钥保存在本机的密钥后端；当前版本设置里还没有填写它的页面（「凭据与密钥」暂未开放）。
 
 ## 下一步
 
 - Agent 请求权限时怎么处理：[权限请求与审批](/docs/approvals/)。
-- 让多个 Agent 分工：[协调者与工作流](/docs/coordinator-and-workflows/)。
+- 让多个 Agent 分工：[协调者](/docs/coordinator-and-workflows/)。

@@ -46,7 +46,7 @@ For roles and how they are granted, see [Self-hosting and remote access](/docs/s
 ## Armadra never answers for you
 
 - When a member hits a permission request, the coordinator `ama` only reports it as blocked; it does not approve on your behalf.
-- Other agents, automations and workflows do not click "Allow" either. A workflow "Gate" likewise stops and waits for you to "Approve" or "Reject".
+- Other agents do not click "Allow" either; they stop and wait for your decision.
 - A request waits for as long as it takes. When nobody has dealt with it for a while the node shows "Waiting too long", and an agent making no progress shows "Stalled" or "Idle, no result". Set the minutes for "Stalled alert" and "Waiting-too-long alert" under Settings → Notifications.
 
 Canvas collaboration actions between agents, such as reading context over a link or sending a message, do not need an approval each time; they only do what the link and node permissions already allow.
@@ -54,5 +54,5 @@ Canvas collaboration actions between agents, such as reading context over a link
 ## Notifications
 
 - **System notifications**: turn on "Notify when input is needed" under Settings → Notifications and a request pops up as "<node title> needs approval". The same page has "Sound" and "Volume".
-- **Phone push**: the phone has a set of "Notify me about" switches, so you can turn "Approval requests", "Waiting for an answer", "Agent errors", "Stalled agents", "Workflow gates" and so on on or off individually; registered devices are listed under "Push devices" in Settings → Notifications. Tapping a notification opens that node. See [Mobile app](/docs/mobile/).
+- **Phone push**: the phone has a set of "Notify me about" switches, so you can turn "Approval requests", "Waiting for an answer", "Agent errors", "Stalled agents" and so on on or off individually; registered devices are listed under "Push devices" in Settings → Notifications. Tapping a notification opens that node. See [Mobile app](/docs/mobile/).
 - You can answer from the phone too, without going back to the computer, as long as your role allows it.

@@ -31,7 +31,7 @@ The adapter needed for the session view can be installed on the same page. When 
 1. **First tell a real hang from a status that never arrived.** The status in a node's header (working, needs you, done) is reported by the CLI itself, and that channel is injected only when the CLI is launched from the canvas. The same CLI started alone in a terminal outside the canvas shows no status. Create a node on the canvas to start it.
 2. Open "Settings → Agent CLI" and check whether the CLI shows "Hook not generated", "Skill not generated", "Injection limited" or "Out of date". If so, click "Regenerate injection".
 3. The agent may be waiting for you: look for a permission request or a question in the node header; see the next section.
-4. The node may be in energy-saving hibernation: an idle agent first exits and then its process ends, and it resumes the original session when you focus the node, a delivery arrives or a schedule fires. Give it a moment.
+4. The node may be in energy-saving hibernation: an idle agent first exits and then its process ends, and it resumes the original session when you focus the node or a delivery arrives. Give it a moment.
 5. Open the "Resources" panel (⇧⌘U), find the session and check whether the process is using an unusual amount; if it is no longer useful you can "End session" and resume it in a new node.
 6. To catch stuck agents early, turn on "Stalled alert" in "Settings → Notifications".
 7. The same agent can switch between the terminal view and the session view; try the other view.

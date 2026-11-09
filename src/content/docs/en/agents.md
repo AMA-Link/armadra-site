@@ -74,13 +74,13 @@ The session view is a timeline arranged by turn: your messages, assistant replie
 
 ## Eco hibernation
 
-An idle agent can exit its CLI and end the process, then resume the same session when you focus it, when a delivery arrives or when a schedule fires. A hibernating node shows "Asleep".
+An idle agent can exit its CLI and end the process, then resume the same session when you focus it or when a delivery arrives. A hibernating node shows "Asleep".
 
 ## The built-in ama
 
-`ama` is the coordinator agent: give it a goal and it turns subtasks into agent nodes on the canvas and collects the results; see [Coordinator and workflows](/docs/coordinator-and-workflows/). The first time, pick a provider and enter an API key under Settings → Credentials & keys, in "Armadra Agent model keys".
+`ama` is the coordinator agent: give it a goal and it turns subtasks into agent nodes on the canvas and collects the results; see [Coordinator](/docs/coordinator-and-workflows/). It needs a model API key, kept in the machine's key backend; this version has no settings page for entering it yet ("Credentials & keys" is not open).
 
 ## Next
 
 - What to do when an agent asks for permission: [Permission requests and approvals](/docs/approvals/).
-- Dividing work among agents: [Coordinator and workflows](/docs/coordinator-and-workflows/).
+- Dividing work among agents: [Coordinator](/docs/coordinator-and-workflows/).

@@ -1,17 +1,17 @@
 ---
-title: Coordinator and workflows
-description: Split work with ama, follow it in the dispatch drawer, let it pick up issues by rule, and save a stable collaboration as a workflow you can rerun.
+title: Coordinator
+description: Split work with ama, follow it in the dispatch drawer, and let it pick up issues by rule.
 group: guides
 order: 3
 ---
 
-When one goal has to be divided among several agents, hand it to the coordinator `ama`; once a way of working settles down, save it as a workflow template and run it again and again. This page covers both.
+When one goal has to be divided among several agents, hand it to the coordinator `ama`. This page covers how to use it, how to follow it in the dispatch drawer, and how to let it pick up issues by rule.
 
 ## The coordinator ama
 
 `ama` is Armadra's own coordinator agent; there is nothing to install. Give it a goal and it turns subtasks into agent nodes on the canvas, dispatches them, waits and collects the results.
 
-1. Create an ama node on the canvas ("New Armadra Agent" in the "AI assistants" group of the new menu; that is ama). The first time, enter a model API key under Settings → Credentials & keys; see [Agents and CLIs](/docs/agents/).
+1. Create an ama node on the canvas ("New Armadra Agent" in the "AI assistants" group of the new menu; that is ama). ama needs a model API key; this version has no settings page for entering it yet, see [Agents and CLIs](/docs/agents/).
 2. State the goal in that node, for example "finish the tests for the login module, then have another agent review them".
 3. ama creates member nodes, links them and assigns tasks as needed, then writes a summary to a sticky.
 
@@ -29,7 +29,7 @@ When a member hits a permission request, ama only reports it as blocked and does
 
 ## Team shapes
 
-Orchestration started by an agent supports a few shapes:
+Orchestration is started by an agent on the canvas: tell ama or another agent how to divide the work and it creates member nodes and links them. The common shapes:
 
 - **Parallel**: several members work on different parts at once;
 - **Pipeline**: the next member starts when the previous one finishes;
@@ -48,24 +48,6 @@ Besides taking your instructions, ama can watch a repository for unclaimed issue
 5. In auto mode ama only takes candidates raised by people on the list while the rules are unchanged; once members are started the candidate is marked "Dispatched".
 
 If the rules file is edited, its state turns to "Changed" and automatic pickup stops until you "Confirm" again. "Auto needs an allow list and confirmed rules", or the setting does not take effect. A remote workspace cannot read the rules file and can only use "Observe". ama's verdict is only an opinion; Armadra checks the list, the rules and rate limits again before anything starts. Titles and text from outside are always treated as material, never as instructions.
-
-## Workflows
-
-Once a way of working has settled, save it as a workflow template:
-
-1. The coordinator submits a draft, and a "Workflow draft" card appears;
-2. Fill in "Name" and choose "Save as workflow" to confirm it as a template, or "Discard";
-3. From then on, open the template library from "Workflows" in the "Content" group of the new menu, choose "Run" on the "Templates" page and fill in the parameters; or choose "Schedule" to hand it to automation.
-
-A template consists of "Roles" (each with a name and the CLI it uses), "Steps" and "Parameters" (which can have a "Default"). There are three kinds of step: "Prompt" (hand a task to a role), "Collect" (gather the outputs of other steps) and "Gate" (stop and wait for you). Choose "Edit" to change these; steps are ordered with "Depends on" and can also be reordered by dragging.
-
-Each run creates a Frame and role nodes on the canvas. The "Runs" page shows each step's state (Pending, Running, Needs you, Done, Failed, Skipped, Stopped). At a gate it stops at "Needs you"; add a "Note" and choose "Approve" or "Reject". A run can be stopped, and you can select two runs and choose "Compare selected" to see which outputs are the same and which differ.
-
-When a template is revised, schedules still on the old version show "Template updated"; choose "Update to latest version" to move them over, and you are told which parameters are missing if they no longer fit.
-
-## When to use a workflow
-
-The path of an open-ended task changes as you learn; explore it first on the canvas with ama or a few agents. Once the steps are clear and the process needs to run repeatedly, distil it into a workflow. The two approaches combine.
 
 ## Next
 
