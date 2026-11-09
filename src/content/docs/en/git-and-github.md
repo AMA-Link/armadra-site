@@ -50,14 +50,14 @@ Also:
 - When files from several repositories are ticked, each repository gets its own commit with the same message, and progress is shown one by one.
 - "Amend the previous commit" rewrites the last commit; if it already exists on a remote-tracking branch you must confirm that you want to rewrite published history.
 - "Stash…" saves the current changes (optionally "Include untracked files"), "Unstash…" lists saved stashes to apply, pop or drop; "Discard the selected change" asks for confirmation first.
-- "Generate with AI" drafts a commit message from the staged changes; you preview it, then "Fill the commit box". It needs the Claude CLI on the machine and `ANTHROPIC_API_KEY` set for the running service, and is unavailable with a custom endpoint; when unavailable it states the reason. Lines detected as sensitive are hidden and not sent. If you edit the box by hand, the draft will not overwrite your text.
+- "Generate with AI" drafts a commit message from the staged changes; you preview it, then "Fill commit message". It needs the Claude CLI on the machine and `ANTHROPIC_API_KEY` set for the running service, and is unavailable with a custom endpoint; when unavailable it states the reason. Lines detected as sensitive are hidden and not sent. If you edit the box by hand, the draft will not overwrite your text.
 
 ## Worktrees
 
 A worktree checks out several branches of one repository into different directories, which suits giving every agent its own working copy so they do not overwrite each other.
 
 1. In the branch tree, right-click the "Worktrees" group and choose "New worktree…".
-2. Fill in "Worktree path (inside the workspace)"; tick "Also create a new branch" if needed.
+2. Fill in "Worktree path (inside workspace)"; tick "Create a new branch" if needed.
 3. Optionally tick "Also create a Frame bound to this worktree" and write an "Init script" — it runs once in the new worktree.
 4. Later, right-click the worktree entry and choose "Open in a Frame" to get a Frame bound to it. The Frame header shows the branch, the number of uncommitted changes and the init script state; if the bound worktree is missing or its branch was switched you are told, and can "Recreate" or "Unbind".
 

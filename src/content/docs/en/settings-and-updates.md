@@ -44,7 +44,7 @@ Some pages ("Local service", "SSH", "Agent CLI" and others) are visible only to 
 In "Settings → Defaults":
 
 1. "Theme": "Dark", "Light" or "System".
-2. "Backdrop": pick a background style; on supported systems there is also "Translucent window".
+2. "Background": pick a background style; on supported systems there is also "Translucent window".
 3. "Language": "中文" or "English".
 
 ## Update the app
@@ -103,7 +103,7 @@ There is no one-click export or import. The dependable way described in the docs
 1. On the old device use "Back up now", then copy the backup file, `settings.json` and the project folders you need (including `.armadra/`);
 2. install the same or a newer version on the new device, start it once so it creates its data folder, then quit completely;
 3. put the backup back into the new device's data folder using the restore steps above;
-4. tokens and keys live in the system's secret store and do not travel with the database file: sign in to each CLI again on the new device, and set up code hosting credentials and ama's model keys again;
+4. tokens and keys live in the system's secret store and do not travel with the database file: sign in to each CLI again on the new device, and set up code hosting credentials again;
 5. workspace records point to project folders, so make sure those folders exist on the new device at the recorded paths.
 
 If you only want to use the same data from another device, no migration is needed: deploy Armadra as a [server shell](/docs/server-and-devices/) and open the same workspace from several devices.

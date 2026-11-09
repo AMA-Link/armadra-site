@@ -18,7 +18,7 @@ This page covers the three node types that deal directly with code: the file bro
 In the tree you can:
 
 - create files and folders, rename and move them;
-- "Delete to Trash", with an "Undo" in the notification afterwards;
+- "Delete to trash", with an "Undo" in the notification afterwards;
 - "Copy path", "Copy relative path", and reveal the file in Finder / Explorer / the file manager.
 
 Files can also be dragged: onto a terminal to insert the path, onto the canvas to open a preview.
@@ -33,14 +33,14 @@ Files can also be dragged: onto a terminal to insert the path, onto the canvas t
 An editor node views and edits a file in the project.
 
 1. After an edit the node shows "Unsaved"; press ⌘S (Ctrl+S on Windows / Linux) to save.
-2. "Find/Replace" supports case, whole-word and regular-expression matching.
+2. "Find / replace" supports case, whole-word and regular-expression matching.
 3. Markdown files switch between "Preview", "Side by side" and "Edit"; images can be zoomed, and PDF and media files are previewed.
 4. The gutter marks changes against Git.
 
 The editor protects your work in these cases:
 
 - **Draft recovery**: after an unexpected close, reopening shows "Restored an unsaved draft", with "Discard draft". If the file on disk changed in the meantime, you get an extra notice.
-- **File changed on disk**: you see "The file on disk was modified" (replaced and deleted have their own notices). Click "Compare" to see "Disk → draft", then choose "Reload and discard draft" or "Keep draft"; when both sides changed, use "Three-way merge" and pick, hunk by hunk, the draft or the disk version.
+- **File changed on disk**: you see "The file changed on disk" (replaced and deleted have their own notices). Click "Compare" to see "Disk → draft", then choose "Reload and discard draft" or "Keep draft"; when both sides changed, use "Three-way merge" and pick, hunk by hunk, the draft or the disk version.
 - **Save as**: if the target path already has a file you are told, and nothing is overwritten silently.
 - Non-UTF-8 files are read-only; very large files show "File too large".
 
@@ -59,7 +59,7 @@ For common languages the editor offers completion, diagnostics, hover, go to def
 
 - Diagnostics are collected in the "Problems" panel and reference results in the "References" panel; neither has a default shortcut, so open them from the command palette or from the editor status bar.
 - Rename and code actions show an "Apply changes" preview first; if any file cannot be changed (outside the workspace, has an unsaved draft, and so on), none of the changes is applied.
-- Language services run on language servers already installed on the machine. When one is missing, the status says why, for example "No language server on this machine" or "Needs the workspace's execution permission". In "Settings → Workspace" you can enable or disable a language, set the executable path and turn on "Format on save".
+- Language services run on language servers already installed on the machine. When one is missing, the status says why, for example "No language server for this on this machine" or "Needs the workspace's execute grant". In "Settings → Workspace" you can enable or disable a language, set the executable path and turn on "Format on save".
 
 ## Remote files
 
