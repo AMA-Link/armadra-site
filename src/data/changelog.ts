@@ -13,6 +13,15 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.17.1',
+    date: '2026-11-10',
+    title: { zh: '修复：远程电脑上可新建项目与画布', en: 'Fixes: create projects and boards on a remote computer' },
+    items: [
+      { zh: '侧栏「我的其他电脑」里在线的每台电脑都能添加项目，建好的项目与之后新建的画布都落在那台电脑上', en: 'Each online computer under “My other computers” in the sidebar can add projects, and the project and any boards created next land on that computer' },
+      { zh: '切走含浏览器节点的画布后，缩略图里不再多出一块看不见的灰色方块，「适应」视图也不再被它撑大', en: 'After switching away from a board with a browser node, the minimap no longer shows an invisible grey box and fit view is no longer stretched by it' },
+    ],
+  },
+  {
     version: '0.17.0',
     date: '2026-11-10',
     title: { zh: '升级到 Electron 45，ama 的模型密钥有了自己的入口', en: 'Electron 45, and a home for ama’s model keys' },
