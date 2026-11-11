@@ -13,6 +13,16 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.17.2',
+    date: '2026-11-12',
+    title: { zh: '修复：更新不再重复下载，Agent 会话改成条目卡片', en: 'Fixes: updates no longer download twice, and agent sessions use item cards' },
+    items: [
+      { zh: '下载、检查或重启更新的过程中再点一次，不会再同时跑第二份；点下载后马上显示「正在下载」与进度', en: 'Clicking download, check or restart again while an update is in progress no longer starts a second one; after clicking download the progress shows right away' },
+      { zh: 'Agent 会话的时间线改成条目卡片，宽度跟着节点走；命令条目写出完整命令、退出码、耗时与输出', en: 'The agent session timeline uses item cards whose width follows the node; command items show the full command, exit code, duration and output' },
+      { zh: '桌面版后台服务意外重启后，页面不再连到旧的地址而全部请求失败', en: 'After the desktop app’s background service restarts unexpectedly, the page no longer connects to a stale address and fails every request' },
+    ],
+  },
+  {
     version: '0.17.1',
     date: '2026-11-10',
     title: { zh: '修复：远程电脑上可新建项目与画布', en: 'Fixes: create projects and boards on a remote computer' },
