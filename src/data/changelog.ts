@@ -13,6 +13,15 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.17.3',
+    date: '2026-11-13',
+    title: { zh: '修复：控制面连接不再猜版本门', en: 'Fixes: control-plane connections no longer guess a version gate' },
+    items: [
+      { zh: '连接控制面时，访问被收回就只提示访问被收回，版本过旧只在服务端明确报告时才提示更新，不再按主机版本推测', en: 'When connecting to a control plane, a revoked access is reported as revoked, and an outdated version is only reported when the server says so, instead of being guessed from the host version' },
+      { zh: '开发依赖 minimatch 换成已修复安全公告的版本，不影响安装包内容', en: 'The development dependency minimatch moves to a version that fixes a security advisory; the installers are unaffected' },
+    ],
+  },
+  {
     version: '0.17.2',
     date: '2026-11-12',
     title: { zh: '修复：更新不再重复下载，Agent 会话改成条目卡片', en: 'Fixes: updates no longer download twice, and agent sessions use item cards' },
