@@ -20,6 +20,8 @@
 | `pnpm deploy:dry` | 构建并让 wrangler 预检，不发布 |
 | `pnpm preview` | 预览构建产物 |
 
+`pnpm install` 会把 `core.hooksPath` 指到 `.githooks`：`git push` 前 `scripts/hooks/pre-push.mjs` 依次跑与 CI 相同的 `pnpm check`、`pnpm build`、`pnpm check:links`（约 11 秒），失败就拦下推送；删除分支、只推 tag 不查。临时跳过用 `git push --no-verify`，或 `ARMADRA_SKIP_PREPUSH=1`（全部）/ `ARMADRA_SKIP_PREPUSH=check:links`（指定步骤）。
+
 ## 环境变量
 
 | 变量 | 默认 | 说明 |
