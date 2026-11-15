@@ -13,6 +13,22 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.18.0',
+    date: '2026-11-15',
+    title: { zh: '新的 Git 工作台与代码托管自动识别', en: 'A new Git workbench and automatic code-hosting detection' },
+    items: [
+      { zh: 'Git 工作台：提交图逐行布线，已合并分支的提交折叠到主线，按仓库着色与筛选；「日志 / 本地更改」两页，提交详情带全高代码差异（统一或并排）', en: 'Git workbench: a row-by-row commit graph that folds merged branches onto the mainline, coloured and filtered by repository; Log and Local changes pages, with full-height code diffs (unified or side by side) in commit details' },
+      { zh: 'Git 工作台可以比较任意两个提交、按文件路径搜索、看完整提交信息与提交者；日志标出协作者与 Agent 参与的提交，头像离线也能显示', en: 'The Git workbench compares any two commits, searches by file path and shows the full commit message and committer; the log marks co-authors and agent commits, and avatars still show offline' },
+      { zh: '画布上新增 Git 节点，与侧栏的 Git 窗口一键互切；Agent 节点菜单可以直接打开它的未提交变更', en: 'A new Git node on the canvas switches with the side-panel Git window in one click; agent node menus open that agent’s uncommitted changes directly' },
+      { zh: '打开工作空间就自动认出代码托管仓库与平台（GitHub、GitLab、Gitea），支持 SSH 别名与多个 remote；直接复用本机已登录的 gh、glab、tea 或 git 凭据，不用再填令牌', en: 'Opening a workspace detects its hosting repository and platform (GitHub, GitLab, Gitea), including SSH aliases and several remotes; logins you already have in gh, glab, tea or git credentials are reused, so no token needs to be entered' },
+      { zh: '远程执行主机上的工作空间也能识别仓库，令牌与请求仍留在本机；主机连不上时面板不再卡住', en: 'Workspaces on remote execution hosts are detected too, while tokens and requests stay on your machine; an unreachable host no longer stalls the panel' },
+      { zh: 'Issue 与 PR 列表支持搜索、筛选、排序与翻页，PR 行显示 CI、审查结论与评论数，PR 概览列出审查者、指派与合并状态', en: 'Issue and PR lists support search, filters, sorting and paging; PR rows show CI, review decision and comment count, and the PR overview lists reviewers, assignees and merge status' },
+      { zh: '画布右键可以新建代码托管节点（列表或看板），列表里的条目也能单独加到画板；节点只记仓库与筛选条件，不存令牌', en: 'The canvas context menu creates code-hosting nodes (list or board), and single items can be added to the board; nodes keep only the repository and filters, never tokens' },
+      { zh: '修复：只靠 gh 登录的仓库，后台 PR 跟踪过一会儿不再报未配置；从程序坞启动也找得到 gh；超大文件的差异截断显示而不是报错，改名的文件按改名显示', en: 'Fixes: background PR tracking for repositories that rely only on a gh login no longer reports “not configured” after a while; gh is found when launched from the Dock; very large file diffs are shown truncated instead of failing, and renamed files show as renames' },
+      { zh: '随包的 ama 升到 0.18.0：模型参数宽松纠正，Anthropic 长对话只发新增消息，代码模式在没有系统沙箱的平台上也能隔离运行', en: 'The bundled ama moves to 0.18.0: lenient correction of model arguments, long Anthropic conversations send only new messages, and code mode runs isolated even on platforms without an OS sandbox' },
+    ],
+  },
+  {
     version: '0.17.3',
     date: '2026-11-13',
     title: { zh: '修复：控制面连接不再猜版本门', en: 'Fixes: control-plane connections no longer guess a version gate' },
