@@ -11,7 +11,7 @@
 | --- | --- |
 | `pnpm install` | 安装依赖 |
 | `pnpm dev` | 本地开发，默认 <http://localhost:4321> |
-| `pnpm check` | `astro check` 类型检查 + 设计约束检查（`check-design.mjs`）+ 对比度检查（`check-contrast.mjs`） |
+| `pnpm check` | `astro check` 类型检查 + 设计约束检查（`check-design.mjs`）+ 对比度检查（`check-contrast.mjs`）+ 钩子安装的用例 |
 | `pnpm check:contrast` | 只跑对比度检查：深浅两套 token 的文字对表面比值 |
 | `pnpm build` | 构建到 `dist/`，并生成带 CSP 哈希的 `dist/_headers` |
 | `pnpm check:links` | 构建后检查站内死链与锚点 |
