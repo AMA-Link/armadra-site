@@ -13,6 +13,18 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.19.0',
+    date: '2026-11-16',
+    title: { zh: '白板存储更小，自研画板引擎进入应用', en: 'Smaller whiteboard storage and the in-house board engine lands' },
+    items: [
+      { zh: '白板改用新的存储格式，画笔多的白板体积约为原来的十分之一；旧格式的白板升级后按空白板打开，不迁移', en: 'Whiteboards use a new storage format, about a tenth of the size for boards with lots of ink; whiteboards in the old format open as empty boards after upgrading and are not migrated' },
+      { zh: '实时协作的画板只与同样是 0.19.0 的客户端同连，版本不一致时会提示并退出实时', en: 'Realtime boards only connect with clients that are also on 0.19.0; a client on another version gets a notice and leaves realtime' },
+      { zh: '自研画板引擎进入应用：节点、分组、视口、连线、协作光标与白板绘图都已接入，缺省仍用现有引擎，新引擎暂不在设置里开放', en: 'The in-house board engine lands in the app: nodes, groups, the viewport, edges, collaborative cursors and whiteboard drawing are all wired up; the current engine stays the default and the new one is not offered in Settings yet' },
+      { zh: '修复：桌面版读日志的一端退出后，不再弹出未捕获异常对话框', en: 'Fix: the desktop app no longer shows an uncaught-exception dialog when whatever reads its log output goes away' },
+      { zh: '随包的 ama 升到 0.19.0：支持本地扩展，可以注册工具、斜杠命令与子代理，按文件哈希信任', en: 'The bundled ama moves to 0.19.0: local extensions that can register tools, slash commands and sub-agents, trusted by file hash' },
+    ],
+  },
+  {
     version: '0.18.0',
     date: '2026-11-15',
     title: { zh: '新的 Git 工作台与代码托管自动识别', en: 'A new Git workbench and automatic code-hosting detection' },
