@@ -13,6 +13,18 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.20.0',
+    date: '2026-11-17',
+    title: { zh: '自研画板引擎成为唯一画布，操作更流畅', en: 'The in-house board engine becomes the only canvas, and it is smoother' },
+    items: [
+      { zh: '画布操作更流畅：平移的主线程耗时降低约 60%，拖动降低约 90%，在有墨迹的白板上平移降低约 63%，缩放与会话状态变化时的重绘也更少', en: 'A smoother canvas: panning takes about 60% less main-thread time, dragging about 90% less, and panning over ink about 63% less, with fewer redraws while zooming and when session status changes' },
+      { zh: '自研画板引擎成为唯一画布，原先的引擎与设置开关一并移除；首屏脚本由 837 KB 降到 693 KB', en: 'The in-house board engine is now the only canvas; the previous engine and its switch are gone, and first-screen JavaScript drops from 837 KB to 693 KB' },
+      { zh: '缩放手柄只在选中单个对象时出现', en: 'Resize handles appear only when a single object is selected' },
+      { zh: '修复：iOS 上用手指拖动节点不再被中断；触屏上较小的缩放手柄也能点到；长按不再弹出系统菜单；Dock 的缩放百分比连续缩放时不再闪烁', en: 'Fixes: dragging nodes with a finger on iOS is no longer interrupted; small resize handles are reachable by touch; long-press no longer shows the system menu; the Dock zoom percentage no longer flickers during continuous zoom' },
+      { zh: '随包的 ama 升到 0.20.0，与统一版本对齐，没有功能改动', en: 'The bundled ama moves to 0.20.0, aligned with the unified version, with no functional change' },
+    ],
+  },
+  {
     version: '0.19.0',
     date: '2026-11-16',
     title: { zh: '白板存储更小，自研画板引擎进入应用', en: 'Smaller whiteboard storage and the in-house board engine lands' },
