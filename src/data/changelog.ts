@@ -13,6 +13,19 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.21.0',
+    date: '2026-11-19',
+    title: { zh: 'Agent 零注入启动，节点有了名字，Git 日志可选排序', en: 'Zero-injection agent launch, named nodes, and a sort order for the Git log' },
+    items: [
+      { zh: 'Agent 零注入启动：设置里每家 Agent 一个开关，打开后 Armadra 不再向它的环境与启动参数里注入任何东西，凭据照常兑换；节点头会显示「零注入」，该模式下审批入口与协作相关设置停用', en: 'Zero-injection agent launch: a switch per agent in Settings; when on, Armadra injects nothing into the agent\'s environment or launch arguments while credentials are still exchanged as usual; the node header shows a "zero injection" mark, and the approval entry and collaboration settings are disabled in that mode' },
+      { zh: '新建的终端与 Agent 节点自带预设名称，终端节点头最左边加了类型标记；没改过的预设名仍可由自动命名接管', en: 'New terminal and agent nodes come with preset names, and the terminal node header gains a type mark on its left; untouched preset names can still be taken over by auto-titling' },
+      { zh: 'ACP 会话的模型按钮合并成一个弹层：模型、思考强度、其余选项、速度与权限模式都在里面，支持搜索与快捷键', en: 'The model button in ACP sessions becomes a single popover holding model, reasoning level, other options, speed and permission mode, with search and shortcuts' },
+      { zh: 'Git 日志筛选栏新增排序：时间优先或拓扑优先，选择会被记住', en: 'The Git log filter bar gains a sort order, date first or topology first, and remembers your choice' },
+      { zh: '修复：浏览器开发模式下代码托管面板无法连上的问题', en: 'Fix: the code-hosting panel could not connect in browser dev mode' },
+      { zh: '随包的 ama 升到 0.21.0，与统一版本对齐，没有功能改动', en: 'The bundled ama moves to 0.21.0, aligned with the unified version, with no functional change' },
+    ],
+  },
+  {
     version: '0.20.0',
     date: '2026-11-17',
     title: { zh: '自研画板引擎成为唯一画布，操作更流畅', en: 'The in-house board engine becomes the only canvas, and it is smoother' },
