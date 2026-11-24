@@ -1,10 +1,9 @@
 name: deploy
 
-# main 推送或手动触发时构建并发布到 Cloudflare（wrangler.jsonc）。
+# 手动触发（workflow_dispatch）时检查、构建并发布到 Cloudflare（wrangler.jsonc）。
+# main 推送的自动发布已合并进 ci.yml（check 通过后复用构建产物发布），避免重复构建。
 # 配好 secret 后把仓库变量 DEPLOY_ENABLED 设为 true 才运行，见 docs/guides/deployment.md。
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -30,6 +29,8 @@ jobs:
         run: echo "::notice::仓库 secret CLOUDFLARE_API_TOKEN 还没配置，本次跳过发布（见 docs/guides/deployment.md）"
       - uses: actions/checkout@v4
         if: env.HAS_TOKEN == 'true'
+        with:
+          fetch-depth: 1
       - uses: pnpm/action-setup@v4
         if: env.HAS_TOKEN == 'true'
       - uses: actions/setup-node@v4
@@ -39,6 +40,20 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
         if: env.HAS_TOKEN == 'true'
+      - name: 缓存 Astro 与构建中间产物
+        if: env.HAS_TOKEN == 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            .astro
+            node_modules/.cache
+          key: astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.mjs', 'tsconfig.json') }}-${{ hashFiles('src/content/**') }}
+          restore-keys: |
+            astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.mjs', 'tsconfig.json') }}-
+            astro-${{ runner.os }}-
+      - name: 类型与设计约束
+        if: env.HAS_TOKEN == 'true'
+        run: pnpm check
       - name: 构建
         if: env.HAS_TOKEN == 'true'
         run: pnpm build
