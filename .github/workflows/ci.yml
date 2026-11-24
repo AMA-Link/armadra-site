@@ -7,27 +7,167 @@ on:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    name: changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: 识别改动范围
+        id: filter
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          BASE=""
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BASE="$PR_BASE_SHA"
+          elif [ "$EVENT_NAME" = "push" ] && [ -n "$PUSH_BEFORE" ] && ! printf '%s' "$PUSH_BEFORE" | grep -Eq '^0+$'; then
+            BASE="$PUSH_BEFORE"
+          fi
+
+          if [ -z "$BASE" ] || ! git fetch --no-tags --depth=1 origin "$BASE" 2>/dev/null; then
+            echo "基线不可达，回退为完整站点检查"
+            echo "site=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! FILES=$(git -c core.quotePath=false diff --name-only "$BASE" HEAD 2>/dev/null); then
+            echo "diff 失败，回退为完整站点检查"
+            echo "site=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if FILES="$FILES" node --input-type=module -e '
+            import { isDocsOnly } from "./scripts/hooks/pre-push.mjs";
+            const files = (process.env.FILES ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
+            process.exit(isDocsOnly(files) ? 0 : 1);
+          ' 2>/dev/null; then
+            echo "仅仓库内部文档/治理文件改动，走 docs 快路径"
+            echo "site=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "涉及站点内容、构建或工作流改动，走完整 check"
+            echo "site=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  docs:
+    name: docs
+    needs: changes
+    if: needs.changes.outputs.site != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: 钩子与快路径自测
+        run: node --test scripts/hooks/*.test.mjs
+
   check:
     name: check
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: 缓存 Astro 与构建中间产物
+        uses: actions/cache@v4
+        with:
+          path: |
+            .astro
+            node_modules/.cache
+          key: astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.mjs', 'tsconfig.json') }}-${{ hashFiles('src/content/**') }}
+          restore-keys: |
+            astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.mjs', 'tsconfig.json') }}-
+            astro-${{ runner.os }}-
       - name: 类型与设计约束
         run: pnpm check
       - name: 构建
         run: pnpm build
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://armadra.com' }}
       - name: 站内链接
         run: pnpm check:links
+      - name: 上传构建产物
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+          retention-days: 1
+          include-hidden-files: true
+          if-no-files-found: error
+
+  deploy:
+    name: deploy
+    needs: check
+    if: >-
+      needs.check.result == 'success' &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL || 'https://armadra.com' }}
+    env:
+      HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    steps:
+      - name: 检查 Cloudflare 令牌
+        if: env.HAS_TOKEN != 'true'
+        run: echo "::notice::仓库 secret CLOUDFLARE_API_TOKEN 还没配置，本次跳过发布（见 docs/guides/deployment.md）"
+      - uses: actions/checkout@v4
+        if: env.HAS_TOKEN == 'true'
+        with:
+          fetch-depth: 1
+      - uses: pnpm/action-setup@v4
+        if: env.HAS_TOKEN == 'true'
+      - uses: actions/setup-node@v4
+        if: env.HAS_TOKEN == 'true'
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+        if: env.HAS_TOKEN == 'true'
+      - name: 下载构建产物
+        if: env.HAS_TOKEN == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+      - name: 校验构建产物
+        if: env.HAS_TOKEN == 'true'
+        run: test -f dist/_headers && test -f dist/index.html
+      - name: 发布到 Cloudflare
+        if: env.HAS_TOKEN == 'true'
+        run: pnpm exec wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -11,7 +11,7 @@
 | --- | --- |
 | `pnpm install` | 安装依赖 |
 | `pnpm dev` | 本地开发，默认 <http://localhost:4321> |
-| `pnpm check` | `astro check` 类型检查 + 设计约束检查（`check-design.mjs`）+ 对比度检查（`check-contrast.mjs`）+ 钩子安装的用例 |
+| `pnpm check` | 并行执行（`check-all.mjs`）`astro check` 类型检查、设计约束检查（`check-design.mjs`）、对比度检查（`check-contrast.mjs`）与钩子自测 |
 | `pnpm check:contrast` | 只跑对比度检查：深浅两套 token 的文字对表面比值 |
 | `pnpm build` | 构建到 `dist/`，并生成带 CSP 哈希的 `dist/_headers` |
 | `pnpm check:links` | 构建后检查站内死链与锚点 |
@@ -20,7 +20,7 @@
 | `pnpm deploy:dry` | 构建并让 wrangler 预检，不发布 |
 | `pnpm preview` | 预览构建产物 |
 
-`pnpm install` 会把 `core.hooksPath` 指到 `.githooks`：`git push` 前 `scripts/hooks/pre-push.mjs` 依次跑与 CI 相同的 `pnpm check`、`pnpm build`、`pnpm check:links`（约 11 秒），失败就拦下推送；删除分支、只推 tag 不查。临时跳过用 `git push --no-verify`，或 `ARMADRA_SKIP_PREPUSH=1`（全部）/ `ARMADRA_SKIP_PREPUSH=check:links`（指定步骤）。
+`pnpm install` 会把 `core.hooksPath` 指到 `.githooks`：`git push` 前 `scripts/hooks/pre-push.mjs` 按改动范围把关——仅改仓库内部文档与治理文件（顶层 `docs/**`、Issue/PR 模板、`AGENTS.md` / `README.md` 等，不含站点文档 `src/content/docs/**`）时只跑轻量钩子自测；涉及站点内容、代码或工作流时依次跑与 CI 相同的 `pnpm check`、`pnpm build`、`pnpm check:links`，失败就拦下推送；删除分支、只推 tag 不查。临时跳过用 `git push --no-verify`，或 `ARMADRA_SKIP_PREPUSH=1`（全部）/ `ARMADRA_SKIP_PREPUSH=check:links`（指定步骤）。
 
 ## 环境变量
 
