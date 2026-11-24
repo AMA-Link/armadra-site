@@ -45,7 +45,7 @@ docs(guides): 部署指南补 armadra.com 绑定步骤
 
 ## 仓库自动化 / Repository automation
 
-- **CI**：`ci.yml` 在 PR 与 `main` 上跑 `pnpm check` 与 `pnpm build`。 / Runs `pnpm check` and `pnpm build` on PRs and `main`.
-- **部署 / Deploy**：`deploy.yml` 在 `main` 推送后发布到 Cloudflare，需要仓库变量与密钥，见 [部署指南](../docs/guides/deployment.md)。 / Publishes to Cloudflare after pushes to `main`; see the deployment guide.
+- **CI**：`ci.yml` 在 PR 与 `main` 上跑 `pnpm check`、`pnpm build` 与 `pnpm check:links`（仅改仓库内部文档时走 `docs` 快路径）；`main` 推送通过检查后直接复用构建产物发布到 Cloudflare。 / Runs `pnpm check`, `pnpm build` and `pnpm check:links` on PRs and `main` (with a lightweight `docs` fast-path for repo-internal docs), and deploys the verified build artifact to Cloudflare on `main` pushes.
+- **手动部署 / Manual deploy**：`deploy.yml` 仅供手动触发（`workflow_dispatch`）重跑检查、构建并发布到 Cloudflare，需要仓库变量与密钥，见 [部署指南](../docs/guides/deployment.md)。 / Manual `workflow_dispatch` workflow to re-check, rebuild and publish to Cloudflare; see the deployment guide.
 - **路径标签 / Path labels**：`labeler.yml` 按 [labeler.yml](labeler.yml) 的映射给 PR 打标签。 / Labels PRs by the paths they touch.
 - **过期 issue / Stale issues**：60 天无活动标 `stale`，再 14 天关闭；`security`、`ready`、`needs-design` 与 PR 不处理。 / Idle issues are marked `stale` after 60 days and closed 14 days later; `security`, `ready`, `needs-design` and PRs are exempt.

@@ -28,7 +28,7 @@ pnpm deploy:dry
    gh secret set CLOUDFLARE_API_TOKEN -R AMA-Link/armadra-site
    ```
 
-4. 之后每次合并到 `main`，`.github/workflows/deploy.yml` 自动构建、检查站内链接并发布；也可以在 Actions 页手动运行。令牌缺失时工作流只打一条提示并跳过，不会失败。
+4. 之后每次合并到 `main`（改动涉及站点时），`.github/workflows/ci.yml` 在 `check`（`pnpm check` + `pnpm build` + `pnpm check:links`）通过后直接上传并复用 `dist/` 发布到 Cloudflare，避免重复构建；纯仓库内部文档改动跳过构建与发布。如需手动重发，可在 Actions 页运行 `.github/workflows/deploy.yml`（`workflow_dispatch`，同样先跑 `pnpm check`、`pnpm build` 与 `pnpm check:links`）。令牌缺失时工作流只打一条提示并跳过，不会失败。
 
 ## 绑定 armadra.com
 
@@ -44,7 +44,7 @@ pnpm deploy:dry
    ]
    ```
 
-3. 开 PR 合并后由 deploy 工作流发布（或本地 `pnpm deploy`）。Cloudflare 自动签发证书，通常几分钟内生效。
+3. 开 PR 合并后由 CI 自动发布（或本地 `pnpm deploy`）。Cloudflare 自动签发证书，通常几分钟内生效。
 4. `www` 跳转到根域：在 Cloudflare 控制台「规则 → 重定向规则」加一条 `www.armadra.com/*` → `https://armadra.com/${1}`（301，保留查询串）。
 5. 绑定后可以把 `workers_dev` 改为 `false`，只保留正式域名。
 
