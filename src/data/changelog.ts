@@ -13,6 +13,20 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.22.0',
+    date: '2026-11-24',
+    title: { zh: 'Agent 节点有了交付状态：谁在等你、谁在审查、谁可以合并', en: 'Delivery status for agent nodes: who needs you, who is in review, who is ready to merge' },
+    items: [
+      { zh: '画布右侧新增交付面板，按「需要你、进行中、审查中、可合并」四栏列出每个 Agent 节点，每张卡片一句话说明当前状态并带上 PR 链接，点击即可定位到节点；节点头也会显示对应标记', en: 'A new delivery panel on the right of the canvas lists every agent node in four lanes (needs you, working, in review, ready to merge), with a one-line status and its PR links on each card; click to center the node, and node headers show a matching mark' },
+      { zh: '节点会按所在分支自动关联开着的 PR，支持 GitHub、GitLab 与 Gitea，只刷新状态，不读讨论、不向终端发送任何内容', en: 'A node is linked automatically to the open PR of its branch on GitHub, GitLab and Gitea; only its status is refreshed, with no discussion reads and nothing sent to a terminal' },
+      { zh: '父节点派出子任务后在等结果时，不再落进「需要你」，而是留在「进行中」并显示「等待子任务 n/m」或「汇总中」', en: 'A parent node waiting for the results of its child tasks no longer lands in "Needs you"; it stays in "Working" and shows "waiting on children n/m" or "collecting"' },
+      { zh: '七个 Agent 的提问、拒绝、失败与中断现在都能被如实识别，不再显示成运行中或正常完成', en: 'Questions, denials, failures and interrupts on all seven agents are now reported faithfully instead of reading as working or a clean finish' },
+      { zh: 'macOS 安装窗口换成浅色环形轨道背景，七个内置 Agent 的 Logo 排在轨道上', en: 'The macOS install window gets a light orbit background with the logos of the seven built-in agents' },
+      { zh: '修复：ACP 会话的工作目录不存在时，页面会写明「工作目录不存在」并给出路径，不再只显示无法启动', en: 'Fix: when the working directory of an ACP session does not exist, the page now says so and shows the path instead of only reporting that it cannot start' },
+      { zh: '随包的 ama 升到 0.22.0：新增 task_land，可把 worktree 任务的提交落到当前分支；worktree 任务会带上未提交的改动', en: 'The bundled ama moves to 0.22.0: task_land lands the commits of a worktree task on the current branch, and worktree tasks now start from your uncommitted work' },
+    ],
+  },
+  {
     version: '0.21.0',
     date: '2026-11-19',
     title: { zh: 'Agent 零注入启动，节点有了名字，Git 日志可选排序', en: 'Zero-injection agent launch, named nodes, and a sort order for the Git log' },
