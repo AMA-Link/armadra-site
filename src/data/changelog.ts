@@ -13,6 +13,19 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.24.0',
+    date: '2026-11-25',
+    title: { zh: 'Grok Build 与 Antigravity 更完整，Agent 协作更稳', en: 'Grok Build and Antigravity grow more complete, agent collaboration gets steadier' },
+    items: [
+      { zh: 'Grok Build 的时间线、历史与 token 成本都能看了；设置里新增可选的「终端审批代答」，缺省关闭，开启后只对经 Armadra 启动、权限模式明确的节点生效，并会在节点头部说明没生效的原因', en: 'Grok Build now shows its timeline, history and token cost; a new optional "answer terminal approvals" setting is off by default and, when on, only applies to nodes launched by Armadra with an explicit permission mode, with the node header saying why it did not take effect' },
+      { zh: 'Antigravity（agy）在终端里也能看到会话转录：时间线可以切到会话视图；等待审阅工件时会拦住排队的消息，不会误投', en: 'Antigravity (agy) in a terminal now shows its session transcript: the timeline can switch to the session view, and queued messages are held while an artifact waits for review instead of being delivered by mistake' },
+      { zh: '计划审批卡更安全：隐藏字符与未结束的控制序列会被清理，批准或拒绝后不再保留正文，节点头部不再提供一键允许，改为跳转到卡片', en: 'Plan approval cards are safer: hidden characters and unterminated control sequences are cleaned, the body is dropped once approved or rejected, and the node header no longer offers one-click allow but jumps to the card' },
+      { zh: 'Agent 一轮结束后会释放自己占用的终端驱动权，下一条消息不用再等两次 120 秒；被撤回的终端等待与会话取消后的终端也会及时收掉', en: 'An agent releases its terminal drive lease at the end of a turn, so the next message no longer waits for two 120-second timeouts; terminals are also cleaned up promptly after a withdrawn wait or a cancelled session' },
+      { zh: '远程主机上 fork 出来的工作副本也能关联到对应的 PR；跳到节点或新建节点后画布偶尔不居中的问题已修复', en: 'Fork checkouts on remote hosts now link to their pull requests, and the canvas no longer occasionally fails to center after jumping to or creating a node' },
+      { zh: '随包的 ama 升到 0.24.0，支持 ACP 扩展请求；手机与平板 App 也请一并升级到 0.24.0', en: 'The bundled ama moves to 0.24.0 with ACP extension requests; please update the phone and tablet app to 0.24.0 as well' },
+    ],
+  },
+  {
     version: '0.23.0',
     date: '2026-11-24',
     title: { zh: '工作流有了共享约定与验证，内置 Grok Build 与 Antigravity', en: 'Workflows gain a shared contract and verification, with Grok Build and Antigravity built in' },
