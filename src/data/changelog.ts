@@ -13,6 +13,19 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.23.0',
+    date: '2026-11-24',
+    title: { zh: '工作流有了共享约定与验证，内置 Grok Build 与 Antigravity', en: 'Workflows gain a shared contract and verification, with Grok Build and Antigravity built in' },
+    items: [
+      { zh: '项目级工作流升级：可以写共享约定、给每个角色划定它负责的文件范围，汇总步骤能运行验证命令或清单，发现问题就把点名的角色退回去重做，次数用尽再交给你决定', en: 'Project workflows grow up: write a shared contract, give each role the files it owns, let the collect step run verification commands or a checklist, send the named roles back when something is wrong, and hand the call to you once retries run out' },
+      { zh: '工作流可以保存为项目里的 .ama/workflows 文件：模板页签新增「导入」，模板菜单新增「导出到 .ama/workflows」，覆盖前会确认并显示路径', en: 'Workflows can live as .ama/workflows files in your project: the templates tab gains Import, the template menu gains "Export to .ama/workflows", and overwriting asks first and shows the path' },
+      { zh: '内置的 ama 可以直接起跑项目里的工作流，并把模型档位带到每个成员节点', en: 'The built-in ama can start a workflow from your project directly and carries the model tier through to each member node' },
+      { zh: '内置 Grok Build 与 Antigravity（agy）两个 Agent：支持从画布启动、ACP 会话与权限模式；agy 还能从历史对话接回', en: 'Grok Build and Antigravity (agy) join as built-in agents: launch from the canvas, ACP sessions and permission modes; agy can also resume from its conversation history' },
+      { zh: '默认画板也能删除，工作空间可以没有画板；没有画板时画布区显示「新建画布」', en: 'The default board can now be deleted and a workspace may have no board; the canvas shows "New board" when none is left' },
+      { zh: '随包的 ama 升到 0.23.0：模型档位、嵌套派发、工作流调度与 /workflow 命令；手机与平板 App 也请一并升级到 0.23.0', en: 'The bundled ama moves to 0.23.0: model tiers, nested dispatch, the workflow scheduler and the /workflow command; please update the phone and tablet app to 0.23.0 as well' },
+    ],
+  },
+  {
     version: '0.22.0',
     date: '2026-11-24',
     title: { zh: 'Agent 节点有了交付状态：谁在等你、谁在审查、谁可以合并', en: 'Delivery status for agent nodes: who needs you, who is in review, who is ready to merge' },
