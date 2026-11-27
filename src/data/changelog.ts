@@ -13,6 +13,18 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.25.0',
+    date: '2026-11-27',
+    title: { zh: '会话页：同一个 Agent 既能像聊天一样对话，也能放到画布上', en: 'Session page: talk to an agent like a chat, and still put it on the canvas' },
+    items: [
+      { zh: '右侧新增「会话」页：左边是会话列表，右边是对话区，新建会话时选 Agent 与驱动方式；会话随时可以钉到画布上，用完再收回，进程不重启', en: 'A new "Sessions" page on the right: a session list beside a conversation pane, with the agent and driver chosen when you create one; a session can be pinned to a canvas and taken back at any time without restarting its process' },
+      { zh: '会话之间可以分上下级：下级缩进挂在上级下面，下级做完一轮会自动告诉上级，可以设成只提示、带摘要或关闭', en: 'Sessions can be arranged as main and sub-sessions: a sub-session is indented under its main session and tells it when it finishes a turn, as a hint, with a summary, or not at all' },
+      { zh: 'Armadra 重启后，断开的 ACP 会话在有消息投给它时会自动接回，排队的消息不再一直等到过期；会话页新建的会话也只会启动一个 Agent 进程', en: 'After Armadra restarts, a disconnected ACP session reconnects by itself when a message is delivered to it, so queued messages no longer wait until they expire; a session created from the session page now starts only one agent process' },
+      { zh: 'Windows 上在命令提示符（cmd）里启动 Grok Build 时，Armadra 的附加参数不再混进你的提示词', en: 'On Windows, launching Grok Build from Command Prompt (cmd) no longer mixes Armadra\'s extra arguments into your prompt' },
+      { zh: '手机与平板的底部导航也有了「会话」入口；随包的 ama 升到 0.25.0', en: 'The phone and tablet bottom navigation gains a "Sessions" entry too; the bundled ama moves to 0.25.0' },
+    ],
+  },
+  {
     version: '0.24.0',
     date: '2026-11-25',
     title: { zh: 'Grok Build 与 Antigravity 更完整，Agent 协作更稳', en: 'Grok Build and Antigravity grow more complete, agent collaboration gets steadier' },
