@@ -13,6 +13,17 @@ export interface Release {
 
 export const CHANGELOG: readonly Release[] = [
   {
+    version: '0.25.1',
+    date: '2026-11-27',
+    title: { zh: '修复老画布的格式提示，会话页与画布不再互相打架', en: 'Older canvases open again, and the session page and canvas stop getting in each other\'s way' },
+    items: [
+      { zh: '较早开过实时协同的画布，打开时不再提示「这块板的数据格式与当前版本不同」，可以照常编辑与协同', en: 'Canvases that turned on real-time collaboration in older versions no longer say "this board\'s data format differs from this version" when opened, and can be edited and shared as usual' },
+      { zh: '会话页打开时在侧栏点画布直接回到画布，新建、删除或切换画布都会关掉会话页；会话详情不再被右上角的工具按钮挡住', en: 'With the session page open, clicking a board in the sidebar goes straight back to the canvas, and creating, deleting or switching boards closes the session page; the session detail is no longer covered by the tool buttons in the top-right corner' },
+      { zh: '侧栏新增「画布 / 会话」切换：会话视图下会话列表放在侧栏，页面只显示对话；收起侧栏时页面自己显示列表', en: 'The sidebar gains a "Canvas / Sessions" switch: in the sessions view the session list sits in the sidebar and the page shows only the conversation; with the sidebar collapsed the page shows its own list' },
+      { zh: '随包的 ama 升到 0.25.1', en: 'The bundled ama moves to 0.25.1' },
+    ],
+  },
+  {
     version: '0.25.0',
     date: '2026-11-27',
     title: { zh: '会话页：同一个 Agent 既能像聊天一样对话，也能放到画布上', en: 'Session page: talk to an agent like a chat, and still put it on the canvas' },
